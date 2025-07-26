@@ -1,0 +1,47 @@
+{
+  "name": "atma-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start": "npm run dev",
+    "build:prod": "NODE_ENV=production vite build",
+    "serve": "vite preview --port 3000",
+    "clean": "rm -rf dist node_modules/.vite",
+    "check": "npm run lint && npm run build",
+    "test:api": "node scripts/api-test.js",
+    "test:api:quick": "node scripts/quick-api-test.js",
+    "test:api:browser": "vite --open /test-api.html"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
+    "@tailwindcss/vite": "^4.1.11",
+    "axios": "^1.10.0",
+    "framer-motion": "^12.23.9",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.60.0",
+    "react-router-dom": "^7.6.3",
+    "recharts": "^3.1.0",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "vite": "^7.0.4"
+  }
+}
