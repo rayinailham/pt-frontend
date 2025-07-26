@@ -262,7 +262,7 @@ const AuthPage = () => {
           {/* Footer */}
           <div className="text-center mt-8">
             <p className="text-sm text-gray-400">
-              © 2024 Peta Talenta Platform. All rights reserved.
+              © 2025 Peta Talenta Platform. All rights reserved.
             </p>
           </div>
         </div>

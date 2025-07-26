@@ -175,7 +175,7 @@ export default function Dashboard() {
                           {loading.tokenBalance ? (
                             <div className="animate-pulse h-6 bg-gray-200 rounded w-16"></div>
                           ) : (
-                            data.tokenBalance?.tokenBalance || 0
+                            data.tokenBalance?.token_balance || 0
                           )}
                         </dd>
                       </dl>
