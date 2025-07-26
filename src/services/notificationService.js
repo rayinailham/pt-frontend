@@ -19,7 +19,6 @@ class NotificationService {
   connect(token, options = {}) {
     // Prevent multiple connections
     if (this.socket && this.socket.connected) {
-      console.log('NotificationService: Already connected, skipping');
       return this;
     }
 
@@ -28,7 +27,6 @@ class NotificationService {
     }
 
     const socketUrl = options.url || 'https://api.chhrone.web.id';
-    console.log('NotificationService: Connecting to', socketUrl);
 
     this.socket = io(socketUrl, {
       autoConnect: false,
@@ -49,7 +47,6 @@ class NotificationService {
 
   disconnect() {
     if (this.socket && this.socket.connected) {
-      console.log('NotificationService: Disconnecting WebSocket');
       this.socket.disconnect();
       this.socket = null;
     } else if (this.socket) {

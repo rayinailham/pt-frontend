@@ -232,7 +232,6 @@ class ApiService {
    * @deprecated Use getUserResults instead
    */
   async getUserJobs(params = {}) {
-    console.warn('getUserJobs is deprecated. Use getUserResults instead.');
     return this.getUserResults(params);
   }
 

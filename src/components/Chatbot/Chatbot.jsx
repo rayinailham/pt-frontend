@@ -32,7 +32,6 @@ const Chatbot = ({ assessmentId }) => {
 
     try {
       // First, try to get existing conversation for this assessment
-      console.log('Checking for existing conversation...');
       let existingConversation = null;
 
       try {
@@ -45,10 +44,9 @@ const Chatbot = ({ assessmentId }) => {
 
         if (existingResponse && existingResponse.success && existingResponse.data.conversation) {
           existingConversation = existingResponse.data.conversation;
-          console.log('Found existing conversation:', existingConversation);
         }
       } catch (getError) {
-        console.log('No existing conversation found, will create new one:', getError.message);
+        // No existing conversation found, will create new one
       }
 
       if (existingConversation) {
@@ -98,7 +96,7 @@ const Chatbot = ({ assessmentId }) => {
           }
         } else {
           // If API doesn't return success, show fallback
-          console.warn('API response not successful:', response);
+          // API response not successful
           setError('Unable to connect to career assistant. Please try again later.');
 
           // Add fallback welcome message
@@ -123,7 +121,6 @@ const Chatbot = ({ assessmentId }) => {
         }
       }
     } catch (err) {
-      console.error('Failed to initialize conversation:', err);
       setError(`Connection failed: ${err.message || 'Unknown error'}`);
 
       // Add fallback welcome message even on error
@@ -150,12 +147,29 @@ const Chatbot = ({ assessmentId }) => {
     }
   };
 
+  // Input sanitization function
+  const sanitizeInput = (input) => {
+    if (!input || typeof input !== 'string') return '';
+
+    // Remove potentially dangerous characters and limit length
+    return input
+      .trim()
+      .slice(0, 1000) // Limit message length
+      .replace(/[<>]/g, '') // Remove angle brackets to prevent HTML injection
+      .replace(/javascript:/gi, '') // Remove javascript: protocol
+      .replace(/on\w+=/gi, ''); // Remove event handlers
+  };
+
   const sendMessage = async () => {
     if (!inputMessage.trim() || !conversation || isLoading) return;
 
+    // Sanitize user input
+    const sanitizedMessage = sanitizeInput(inputMessage);
+    if (!sanitizedMessage) return;
+
     const userMessage = {
       id: Date.now().toString(),
-      content: inputMessage,
+      content: sanitizedMessage,
       sender: 'user',
       timestamp: new Date().toISOString(),
       type: 'text'
@@ -168,7 +182,7 @@ const Chatbot = ({ assessmentId }) => {
 
     try {
       const response = await apiService.sendChatMessage(conversation.conversationId, {
-        content: inputMessage,
+        content: sanitizedMessage,
         type: 'text'
       });
 
@@ -185,7 +199,6 @@ const Chatbot = ({ assessmentId }) => {
         setMessages(prev => [...prev, aiMessage]);
       }
     } catch (err) {
-      console.error('Failed to send message:', err);
       setError('Failed to send message. Please try again.');
     } finally {
       setIsLoading(false);
@@ -193,7 +206,8 @@ const Chatbot = ({ assessmentId }) => {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setInputMessage(suggestion.description || suggestion.title);
+    const suggestionText = sanitizeInput(suggestion.description || suggestion.title);
+    setInputMessage(suggestionText);
   };
 
   const handleKeyPress = (e) => {
@@ -290,7 +304,7 @@ const Chatbot = ({ assessmentId }) => {
                             : 'bg-gray-100 text-gray-800'
                         }`}
                       >
-                        <p className="text-sm">{message.content}</p>
+                        <p className="text-sm">{sanitizeInput(message.content)}</p>
                         <p className="text-xs opacity-70 mt-1">
                           {new Date(message.timestamp).toLocaleTimeString()}
                         </p>

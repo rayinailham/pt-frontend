@@ -20,7 +20,7 @@ const Footer = () => {
             <div className="md:col-span-2 lg:col-span-2">
               <h2 className="text-2xl font-bold text-white">Peta Talenta</h2>
               <p className="mt-4 text-gray-400 max-w-md">
-                AI-Driven Talent Mapping Assessment. Membantu siswa dan siswi untuk menemukan dan mengembangkan talenta terbaik melalui analisis berbasis data.
+                Platform pemetaan talenta berbasis AI. Membantu siswa dan siswi untuk menemukan dan mengembangkan talenta terbaik melalui analisis berbasis data.
               </p>
             </div>
 

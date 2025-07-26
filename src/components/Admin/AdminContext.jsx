@@ -44,7 +44,6 @@ export const AdminProvider = ({ children }) => {
       // Update localStorage with fresh data
       localStorage.setItem('adminUser', JSON.stringify(response.data.admin));
     } catch (error) {
-      console.error('Failed to initialize admin:', error);
       // Check if it's a network error (backend not available)
       if (error.message.includes('Network Error') || error.code === 'ERR_NETWORK') {
         // For network errors, don't clear session - backend might be temporarily down
@@ -88,7 +87,7 @@ export const AdminProvider = ({ children }) => {
     try {
       await adminService.logout();
     } catch (error) {
-      console.warn('Logout request failed:', error.message);
+      // Silently handle logout errors
     } finally {
       setIsAuthenticated(false);
       setAdminUser(null);
@@ -111,8 +110,7 @@ export const AdminProvider = ({ children }) => {
       setAdminUser(response.data.admin);
       localStorage.setItem('adminUser', JSON.stringify(response.data.admin));
     } catch (error) {
-      console.error('Failed to refresh admin profile:', error);
-      // Don't logout on refresh failure, just log the error
+      // Don't logout on refresh failure, silently handle error
     }
   };
 

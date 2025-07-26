@@ -1,6 +1,6 @@
 # Dashboard Component
 
-Dashboard utama untuk aplikasi AI-Driven Talent Mapping Assessment - **SIMPLIFIED VERSION**
+Dashboard utama untuk aplikasi Peta Talenta - **SIMPLIFIED VERSION**
 
 ## Struktur Komponen
 

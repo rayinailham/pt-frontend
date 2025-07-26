@@ -1,5 +1,5 @@
 {
-  "name": "atma-frontend",
+  "name": "peta-talenta-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,13 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "npm run dev",
-    "build:prod": "NODE_ENV=production vite build",
+    "build:prod": "VITE_DEBUG=false NODE_ENV=production vite build",
     "serve": "vite preview --port 3000",
     "clean": "rm -rf dist node_modules/.vite",
-    "check": "npm run lint && npm run build",
-    "test:api": "node scripts/api-test.js",
-    "test:api:quick": "node scripts/quick-api-test.js",
-    "test:api:browser": "vite --open /test-api.html"
+    "check": "npm run lint && npm run build"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",

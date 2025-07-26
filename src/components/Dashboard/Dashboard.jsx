@@ -311,7 +311,7 @@ export default function Dashboard() {
                         <tr key={result.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
-                              {result.assessment_name || 'AI-Driven Talent Mapping'}
+                              {result.assessment_name || 'Peta Talenta Assessment'}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">

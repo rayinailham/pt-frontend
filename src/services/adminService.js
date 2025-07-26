@@ -28,16 +28,14 @@ class AdminService {
 
     try {
       const response = await axios(config);
-      // Remove debug log to reduce console noise
       return response.data;
     } catch (error) {
-      console.error('Admin API Error:', error);
       if (error.response?.status === 401) {
         // Token expired, clear admin session
         this.logout();
         throw new Error('Session expired. Please login again.');
       }
-      
+
       const errorData = error.response?.data;
       throw new Error(errorData?.error?.message || error.message || 'Request failed');
     }
@@ -79,32 +77,8 @@ class AdminService {
 
   // Mock login for development when backend is not available
   mockLogin(username, password) {
-    if (username === 'superadmin' && password === 'admin123') {
-      const mockAdmin = {
-        id: 'mock-admin-id',
-        username: 'superadmin',
-        email: 'admin@atma.com',
-        full_name: 'Super Administrator',
-        role: 'superadmin',
-        is_active: true,
-        last_login: new Date().toISOString(),
-        created_at: '2024-01-01T00:00:00Z',
-        updated_at: new Date().toISOString()
-      };
-
-      const mockToken = 'mock-jwt-token-for-development';
-
-      // Store admin session
-      localStorage.setItem('adminToken', mockToken);
-      localStorage.setItem('adminUser', JSON.stringify(mockAdmin));
-
-      this.adminToken = mockToken;
-      this.adminUser = mockAdmin;
-
-      return { admin: mockAdmin, token: mockToken };
-    } else {
-      throw new Error('Invalid credentials');
-    }
+    // Remove hardcoded credentials for security
+    throw new Error('Mock login disabled in production');
   }
 
   async logout() {
@@ -113,7 +87,7 @@ class AdminService {
         await this.adminApiRequest('/admin/logout', { method: 'POST' });
       }
     } catch (error) {
-      console.warn('Logout request failed:', error.message);
+      // Silently handle logout errors
     } finally {
       // Clear admin session regardless of API response
       localStorage.removeItem('adminToken');
@@ -129,7 +103,6 @@ class AdminService {
     } catch (error) {
       // Check if it's a connection error and provide fallback for development
       if (error.message.includes('Network Error') || error.code === 'ERR_NETWORK') {
-        console.warn('Backend not available, using mock profile data for development');
         return this.mockGetProfile();
       }
       throw error;
@@ -140,7 +113,7 @@ class AdminService {
     const mockAdmin = {
       id: 'mock-admin-id',
       username: 'superadmin',
-      email: 'admin@atma.com',
+      email: 'admin@petatalenta.com',
       full_name: 'Super Administrator',
       role: 'superadmin',
       is_active: true,
@@ -216,7 +189,6 @@ class AdminService {
     } catch (error) {
       // Check if it's a connection error and provide fallback for development
       if (error.message.includes('Network Error') || error.code === 'ERR_NETWORK') {
-        console.warn('Backend not available, using mock users data for development');
         return this.mockGetUsers(page, limit, search, sortBy, sortOrder);
       }
 
@@ -366,8 +338,6 @@ class AdminService {
 
   // Error handling helper
   handleError(error) {
-    console.error('Admin API Error:', error);
-    
     const errorMessages = {
       'UNAUTHORIZED': 'Session expired. Please login again.',
       'FORBIDDEN': 'You do not have permission to perform this action.',
@@ -375,7 +345,7 @@ class AdminService {
       'NOT_FOUND': 'The requested resource was not found.',
       'SERVICE_UNAVAILABLE': 'Service is temporarily unavailable. Please try again later.',
     };
-    
+
     return errorMessages[error.code] || error.message || 'An unexpected error occurred.';
   }
 }

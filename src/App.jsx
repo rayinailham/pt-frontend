@@ -27,19 +27,9 @@ axios.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Log request details in development
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`, {
-        baseURL: config.baseURL,
-        headers: config.headers,
-        data: config.data
-      });
-    }
-
     return config;
   },
   (error) => {
-    console.error('❌ Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
@@ -47,26 +37,9 @@ axios.interceptors.request.use(
 // Add response interceptor to handle auth errors
 axios.interceptors.response.use(
   (response) => {
-    // Log successful responses in development
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      console.log(`✅ API Response: ${response.config.method?.toUpperCase()} ${response.config.url}`, {
-        status: response.status,
-        data: response.data
-      });
-    }
     return response;
   },
   (error) => {
-    // Log error details in development
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      console.error(`❌ API Error: ${error.config?.method?.toUpperCase()} ${error.config?.url}`, {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message
-      });
-    }
-
     if (error.response?.status === 401) {
       // Token expired or invalid
       localStorage.removeItem('token');

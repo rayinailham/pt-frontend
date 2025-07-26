@@ -120,7 +120,7 @@ const AuthPage = () => {
 
             {/* Subtitle with Better Spacing */}
             <p className="text-xl text-blue-200/80 mb-16 font-light leading-relaxed max-w-md mx-auto">
-              AI-Driven Talent Mapping Assessment
+              Platform Pemetaan Talenta Berbasis AI
             </p>
 
             {/* Enhanced Features List */}
@@ -223,7 +223,7 @@ const AuthPage = () => {
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
               Peta Talenta Platform
             </h1>
-            <p className="text-gray-500">AI-Driven Talent Mapping Assessment</p>
+            <p className="text-gray-500">Platform Pemetaan Talenta Berbasis AI</p>
           </div>
 
           {/* Tab Navigation */}

@@ -44,7 +44,7 @@ export const WebSocketProvider = ({ children }) => {
         try {
           callback(data);
         } catch (error) {
-          console.error(`Error in ${eventType} callback:`, error);
+          // Silently handle callback errors
         }
       });
     }
@@ -55,7 +55,6 @@ export const WebSocketProvider = ({ children }) => {
     if (!isAuthenticated || !token) {
       // Disconnect if not authenticated
       if (isConnectingRef.current) {
-        console.log('WebSocketProvider: Disconnecting due to auth change');
         notificationService.disconnect();
         setIsConnected(false);
         setIsNotificationAuthenticated(false);
@@ -66,23 +65,19 @@ export const WebSocketProvider = ({ children }) => {
     }
 
     if (isConnectingRef.current) {
-      console.log('WebSocketProvider: Already connecting, skipping');
       return;
     }
 
     isConnectingRef.current = true;
-    console.log('WebSocketProvider: Setting up connection');
 
     // Setup notification service callbacks
     notificationService
       .onConnect(() => {
-        console.log('WebSocketProvider: Connected');
         setIsConnected(true);
         setConnectionStatus(notificationService.getConnectionStatus());
         triggerCallbacks('onConnect');
       })
       .onDisconnect(() => {
-        console.log('WebSocketProvider: Disconnected');
         setIsConnected(false);
         setIsNotificationAuthenticated(false);
         setConnectionStatus({});
@@ -90,18 +85,15 @@ export const WebSocketProvider = ({ children }) => {
         triggerCallbacks('onDisconnect');
       })
       .onAuthenticated((data) => {
-        console.log('WebSocketProvider: Authenticated');
         setIsNotificationAuthenticated(true);
         setConnectionStatus(notificationService.getConnectionStatus());
         triggerCallbacks('onAuthenticated', data);
       })
       .onAuthError((error) => {
-        console.log('WebSocketProvider: Auth error', error);
         setIsNotificationAuthenticated(false);
         triggerCallbacks('onAuthError', error);
       })
       .onAnalysisComplete((data) => {
-        console.log('WebSocketProvider: Analysis complete', data);
         setNotifications(prev => [...prev, {
           id: Date.now(),
           type: 'success',
@@ -113,7 +105,6 @@ export const WebSocketProvider = ({ children }) => {
         triggerCallbacks('onAnalysisComplete', data);
       })
       .onAnalysisFailed((data) => {
-        console.log('WebSocketProvider: Analysis failed', data);
         setNotifications(prev => [...prev, {
           id: Date.now(),
           type: 'error',
@@ -130,7 +121,6 @@ export const WebSocketProvider = ({ children }) => {
 
     // Cleanup on unmount
     return () => {
-      console.log('WebSocketProvider: Cleanup');
       isConnectingRef.current = false;
       // Don't disconnect here to prevent multiple disconnects
       // Let the service handle its own lifecycle
