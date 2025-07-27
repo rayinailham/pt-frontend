@@ -352,38 +352,38 @@ const ResultViaIs = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mb-8"
             >
-              <div className="flex justify-between items-start mb-6 overflow-hidden">
-                <div className="min-w-0 flex-1">
-                  <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
                     VIA Character Strengths Assessment
                   </h1>
-                  <p className="text-slate-600 max-w-2xl leading-relaxed">
-                    Halaman ini menampilkan hasil penilaian kekuatan karakter Anda berdasarkan VIA (Values in Action) Survey yang merepresentasikan diri anda secara otentik.
+                  <p className="text-gray-600 max-w-2xl">
+                    Discover your signature character strengths based on the VIA (Values in Action) Survey that represents your authentic self.
                   </p>
                 </div>
-                <div className="flex space-x-3 flex-shrink-0 ml-4">
+                <div className="flex space-x-3">
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
                   >
                     ← Back
                   </button>
                   <button
                     onClick={() => navigate('/dashboard')}
-                    className="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
+                    className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
                   >
                     Dashboard
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                <div className="flex items-center justify-between text-sm text-slate-600">
+              <div className="bg-white rounded p-4 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between text-sm text-gray-600">
                   <div className="flex items-center">
-                    <span className="w-2 h-2 bg-slate-900 rounded-sm mr-2"></span>
+                    <span className="w-2 h-2 bg-gray-900 rounded-sm mr-2"></span>
                     Completed: {formatDate(result.created_at)}
                   </div>
-                  <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium">
                     VIA Character Strengths
                   </span>
                 </div>

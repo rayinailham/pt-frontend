@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import apiService from '../../services/apiService';
 import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
@@ -9,6 +10,7 @@ import { motion } from 'framer-motion';
 
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { user, login, logout, updateUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
@@ -176,9 +178,9 @@ const ProfilePage = () => {
 
   if (!user || profileLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50">
         {/* Main Content Area */}
-        <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="flex-1 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
           {/* Loading State */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -198,22 +200,32 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50">
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-12"
         >
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-            Profile Settings
-          </h1>
-          <p className="mt-2 text-gray-600">Manage your account settings and preferences</p>
-
-
+          <div className="flex justify-between items-center border-b border-slate-200/60 pb-8">
+            <div>
+              <h1 className="text-4xl font-light tracking-tight text-slate-900 mb-3">
+                Account Settings
+              </h1>
+              <p className="text-slate-600 font-light text-lg">Manage your profile and security preferences</p>
+            </div>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-colors duration-200 font-light shadow-sm"
+              >
+                Back to Dashboard
+              </button>
+            </div>
+          </div>
         </motion.div>
 
         {/* Token Balance Card */}
@@ -221,18 +233,18 @@ const ProfilePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 p-6 mb-8"
+          className="bg-white border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-md p-8 mb-8"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Token Balance</h3>
-              <p className="text-sm text-gray-600">Available tokens for assessments</p>
+              <h3 className="text-xl font-medium text-slate-900 mb-1">Available Credits</h3>
+              <p className="text-slate-500 font-light">Assessment tokens remaining</p>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
+              <div className="text-4xl font-light text-slate-900 tracking-tight">
                 {profileData?.user?.token_balance ?? '...'}
               </div>
-              <div className="text-sm text-gray-500">tokens</div>
+              <div className="text-sm text-slate-400 uppercase tracking-wider font-medium">Credits</div>
             </div>
           </div>
         </motion.div>
@@ -242,63 +254,72 @@ const ProfilePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 overflow-hidden"
+          className="bg-white border border-slate-200/60 shadow-sm rounded-md overflow-hidden"
         >
-          <div className="border-b border-gray-200/50">
-            <nav className="-mb-px flex">
+          <div className="border-b border-slate-200/60">
+            <nav className="flex">
               <button
                 onClick={() => setActiveTab('profile')}
-                className={`py-4 px-6 text-sm font-medium border-b-2 transition-all duration-200 ${
+                className={`py-5 px-8 text-sm font-medium transition-all duration-300 relative ${
                   activeTab === 'profile'
-                    ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50/50'
+                    ? 'text-slate-900 bg-slate-50/50'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/30'
                 }`}
               >
                 Profile Information
+                {activeTab === 'profile' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900"></div>
+                )}
               </button>
               <button
                 onClick={() => setActiveTab('password')}
-                className={`py-4 px-6 text-sm font-medium border-b-2 transition-all duration-200 ${
+                className={`py-5 px-8 text-sm font-medium transition-all duration-300 relative ${
                   activeTab === 'password'
-                    ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50/50'
+                    ? 'text-slate-900 bg-slate-50/50'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/30'
                 }`}
               >
-                Change Password
+                Security
+                {activeTab === 'password' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900"></div>
+                )}
               </button>
               <button
                 onClick={() => setActiveTab('account')}
-                className={`py-4 px-6 text-sm font-medium border-b-2 transition-all duration-200 ${
+                className={`py-5 px-8 text-sm font-medium transition-all duration-300 relative ${
                   activeTab === 'account'
-                    ? 'border-indigo-500 text-indigo-600 bg-indigo-50/50'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50/50'
+                    ? 'text-slate-900 bg-slate-50/50'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/30'
                 }`}
               >
-                Account Settings
+                Account Management
+                {activeTab === 'account' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900"></div>
+                )}
               </button>
             </nav>
           </div>
 
-          <div className="p-8">
+          <div className="p-10">
             {/* Success/Error Messages */}
             {error && (
               <ErrorMessage
                 title="Error"
                 message={error}
-                className="mb-6"
+                className="mb-8"
               />
             )}
 
             {success && (
-              <div className="bg-green-50/80 backdrop-blur-sm border border-green-200/50 rounded-xl p-4 mb-6">
+              <div className="bg-emerald-50 border border-emerald-200/60 rounded-md p-5 mb-8">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="h-5 w-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-green-800">{success}</p>
+                    <p className="text-sm font-medium text-emerald-800">{success}</p>
                   </div>
                 </div>
               </div>
@@ -306,11 +327,11 @@ const ProfilePage = () => {
 
             {/* Profile Tab */}
             {activeTab === 'profile' && (
-              <div className="bg-gray-50/50 rounded-xl p-6">
-                <form onSubmit={handleSubmitProfile(onUpdateProfile)} className="space-y-6">
+              <div className="bg-slate-50/30 rounded-md p-8">
+                <form onSubmit={handleSubmitProfile(onUpdateProfile)} className="space-y-8">
                   {/* Read-only Email */}
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-3">
                       Email Address
                     </label>
                     <input
@@ -318,14 +339,14 @@ const ProfilePage = () => {
                       id="email"
                       value={profileData?.user?.email || ''}
                       disabled
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-gray-100/80 text-gray-500 focus:outline-none"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-slate-50 text-slate-500 focus:outline-none font-light"
                     />
-                    <p className="mt-2 text-sm text-gray-500">Email cannot be changed</p>
+                    <p className="mt-2 text-sm text-slate-500 font-light">Email address cannot be modified</p>
                   </div>
 
                   {/* Username */}
                   <div>
-                    <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="username" className="block text-sm font-medium text-slate-700 mb-3">
                       Username
                     </label>
                     <input
@@ -345,17 +366,17 @@ const ProfilePage = () => {
                           message: 'Username must be at most 100 characters'
                         }
                       })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                       placeholder="Enter your username"
                     />
                     {profileErrors.username && (
-                      <p className="mt-2 text-sm text-red-600">{profileErrors.username.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{profileErrors.username.message}</p>
                     )}
                   </div>
 
                   {/* Full Name */}
                   <div>
-                    <label htmlFor="full_name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="full_name" className="block text-sm font-medium text-slate-700 mb-3">
                       Full Name
                     </label>
                     <input
@@ -367,17 +388,17 @@ const ProfilePage = () => {
                           message: 'Full name must be at most 100 characters'
                         }
                       })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                       placeholder="Enter your full name"
                     />
                     {profileErrors.full_name && (
-                      <p className="mt-2 text-sm text-red-600">{profileErrors.full_name.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{profileErrors.full_name.message}</p>
                     )}
                   </div>
 
                   {/* Date of Birth */}
                   <div>
-                    <label htmlFor="date_of_birth" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="date_of_birth" className="block text-sm font-medium text-slate-700 mb-3">
                       Date of Birth
                     </label>
                     <input
@@ -391,39 +412,39 @@ const ProfilePage = () => {
                           return selectedDate <= today || 'Date of birth cannot be in the future';
                         }
                       })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                     />
                     {profileErrors.date_of_birth && (
-                      <p className="mt-2 text-sm text-red-600">{profileErrors.date_of_birth.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{profileErrors.date_of_birth.message}</p>
                     )}
                   </div>
 
                   {/* Gender */}
                   <div>
-                    <label htmlFor="gender" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="gender" className="block text-sm font-medium text-slate-700 mb-3">
                       Gender
                     </label>
                     <select
                       id="gender"
                       {...registerProfile('gender')}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                     >
                       <option value="">Select gender</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
                     {profileErrors.gender && (
-                      <p className="mt-2 text-sm text-red-600">{profileErrors.gender.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{profileErrors.gender.message}</p>
                     )}
                   </div>
 
 
 
-                  <div className="flex justify-end pt-4">
+                  <div className="flex justify-end pt-6 border-t border-slate-200/60">
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-3 rounded-xl font-medium hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-indigo-500/25"
+                      className="bg-slate-900 text-white px-8 py-3.5 rounded-md font-medium hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm"
                     >
                       {isLoading ? 'Updating...' : 'Update Profile'}
                     </button>
@@ -434,10 +455,10 @@ const ProfilePage = () => {
 
             {/* Password Tab */}
             {activeTab === 'password' && (
-              <div className="bg-gray-50/50 rounded-xl p-6">
-                <form onSubmit={handleSubmitPassword(onChangePassword)} className="space-y-6">
+              <div className="bg-slate-50/30 rounded-md p-8">
+                <form onSubmit={handleSubmitPassword(onChangePassword)} className="space-y-8">
                   <div>
-                    <label htmlFor="currentPassword" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="currentPassword" className="block text-sm font-medium text-slate-700 mb-3">
                       Current Password
                     </label>
                     <input
@@ -446,16 +467,16 @@ const ProfilePage = () => {
                       {...registerPassword('currentPassword', {
                         required: 'Current password is required'
                       })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                       placeholder="Enter your current password"
                     />
                     {passwordErrors.currentPassword && (
-                      <p className="mt-2 text-sm text-red-600">{passwordErrors.currentPassword.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{passwordErrors.currentPassword.message}</p>
                     )}
                   </div>
 
                   <div>
-                    <label htmlFor="newPassword" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="newPassword" className="block text-sm font-medium text-slate-700 mb-3">
                       New Password
                     </label>
                     <input
@@ -472,16 +493,16 @@ const ProfilePage = () => {
                           message: 'Password must contain at least one letter and one number'
                         }
                       })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                       placeholder="Enter your new password"
                     />
                     {passwordErrors.newPassword && (
-                      <p className="mt-2 text-sm text-red-600">{passwordErrors.newPassword.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{passwordErrors.newPassword.message}</p>
                     )}
                   </div>
 
                   <div>
-                    <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-3">
                       Confirm New Password
                     </label>
                     <input
@@ -492,21 +513,21 @@ const ProfilePage = () => {
                         validate: (value, { newPassword }) =>
                           value === newPassword || 'Passwords do not match'
                       })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                      className="block w-full px-4 py-3.5 border border-slate-200 rounded-md shadow-sm bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-all duration-200 font-light"
                       placeholder="Confirm your new password"
                     />
                     {passwordErrors.confirmPassword && (
-                      <p className="mt-2 text-sm text-red-600">{passwordErrors.confirmPassword.message}</p>
+                      <p className="mt-2 text-sm text-red-600 font-light">{passwordErrors.confirmPassword.message}</p>
                     )}
                   </div>
 
-                  <div className="flex justify-end pt-4">
+                  <div className="flex justify-end pt-6 border-t border-slate-200/60">
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-3 rounded-xl font-medium hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-indigo-500/25"
+                      className="bg-slate-900 text-white px-8 py-3.5 rounded-md font-medium hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm"
                     >
-                      {isLoading ? 'Changing...' : 'Change Password'}
+                      {isLoading ? 'Changing...' : 'Update Password'}
                     </button>
                   </div>
                 </form>
@@ -515,54 +536,56 @@ const ProfilePage = () => {
 
             {/* Account Settings Tab */}
             {activeTab === 'account' && (
-              <div className="bg-gray-50/50 rounded-xl p-6">
-                <div className="space-y-6">
-                  <div className="bg-red-50/80 backdrop-blur-sm border border-red-200/50 rounded-xl p-6">
+              <div className="bg-slate-50/30 rounded-md p-8">
+                <div className="space-y-8">
+                  <div className="bg-red-50 border border-red-200/60 rounded-md p-6">
                     <div className="flex">
                       <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
                       </div>
                       <div className="ml-3">
-                        <h3 className="text-sm font-semibold text-red-800">Danger Zone</h3>
-                        <div className="mt-2 text-sm text-red-700">
-                          <p>Once you delete your account, there is no going back. Please be certain.</p>
+                        <h3 className="text-sm font-medium text-red-800">Critical Actions</h3>
+                        <div className="mt-2 text-sm text-red-700 font-light">
+                          <p>Irreversible account operations require careful consideration.</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Delete Account</h4>
-                    <p className="text-sm text-gray-600 mb-6">
-                      This will permanently delete your account and all associated data. This action cannot be undone.
+                  <div className="bg-white border border-slate-200/60 rounded-md p-8">
+                    <h4 className="text-xl font-medium text-slate-900 mb-3">Account Deletion</h4>
+                    <p className="text-slate-600 font-light mb-8 leading-relaxed">
+                      Permanently remove your account and all associated data. This action is irreversible and cannot be undone.
                     </p>
 
                     {!showDeleteConfirm ? (
                       <button
                         onClick={() => setShowDeleteConfirm(true)}
-                        className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-xl font-medium hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-lg shadow-red-500/25"
+                        className="bg-red-600 text-white px-8 py-3.5 rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
                       >
                         Delete Account
                       </button>
                     ) : (
-                      <div className="space-y-4">
-                        <p className="text-sm font-medium text-red-600">
-                          Are you absolutely sure? This action cannot be undone.
-                        </p>
-                        <div className="flex space-x-3">
+                      <div className="space-y-6">
+                        <div className="bg-red-50 border border-red-200/60 rounded-md p-4">
+                          <p className="text-sm font-medium text-red-800">
+                            Confirm account deletion. This action is permanent and irreversible.
+                          </p>
+                        </div>
+                        <div className="flex space-x-4">
                           <button
                             onClick={onDeleteAccount}
                             disabled={isLoading}
-                            className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-xl font-medium hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-red-500/25"
+                            className="bg-red-600 text-white px-8 py-3.5 rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm"
                           >
-                            {isLoading ? 'Deleting...' : 'Yes, Delete My Account'}
+                            {isLoading ? 'Processing...' : 'Confirm Deletion'}
                           </button>
                           <button
                             onClick={() => setShowDeleteConfirm(false)}
                             disabled={isLoading}
-                            className="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200"
+                            className="bg-slate-200 text-slate-700 px-8 py-3.5 rounded-md font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200"
                           >
                             Cancel
                           </button>

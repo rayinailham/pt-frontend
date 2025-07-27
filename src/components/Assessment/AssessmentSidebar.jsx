@@ -1,4 +1,4 @@
-import { Clock, ChevronRight, Shuffle, Zap } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 const AssessmentSidebar = ({
   assessmentData,
@@ -6,8 +6,6 @@ const AssessmentSidebar = ({
   currentPage,
   setCurrentPage,
   currentStep,
-  onFillRandomAnswers,
-  onFillAllAssessments,
   onNavigateToPhase // New prop for phase navigation
 }) => {
   // Define assessment phases mapping (ordered to match actual flow)
@@ -109,32 +107,7 @@ const AssessmentSidebar = ({
   return (
     <div className="hidden lg:block fixed right-0 top-0 h-full w-80 bg-white border-l border-gray-200 overflow-y-auto z-20">
       <div className="p-6 h-full flex flex-col">
-        {/* Assessment Info */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-3">
-            <div className="p-2 bg-gray-100 border border-gray-200">
-              <Clock className="h-4 w-4 text-gray-700" />
-            </div>
-            <span>Assessment Progress</span>
-          </h3>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="text-center p-4 bg-gray-50 border border-gray-200">
-              <div className="text-2xl font-bold text-gray-900">
-                {totalProgress.answered}
-              </div>
-              <div className="text-xs text-gray-600 font-medium">Completed</div>
-            </div>
-            <div className="text-center p-4 bg-gray-50 border border-gray-200">
-              <div className="text-2xl font-bold text-gray-600">
-                {totalProgress.total - totalProgress.answered}
-              </div>
-              <div className="text-xs text-gray-600 font-medium">Remaining</div>
-            </div>
-          </div>
-
-
-        </div>
 
         {/* Phase Structure */}
         <div className="flex-1">
@@ -216,37 +189,7 @@ const AssessmentSidebar = ({
           </div>
         </div>
 
-        {/* Auto Fill Section */}
-        {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_AUTO_FILL) && (
-          <div className="mt-6 p-4 bg-gray-50 border border-gray-200">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-              <Zap className="h-4 w-4" />
-              <span>Quick Fill Options</span>
-            </h4>
-            <div className="space-y-2">
-              {/* Fill Current Assessment */}
-              <button
-                onClick={onFillRandomAnswers}
-                className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 text-sm font-medium"
-              >
-                <Shuffle className="h-4 w-4" />
-                <span>Fill Current Phase</span>
-              </button>
 
-              {/* Fill All Assessments */}
-              <button
-                onClick={() => onFillAllAssessments(true)} // Pass true to navigate to last question
-                className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 text-sm font-medium"
-              >
-                <Zap className="h-4 w-4" />
-                <span>Fill All 200 Questions</span>
-              </button>
-            </div>
-            <p className="text-xs text-gray-600 mt-2 text-center">
-              Auto-filled answers can be edited manually
-            </p>
-          </div>
-        )}
 
         {/* Total Progress - Bottom Section */}
         <div className="mt-auto pt-6 border-t border-gray-200">

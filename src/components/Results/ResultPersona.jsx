@@ -580,69 +580,50 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-12"
+              className="mb-8"
             >
-              <div className="flex justify-between items-center">
-                <h1 className="text-5xl font-light text-slate-800 tracking-tight">
-                  Career Persona Profile
-                </h1>
-                <div className="flex space-x-4">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    Career Persona Profile
+                  </h1>
+                  <p className="text-gray-600 max-w-2xl">
+                    Discover your comprehensive career persona based on integrated assessment results from RIASEC, OCEAN, and VIA-IS evaluations.
+                  </p>
+                </div>
+                <div className="flex space-x-3">
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="bg-slate-100 text-slate-700 px-6 py-3 rounded hover:bg-slate-200 transition-colors duration-200 border border-slate-200 font-light"
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
                   >
-                    Back to Overview
+                    ← Back
                   </button>
                   <button
                     onClick={() => navigate("/dashboard")}
-                    className="bg-slate-800 text-white px-6 py-3 rounded hover:bg-slate-700 transition-colors duration-200 font-light"
+                    className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
                   >
                     Dashboard
                   </button>
                 </div>
               </div>
 
-              <div className="mt-8 p-6 bg-white rounded-md shadow-sm border border-gray-100">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-8 text-base text-slate-600">
+              <div className="bg-white rounded p-4 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between text-sm text-gray-600">
+                  <div className="flex items-center space-x-6">
                     <div className="flex items-center">
-                      <div className="w-6 h-6 mr-3 bg-slate-100 rounded-md flex items-center justify-center">
-                        <svg
-                          className="w-3 h-3 text-slate-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                      <span className="w-2 h-2 bg-gray-900 rounded-sm mr-2"></span>
+                      Completed: {formatDate(result.created_at)}
+                    </div>
+                    {result.persona_profile?.riskTolerance && (
+                      <div className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-600 rounded-sm mr-2"></span>
+                        Risk Profile: <span className="font-medium ml-1 capitalize">{result.persona_profile.riskTolerance}</span>
                       </div>
-                      <span className="font-medium">
-                        Completed: {formatDate(result.created_at)}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-slate-400 rounded-sm mr-3"></div>
-                      <span className="text-slate-700 font-medium">
-                        Career Profile Analysis
-                      </span>
-                    </div>
+                    )}
                   </div>
-                  {result.persona_profile?.riskTolerance && (
-                    <div className="flex items-center">
-                      <div className="bg-slate-100 border border-slate-200 rounded px-4 py-2">
-                        <span className="text-slate-800 font-medium text-base">
-                          {result.persona_profile.riskTolerance
-                            .charAt(0)
-                            .toUpperCase() +
-                            result.persona_profile.riskTolerance.slice(1)}{" "}
-                          Risk Taker
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium">
+                    Integrated Profile
+                  </span>
                 </div>
               </div>
             </motion.div>

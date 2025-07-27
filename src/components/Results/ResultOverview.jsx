@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import apiService from '../../services/apiService';
 import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import useScrollToTop from '../../hooks/useScrollToTop';
+import AssessmentExplanations from './AssessmentExplanations';
 
 const ResultOverview = () => {
   const { resultId } = useParams();
