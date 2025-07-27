@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, Check, Clock, BookOpen } from 'lucide-react'
 const mockAssessmentData = {
   title: "Personality Assessment",
   description: "This assessment will help us understand your personality traits and preferences.",
-  scale: { min: 1, max: 5, labels: ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'] }
+  scale: { min: 1, max: 7, labels: ['Strongly Disagree', 'Disagree', 'Somewhat Disagree', 'Neutral', 'Somewhat Agree', 'Agree', 'Strongly Agree'] }
 };
 
 const mockQuestions = [

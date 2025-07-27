@@ -5,9 +5,11 @@ export const viaQuestions = {
   scale: [
     { value: 1, label: "Sangat tidak sesuai dengan saya" },
     { value: 2, label: "Tidak sesuai dengan saya" },
-    { value: 3, label: "Netral" },
-    { value: 4, label: "Sesuai dengan saya" },
-    { value: 5, label: "Sangat sesuai dengan saya" }
+    { value: 3, label: "Agak tidak sesuai dengan saya" },
+    { value: 4, label: "Netral" },
+    { value: 5, label: "Agak sesuai dengan saya" },
+    { value: 6, label: "Sesuai dengan saya" },
+    { value: 7, label: "Sangat sesuai dengan saya" }
   ],
   categories: {
     creativity: {
@@ -236,9 +238,11 @@ export const riasecQuestions = {
   scale: [
     { value: 1, label: "Sangat tidak setuju" },
     { value: 2, label: "Tidak setuju" },
-    { value: 3, label: "Netral" },
-    { value: 4, label: "Setuju" },
-    { value: 5, label: "Sangat setuju" }
+    { value: 3, label: "Agak tidak setuju" },
+    { value: 4, label: "Netral" },
+    { value: 5, label: "Agak setuju" },
+    { value: 6, label: "Setuju" },
+    { value: 7, label: "Sangat setuju" }
   ],
   categories: {
     realistic: {
@@ -340,10 +344,12 @@ export const bigFiveQuestions = {
   description: "This assessment contains 44 statements. Read each statement and decide how well it describes you. The phrase to keep in mind is: 'I see myself as someone who...'",
   scale: [
     { value: 1, label: "Sangat tidak setuju" },
-    { value: 2, label: "Kurang setuju" },
-    { value: 3, label: "Netral; tidak berpendapat" },
-    { value: 4, label: "Sedikit setuju" },
-    { value: 5, label: "Sangat setuju" }
+    { value: 2, label: "Tidak setuju" },
+    { value: 3, label: "Agak tidak setuju" },
+    { value: 4, label: "Netral" },
+    { value: 5, label: "Agak setuju" },
+    { value: 6, label: "Setuju" },
+    { value: 7, label: "Sangat setuju" }
   ],
   categories: {
     openness: {

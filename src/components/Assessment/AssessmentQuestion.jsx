@@ -61,14 +61,6 @@ const AssessmentQuestion = ({
             );
           })}
         </div>
-
-        <div className="flex justify-between text-xs text-gray-400 mt-2">
-          {scaleConfig.labels.map((label, index) => (
-            <span key={index} className="text-center flex-1">
-              {label}
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );

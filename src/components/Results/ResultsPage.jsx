@@ -100,7 +100,7 @@ const ResultsPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-xl shadow-lg border border-indigo-100"
         >
           <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
@@ -117,7 +117,7 @@ const ResultsPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl shadow-lg border border-green-100 h-full"
           >
             <h4 className="text-xl font-semibold text-green-700 mb-4 flex items-center">
@@ -145,7 +145,7 @@ const ResultsPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="bg-gradient-to-br from-orange-50 to-amber-50 p-6 rounded-xl shadow-lg border border-orange-100 h-full"
           >
             <h4 className="text-xl font-semibold text-orange-700 mb-4 flex items-center">
@@ -174,7 +174,7 @@ const ResultsPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-xl shadow-lg border border-blue-100"
         >
           <h4 className="text-2xl font-semibold text-gray-800 mb-8 flex items-center">
@@ -339,7 +339,7 @@ const ResultsPage = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
               <RiasecRadarChart data={assessmentData.riasec} />
             </motion.div>
@@ -350,7 +350,7 @@ const ResultsPage = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
               <OceanBarChart data={assessmentData.ocean} />
             </motion.div>
@@ -362,7 +362,7 @@ const ResultsPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             <ViaisChart data={assessmentData.viaIs} />
           </motion.div>
@@ -372,7 +372,7 @@ const ResultsPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
           <AssessmentExplanations />
         </motion.div>
@@ -380,78 +380,30 @@ const ResultsPage = () => {
     );
   };
 
-  // Remove loading screen - show content immediately with skeleton if needed
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <div className="h-16 w-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="h-8 w-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <h2 className="text-lg font-medium text-red-900 mb-2">Error Loading Results</h2>
-          <p className="text-red-700 mb-4">{error}</p>
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-          >
-            Back to Dashboard
-          </button>
-        </div>
-        </div>
-
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30">
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="mb-8"
-        >
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Hasil Assessment
-            </h1>
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-colors duration-200 shadow-lg"
-            >
-              Back to Dashboard
-            </button>
-          </div>
+        {/* Loading State */}
+        {!result && !error && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <EnhancedLoadingScreen
+              title="Loading Results..."
+              subtitle="Fetching your assessment analysis and insights"
+              skeletonCount={6}
+              className="min-h-[600px]"
+            />
+          </motion.div>
+        )}
 
-          {result && (
-            <div className="mt-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="flex items-center space-x-6 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <svg className="w-4 h-4 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                  </svg>
-                  <span>Completed: {formatDate(result.created_at)}</span>
-                </div>
-                <div className="flex items-center">
-                  <div className={`w-2 h-2 rounded-full mr-2 ${
-                    result.status === 'completed' ? 'bg-green-400' : 'bg-yellow-400'
-                  }`}></div>
-                  <span>Status: <span className="capitalize font-medium">{result.status}</span></span>
-                </div>
-              </div>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Show content immediately, with skeleton if no result yet */}
-        {error ? (
+        {/* Error State */}
+        {error && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -496,47 +448,75 @@ const ResultsPage = () => {
               </div>
             </div>
           </motion.div>
-        ) : result ? (
-          <div className="space-y-12">
+        )}
 
-
-            {/* Persona Profile - Moved up for better flow */}
+        {/* Content State */}
+        {result && (
+          <>
+            {/* Header */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
+              className="mb-8"
             >
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8">
-                Profil Karier Detail Anda
-              </h2>
-              {renderPersonaProfile(result.persona_profile)}
+              <div className="flex justify-between items-center">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                  Hasil Assessment
+                </h1>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-colors duration-200 shadow-lg"
+                >
+                  Back to Dashboard
+                </button>
+              </div>
+
+              <div className="mt-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                <div className="flex items-center space-x-6 text-sm text-gray-600">
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    </svg>
+                    <span>Completed: {formatDate(result.created_at)}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className={`w-2 h-2 rounded-full mr-2 ${
+                      result.status === 'completed' ? 'bg-green-400' : 'bg-yellow-400'
+                    }`}></div>
+                    <span>Status: <span className="capitalize font-medium">{result.status}</span></span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Assessment Data */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8">
-                Wawasan Assessment
-              </h2>
-              {renderAssessmentData(result.assessment_data)}
-            </motion.div>
-          </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <EnhancedLoadingScreen
-              title="Loading Results..."
-              subtitle="Fetching your assessment analysis and insights"
-              skeletonCount={4}
-              className="min-h-[400px]"
-            />
-          </motion.div>
+            {/* Main Content */}
+            <div className="space-y-12">
+              {/* Persona Profile - Moved up for better flow */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8">
+                  Profil Karier Detail Anda
+                </h2>
+                {renderPersonaProfile(result.persona_profile)}
+              </motion.div>
+
+              {/* Assessment Data */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8">
+                  Wawasan Assessment
+                </h2>
+                {renderAssessmentData(result.assessment_data)}
+              </motion.div>
+            </div>
+          </>
         )}
       </main>
 

@@ -199,7 +199,12 @@ const ProfilePage = () => {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
           <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
             Profile Settings
           </h1>
@@ -214,10 +219,15 @@ const ProfilePage = () => {
               Debug Profile
             </button>
           )}
-        </div>
+        </motion.div>
 
         {/* Token Balance Card */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 p-6 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 p-6 mb-8"
+        >
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Token Balance</h3>
@@ -230,10 +240,15 @@ const ProfilePage = () => {
               <div className="text-sm text-gray-500">tokens</div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Tabs */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 overflow-hidden"
+        >
           <div className="border-b border-gray-200/50">
             <nav className="-mb-px flex">
               <button
@@ -584,7 +599,7 @@ const ProfilePage = () => {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </main>
     </div>
   );

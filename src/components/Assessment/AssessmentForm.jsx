@@ -26,9 +26,9 @@ const AssessmentForm = ({
     if (isDebugMode && import.meta.env.DEV) {
       const autoAnswers = {};
 
-      // Generate random answers for all questions (3-5 range for good scores)
+      // Generate random answers for all questions (5-7 range for good scores)
       allQuestions.forEach((q) => {
-        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 3; // Random 3-5
+        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 5; // Random 5-7
       });
 
       setAnswers(autoAnswers);
@@ -108,8 +108,8 @@ const AssessmentForm = ({
         category.reverseQuestions.forEach((_, index) => {
           const questionKey = `${categoryKey}_reverse_${index}`;
           if (answers[questionKey]) {
-            // Reverse the score (6 - original score for 1-5 scale)
-            totalScore += (6 - answers[questionKey]);
+            // Reverse the score (8 - original score for 1-7 scale)
+            totalScore += (8 - answers[questionKey]);
             questionCount++;
           }
         });
@@ -117,7 +117,7 @@ const AssessmentForm = ({
       
       // Calculate average score (0-100 scale)
       if (questionCount > 0) {
-        scores[categoryKey] = Math.round((totalScore / questionCount) * 20); // Convert 1-5 to 0-100
+        scores[categoryKey] = Math.round(((totalScore / questionCount) - 1) * (100 / 6)); // Convert 1-7 to 0-100
       }
     });
     
