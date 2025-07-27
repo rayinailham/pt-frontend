@@ -91,6 +91,205 @@ const ResultOverview = () => {
     });
   };
 
+  // Assessment Results Graphic Component
+  const AssessmentResultsGraphic = ({ assessmentData }) => {
+    const getScoreColor = (score) => {
+      if (score >= 80) return 'bg-slate-700';
+      if (score >= 60) return 'bg-slate-600';
+      if (score >= 40) return 'bg-slate-500';
+      return 'bg-slate-400';
+    };
+
+    const getTopScores = (data, count = 3) => {
+      if (!data) return [];
+      return Object.entries(data)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, count)
+        .map(([key, value]) => ({ name: key, score: value }));
+    };
+
+    const viaTopScores = getTopScores(assessmentData?.viaIs);
+    const riasecTopScores = getTopScores(assessmentData?.riasec);
+    const oceanTopScores = getTopScores(assessmentData?.ocean);
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mb-16"
+      >
+        <div className="bg-white rounded-xl border border-gray-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">
+          <div className="bg-gradient-to-b from-gray-50/30 to-white p-10 border-b border-gray-100/60">
+            <div className="text-center max-w-2xl mx-auto">
+              <h2 className="text-2xl font-medium text-gray-900 mb-3 tracking-tight">
+                Visualisasi Hasil Assessment
+              </h2>
+              <p className="text-gray-600 text-base font-normal leading-relaxed">
+                Gambaran visual dari kekuatan utama Anda di setiap dimensi assessment
+              </p>
+            </div>
+          </div>
+
+          <div className="p-10">
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* VIA Character Strengths */}
+              <div className="bg-white rounded-xl p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="flex items-start mb-6">
+                  <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
+                    <span className="text-gray-700 text-xl">⭐</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium text-gray-900 text-lg mb-1">Character Strengths</h3>
+                    <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">VIA-IS Assessment</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {viaTopScores.map((item, index) => (
+                    <div key={index} className="flex items-center justify-between group">
+                      <span className="text-sm text-gray-700 capitalize font-medium">
+                        {item.name}
+                      </span>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full ${getScoreColor(item.score)} rounded-full`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(item.score / 100) * 100}%` }}
+                            transition={{ duration: 1.2, delay: 0.5 + index * 0.15, ease: "easeOut" }}
+                          />
+                        </div>
+                        <span className="text-xs font-medium text-gray-600 w-8 text-right tabular-nums">
+                          {item.score.toFixed(0)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* RIASEC Interests */}
+              <div className="bg-white rounded-xl p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="flex items-start mb-6">
+                  <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
+                    <span className="text-gray-700 text-xl">🎯</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium text-gray-900 text-lg mb-1">Career Interests</h3>
+                    <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">RIASEC Assessment</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {riasecTopScores.map((item, index) => (
+                    <div key={index} className="flex items-center justify-between group">
+                      <span className="text-sm text-gray-700 capitalize font-medium">
+                        {item.name}
+                      </span>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full ${getScoreColor(item.score)} rounded-full`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(item.score / 100) * 100}%` }}
+                            transition={{ duration: 1.2, delay: 0.7 + index * 0.15, ease: "easeOut" }}
+                          />
+                        </div>
+                        <span className="text-xs font-medium text-gray-600 w-8 text-right tabular-nums">
+                          {item.score.toFixed(0)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* OCEAN Personality */}
+              <div className="bg-white rounded-xl p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="flex items-start mb-6">
+                  <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
+                    <span className="text-gray-700 text-xl">🧭</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium text-gray-900 text-lg mb-1">Personality Traits</h3>
+                    <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">OCEAN Assessment</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {oceanTopScores.map((item, index) => (
+                    <div key={index} className="flex items-center justify-between group">
+                      <span className="text-sm text-gray-700 capitalize font-medium">
+                        {item.name}
+                      </span>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            className={`h-full ${getScoreColor(item.score)} rounded-full`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(item.score / 100) * 100}%` }}
+                            transition={{ duration: 1.2, delay: 0.9 + index * 0.15, ease: "easeOut" }}
+                          />
+                        </div>
+                        <span className="text-xs font-medium text-gray-600 w-8 text-right tabular-nums">
+                          {item.score.toFixed(0)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Overall Score Summary */}
+            <div className="mt-10 pt-8 border-t border-gray-200/60">
+              <h4 className="text-lg font-medium text-gray-900 text-center mb-8">Skor Tertinggi Anda</h4>
+              <div className="grid grid-cols-3 gap-6 text-center">
+                <motion.div
+                  className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
+                  whileHover={{ scale: 1.01, y: -1 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  <div className="text-3xl font-medium text-gray-900 mb-3 tabular-nums">
+                    {viaTopScores.length > 0 ? viaTopScores[0].score.toFixed(0) : 'N/A'}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium mb-2">Top Character Strength</div>
+                  <div className="text-xs text-gray-500 font-medium capitalize">
+                    {viaTopScores.length > 0 ? viaTopScores[0].name : 'No data'}
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
+                  whileHover={{ scale: 1.01, y: -1 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  <div className="text-3xl font-medium text-gray-900 mb-3 tabular-nums">
+                    {riasecTopScores.length > 0 ? riasecTopScores[0].score.toFixed(0) : 'N/A'}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium mb-2">Top Career Interest</div>
+                  <div className="text-xs text-gray-500 font-medium capitalize">
+                    {riasecTopScores.length > 0 ? riasecTopScores[0].name : 'No data'}
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
+                  whileHover={{ scale: 1.01, y: -1 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  <div className="text-3xl font-medium text-gray-900 mb-3 tabular-nums">
+                    {oceanTopScores.length > 0 ? oceanTopScores[0].score.toFixed(0) : 'N/A'}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium mb-2">Top Personality Trait</div>
+                  <div className="text-xs text-gray-500 font-medium capitalize">
+                    {oceanTopScores.length > 0 ? oceanTopScores[0].name : 'No data'}
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
   const getTopViaIsStrengths = (viaIsData) => {
     if (!viaIsData) return [];
     return Object.entries(viaIsData)
@@ -165,7 +364,7 @@ const ResultOverview = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Main Content Area */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Loading State */}
@@ -261,7 +460,7 @@ const ResultOverview = () => {
                 </button>
               </div>
 
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <div className="bg-white rounded-xl border border-gray-200/40 p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-6 text-sm text-gray-600">
                     <div className="flex items-center">
@@ -272,7 +471,7 @@ const ResultOverview = () => {
                     </div>
                     <div className="flex items-center">
                       <div className={`w-2 h-2 rounded-full mr-2 ${
-                        result.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'
+                        result.status === 'completed' ? 'bg-gray-700' : 'bg-gray-500'
                       }`}></div>
                       <span>Status: <span className="capitalize font-medium text-gray-900">{result.status}</span></span>
                     </div>
@@ -281,67 +480,62 @@ const ResultOverview = () => {
               </div>
             </motion.div>
 
-            {/* Career Persona Summary */}
-            {result.persona_profile?.archetype && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="mb-12"
-              >
-                <div className="bg-white rounded-lg border border-gray-200 p-8">
-                  <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                      Career Persona Anda
-                    </h2>
-                    <motion.div
-                      className="inline-block bg-gray-100 px-4 py-2 rounded-full"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <span className="text-lg font-semibold text-gray-800">
-                        {result.persona_profile.archetype}
-                      </span>
-                    </motion.div>
-                  </div>
-                  <p className="text-gray-700 leading-relaxed max-w-3xl mx-auto text-center">
-                    {result.persona_profile.shortSummary}
-                  </p>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Introduction Section */}
+            {/* Career Persona Summary & Introduction Section - Combined in Single Row */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-12"
             >
-              <div className="bg-white rounded-lg border border-gray-200 p-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Memahami Hasil Assessment Anda
-                </h2>
-                <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 mb-4">
-                    Hasil assessment Anda diorganisir dalam empat bagian komprehensif, masing-masing memberikan
-                    wawasan unik tentang aspek yang berbeda dari kepribadian dan potensi karir Anda:
+              <div className="grid lg:grid-cols-2 gap-6">
+                {/* Career Persona Summary */}
+                {result.persona_profile?.archetype && (
+                  <div className="bg-white rounded-xl border border-gray-200/40 p-6">
+                    <h2 className="text-lg font-medium text-gray-900 mb-4">
+                      Career Persona Anda
+                    </h2>
+                    <motion.div
+                      className="inline-block bg-gray-50 px-4 py-2 rounded-lg border border-gray-200/40 shadow-sm mb-4"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <span className="text-base font-medium text-gray-900">
+                        {result.persona_profile.archetype}
+                      </span>
+                    </motion.div>
+                    <p className="text-gray-600 leading-relaxed text-sm">
+                      {result.persona_profile.shortSummary}
+                    </p>
+                  </div>
+                )}
+
+                {/* Introduction Section */}
+                <div className="bg-white rounded-xl border border-gray-200/40 p-6">
+                  <h2 className="text-lg font-medium text-gray-900 mb-4">
+                    Memahami Hasil Assessment Anda
+                  </h2>
+                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                    Hasil assessment Anda diorganisir dalam empat bagian komprehensif yang saling terintegrasi.
+                    Visualisasi di bawah menunjukkan kekuatan utama Anda di setiap dimensi.
                   </p>
-                  <ul className="text-gray-700 space-y-2">
-                    <li><strong>Character Strengths (VIA-IS):</strong> Mengidentifikasi nilai-nilai inti dan kekuatan karakter yang mendorong perilaku dan pengambilan keputusan Anda.</li>
-                    <li><strong>Career Interests (RIASEC):</strong> Memetakan minat Anda terhadap lingkungan karir dan aktivitas yang secara alami menarik bagi Anda.</li>
-                    <li><strong>Personality Traits (OCEAN):</strong> Menganalisis dimensi kepribadian fundamental dan bagaimana hal tersebut mempengaruhi gaya kerja Anda.</li>
-                    <li><strong>Career Persona:</strong> Mensintesis semua penilaian menjadi rekomendasi karir yang dapat ditindaklanjuti dan peluang pengembangan.</li>
-                  </ul>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div><strong className="text-gray-900">Character Strengths:</strong> Nilai-nilai inti dan kekuatan karakter Anda.</div>
+                    <div><strong className="text-gray-900">Career Interests:</strong> Minat terhadap lingkungan karir dan aktivitas.</div>
+                    <div><strong className="text-gray-900">Personality Traits:</strong> Dimensi kepribadian dan gaya kerja Anda.</div>
+                    <div><strong className="text-gray-900">Career Persona:</strong> Rekomendasi karir dan peluang pengembangan.</div>
+                  </div>
                 </div>
               </div>
             </motion.div>
+
+            {/* Assessment Results Graphic */}
+            <AssessmentResultsGraphic assessmentData={result.assessment_data} />
 
             {/* Assessment Sections */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-6">
@@ -354,12 +548,12 @@ const ResultOverview = () => {
                     key={card.title}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
                     whileHover={{
                       scale: 1.02,
                       transition: { duration: 0.2 }
                     }}
-                    className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                    className="bg-white rounded-xl border border-gray-200/60 hover:border-gray-300/80 hover:shadow-lg transition-all duration-300 cursor-pointer group"
                     onClick={() => navigate(card.path)}
                   >
                     <div className="p-6">
@@ -367,13 +561,13 @@ const ResultOverview = () => {
                         <div className="flex items-center">
                           <motion.div
                             className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gray-200 transition-colors"
-                            whileHover={{ rotate: 5 }}
+                            whileHover={{ rotate: 3 }}
                             transition={{ duration: 0.2 }}
                           >
                             <span className="text-lg">{card.icon}</span>
                           </motion.div>
                           <div>
-                            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+                            <h3 className="text-lg font-medium text-gray-900 group-hover:text-gray-700 transition-colors">
                               {card.title}
                             </h3>
                             <p className="text-gray-600 text-sm mt-1">{card.description}</p>
@@ -433,6 +627,11 @@ const ResultOverview = () => {
                 ))}
               </div>
             </motion.div>
+
+            {/* Assessment Explanations */}
+            <div className="mt-16">
+              <AssessmentExplanations delay={0.3}/>
+            </div>
           </>
         )}
       </main>
