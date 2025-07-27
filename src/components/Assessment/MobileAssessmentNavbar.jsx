@@ -1,0 +1,124 @@
+import { BookOpen, Menu } from 'lucide-react';
+
+const MobileAssessmentNavbar = ({
+  assessmentData,
+  currentStep,
+  totalSteps,
+  answers,
+  onTogglePhaseMenu
+}) => {
+  // Define assessment phases mapping
+  const assessmentPhases = [
+    {
+      id: 1,
+      title: "Phase 1",
+      subtitle: "VIA Character Strengths",
+      assessmentKey: "via",
+      step: 1,
+      totalQuestions: 96
+    },
+    {
+      id: 2,
+      title: "Phase 2", 
+      subtitle: "RIASEC Holland Codes",
+      assessmentKey: "riasec",
+      step: 2,
+      totalQuestions: 60
+    },
+    {
+      id: 3,
+      title: "Phase 3",
+      subtitle: "OCEAN Personality", 
+      assessmentKey: "bigFive",
+      step: 3,
+      totalQuestions: 44
+    }
+  ];
+
+  // Calculate total progress for current phase
+  const getTotalProgress = () => {
+    if (!assessmentData?.categories) return { answered: 0, total: 0 };
+    
+    let totalAnswered = 0;
+    let totalQuestions = 0;
+    
+    Object.entries(assessmentData.categories).forEach(([categoryKey, category]) => {
+      // Count regular questions
+      totalQuestions += category.questions.length;
+      category.questions.forEach((_, index) => {
+        const questionKey = `${categoryKey}_${index}`;
+        if (answers[questionKey] !== undefined) totalAnswered++;
+      });
+      
+      // Count reverse questions
+      if (category.reverseQuestions) {
+        totalQuestions += category.reverseQuestions.length;
+        category.reverseQuestions.forEach((_, index) => {
+          const questionKey = `${categoryKey}_reverse_${index}`;
+          if (answers[questionKey] !== undefined) totalAnswered++;
+        });
+      }
+    });
+    
+    return { answered: totalAnswered, total: totalQuestions };
+  };
+
+  const currentPhase = assessmentPhases.find(phase => phase.step === currentStep);
+  const progress = getTotalProgress();
+  const progressPercentage = progress.total > 0 ? (progress.answered / progress.total) * 100 : 0;
+
+  return (
+    <div className="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+      <div className="px-3 sm:px-4 py-3 sm:py-4">
+        {/* Header Layout: Icon | Title & Subtitle | Menu Button */}
+        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 mb-3">
+          {/* Icon */}
+          <div className="p-2 bg-gray-100 border border-gray-200 rounded-lg flex-shrink-0">
+            <BookOpen className="h-4 w-4 text-gray-700" />
+          </div>
+
+          {/* Title and Subtitle */}
+          <div className="min-w-0">
+            <h1 className="text-base sm:text-lg font-semibold text-gray-900 leading-tight truncate">
+              {currentPhase?.title}
+            </h1>
+            <p className="text-xs sm:text-sm text-gray-600 font-medium truncate">
+              {currentPhase?.subtitle}
+            </p>
+          </div>
+
+          {/* Menu Button */}
+          <button
+            onClick={onTogglePhaseMenu}
+            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Progress Section */}
+        <div className="space-y-2">
+          {/* Progress Info */}
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-medium text-gray-700">
+              Assessment {currentStep} of {totalSteps}
+            </span>
+            <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
+              {progress.answered}/{progress.total}
+            </span>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-gray-900 h-2 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MobileAssessmentNavbar;

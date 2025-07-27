@@ -16,13 +16,6 @@ class ApiService {
     const errorMessage = error.response?.data?.message || error.message || 'An unexpected error occurred';
     const statusCode = error.response?.status;
 
-    console.error(`API Error in ${operation}:`, {
-      status: statusCode,
-      message: errorMessage,
-      url: error.config?.url,
-      method: error.config?.method
-    });
-
     // Re-throw with enhanced error information
     const enhancedError = new Error(errorMessage);
     enhancedError.status = statusCode;

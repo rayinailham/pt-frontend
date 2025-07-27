@@ -50,14 +50,14 @@ const ResultsTable = ({
       transition={{ duration: 0.5, delay: 0.4 }}
     >
       {/* Action Buttons */}
-      <div className="flex justify-end items-center space-x-3 mb-6">
+      <div className="flex flex-col sm:flex-row justify-end items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-4 md:mb-6">
         {onRefresh && (
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={onRefresh}
             disabled={loading.results}
-            className="flex items-center space-x-2 px-3 py-2.5 text-slate-600 bg-slate-100 rounded-md hover:bg-slate-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center space-x-2 px-3 py-2.5 text-slate-600 bg-slate-100 rounded-md hover:bg-slate-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Refresh results table"
           >
             <RefreshCw className={`h-4 w-4 ${loading.results ? 'animate-spin' : ''}`} />
@@ -69,7 +69,7 @@ const ResultsTable = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onNewAssessment}
-          className="flex items-center space-x-2 px-4 py-2.5 text-white bg-slate-900 rounded-md hover:bg-slate-800 transition-all duration-200"
+          className="flex items-center justify-center space-x-2 px-4 py-2.5 text-white bg-slate-900 rounded-md hover:bg-slate-800 transition-all duration-200"
         >
           <Plus className="h-4 w-4" />
           <span className="hidden sm:inline font-medium">New Assessment</span>
@@ -96,19 +96,19 @@ const ResultsTable = ({
             <table className="min-w-full divide-y divide-slate-200">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="hidden sm:table-cell px-3 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Date
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="hidden md:table-cell px-3 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Archetype
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -122,17 +122,21 @@ const ResultsTable = ({
                       transition={{ duration: 0.3, delay: index * 0.05 }}
                       className="hover:bg-slate-50 transition-colors duration-200"
                     >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-slate-900">
                         {result.assessment_name || 'Peta Talenta Assessment'}
                       </div>
+                      {/* Show date on mobile below name */}
+                      <div className="sm:hidden text-xs text-slate-500 mt-1">
+                        {formatDate(result.created_at)}
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="hidden sm:table-cell px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       <div className="text-sm text-slate-600">
                         {formatDate(result.created_at)}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="hidden md:table-cell px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       {result.status === 'completed' ? (
                         result.persona_profile?.archetype ? (
                           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
@@ -157,33 +161,47 @@ const ResultsTable = ({
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       {getStatusBadge(result.status)}
+                      {/* Show archetype on mobile below status */}
+                      <div className="md:hidden mt-1">
+                        {result.status === 'completed' ? (
+                          result.persona_profile?.archetype ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                              {result.persona_profile.archetype}
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 text-xs">
+                              No archetype
+                            </span>
+                          )
+                        ) : null}
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex items-center space-x-2">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex items-center space-x-1 md:space-x-2">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => onView(result.id)}
-                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors duration-200"
+                          className="inline-flex items-center px-2 md:px-3 py-1.5 border border-transparent text-xs font-medium rounded text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors duration-200"
                         >
-                          <Eye className="h-3 w-3 mr-1" />
-                          View
+                          <Eye className="h-3 w-3 md:mr-1" />
+                          <span className="hidden md:inline">View</span>
                         </motion.button>
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => onDelete(result.id)}
                           disabled={deleteLoading[result.id]}
-                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 disabled:opacity-50 transition-colors duration-200"
+                          className="inline-flex items-center px-2 md:px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 disabled:opacity-50 transition-colors duration-200"
                         >
                           {deleteLoading[result.id] ? (
-                            <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                            <RefreshCw className="h-3 w-3 md:mr-1 animate-spin" />
                           ) : (
-                            <Trash2 className="h-3 w-3 mr-1" />
+                            <Trash2 className="h-3 w-3 md:mr-1" />
                           )}
-                          Delete
+                          <span className="hidden md:inline">Delete</span>
                         </motion.button>
                       </div>
                     </td>

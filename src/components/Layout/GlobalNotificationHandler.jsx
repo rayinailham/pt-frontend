@@ -38,7 +38,6 @@ const GlobalNotificationHandler = () => {
     onAnalysisFailed: (data) => {
       // Handle analysis failure globally if needed
       // For now, we let individual components handle their own error states
-      console.warn('Analysis failed:', data.message);
     }
   });
 

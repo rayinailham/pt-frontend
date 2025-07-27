@@ -74,21 +74,21 @@ const ArticlesSection = ({ loading }) => {
       transition={{ duration: 0.3 }}
     >
       {/* Articles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {articles.map((article, index) => (
           <motion.div
             key={article.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="bg-white hover:bg-slate-50 rounded-md p-6 cursor-pointer transition-all duration-200 border border-slate-200/60 hover:border-slate-300 hover:shadow-md shadow-sm group"
+            className="bg-white hover:bg-slate-50 rounded-md p-4 md:p-6 cursor-pointer transition-all duration-200 border border-slate-200/60 hover:border-slate-300 hover:shadow-md shadow-sm group"
           >
             {/* Icon & Header */}
-            <div className="flex items-center mb-4">
-              <div className={`w-12 h-12 ${article.iconBg} rounded-md flex items-center justify-center`}>
-                <article.icon className={`h-6 w-6 ${article.iconColor}`} />
+            <div className="flex items-center mb-3 md:mb-4">
+              <div className={`w-10 h-10 md:w-12 md:h-12 ${article.iconBg} rounded-md flex items-center justify-center`}>
+                <article.icon className={`h-5 w-5 md:h-6 md:w-6 ${article.iconColor}`} />
               </div>
-              <div className="ml-4">
+              <div className="ml-3 md:ml-4">
                 <h4 className="text-sm font-semibold text-slate-900 group-hover:text-slate-800 transition-colors">
                   {article.title}
                 </h4>
@@ -97,16 +97,17 @@ const ArticlesSection = ({ loading }) => {
             </div>
 
             {/* Description */}
-            <p className="text-sm text-slate-700 mb-4 leading-relaxed">
+            <p className="text-xs md:text-sm text-slate-700 mb-3 md:mb-4 leading-relaxed">
               {article.description}
             </p>
 
             {/* Footer */}
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-500 font-medium">{article.readTime}</span>
-              <div className="flex items-center text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
-                <span>Baca Selengkapnya</span>
-                <ArrowRight className="h-4 w-4 ml-1" />
+              <div className="flex items-center text-xs md:text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
+                <span className="hidden sm:inline">Baca Selengkapnya</span>
+                <span className="sm:hidden">Baca</span>
+                <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-1" />
               </div>
             </div>
           </motion.div>
@@ -114,9 +115,10 @@ const ArticlesSection = ({ loading }) => {
       </div>
 
       {/* View All Button */}
-      <div className="mt-8 text-center">
-        <button className="inline-flex items-center px-6 py-3 border border-slate-200 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 transition-all duration-200 shadow-sm hover:border-slate-300">
-          Lihat Semua Artikel
+      <div className="mt-6 md:mt-8 text-center">
+        <button className="inline-flex items-center px-4 md:px-6 py-2.5 md:py-3 border border-slate-200 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 transition-all duration-200 shadow-sm hover:border-slate-300">
+          <span className="hidden sm:inline">Lihat Semua Artikel</span>
+          <span className="sm:hidden">Semua Artikel</span>
           <BookOpen className="ml-2 h-4 w-4" />
         </button>
       </div>

@@ -47,7 +47,6 @@ export const useDashboard = () => {
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch statistics';
       setError(prev => ({ ...prev, stats: errorMessage }));
-      console.error('Error fetching stats:', err);
     } finally {
       setLoading(prev => ({ ...prev, stats: false }));
     }
@@ -66,16 +65,7 @@ export const useDashboard = () => {
         order: 'DESC'
       });
 
-      // Debug logging untuk melihat struktur data yang dikembalikan
-      console.log('Dashboard Results:', {
-        total_results: response.data.results?.length || 0,
-        results_summary: response.data.results?.map(r => ({
-          id: r.id,
-          status: r.status,
-          has_persona_profile: !!r.persona_profile,
-          archetype: r.persona_profile?.archetype || 'none'
-        })) || []
-      });
+
 
       setData(prev => ({
         ...prev,
@@ -90,7 +80,6 @@ export const useDashboard = () => {
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch results';
       setError(prev => ({ ...prev, results: errorMessage }));
-      console.error('Error fetching results:', err);
     } finally {
       setLoading(prev => ({ ...prev, results: false }));
     }
@@ -107,7 +96,6 @@ export const useDashboard = () => {
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch token balance';
       setError(prev => ({ ...prev, tokenBalance: errorMessage }));
-      console.error('Error fetching token balance:', err);
     } finally {
       setLoading(prev => ({ ...prev, tokenBalance: false }));
     }
@@ -135,7 +123,6 @@ export const useDashboard = () => {
         ...prev,
         general: 'Failed to load dashboard data. Please try again.'
       }));
-      console.error('Error fetching dashboard data:', err);
     } finally {
       setLoading(prev => ({ ...prev, initial: false }));
     }
@@ -152,7 +139,6 @@ export const useDashboard = () => {
       }));
       return true;
     } catch (err) {
-      console.error('Error deleting result:', err);
       throw err;
     }
   }, []);

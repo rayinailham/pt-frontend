@@ -66,7 +66,6 @@ class AdminService {
     } catch (error) {
       // Check if it's a connection error and provide fallback for development
       if (error.code === 'ERR_NETWORK' || error.message.includes('ERR_CONNECTION_REFUSED')) {
-        console.warn('Backend not available, using mock data for development');
         return this.mockLogin(username, password);
       }
 

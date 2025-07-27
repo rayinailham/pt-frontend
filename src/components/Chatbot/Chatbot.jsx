@@ -22,11 +22,9 @@ const Chatbot = ({ assessmentId }) => {
 
   const initializeConversation = async () => {
     if (!assessmentId || conversation) {
-      console.log('Skipping initialization:', { assessmentId, hasConversation: !!conversation });
       return;
     }
 
-    console.log('Initializing conversation for assessment:', assessmentId);
     setIsInitializing(true);
     setError('');
 
@@ -71,14 +69,11 @@ const Chatbot = ({ assessmentId }) => {
         }
       } else {
         // Create new conversation from assessment
-        console.log('Creating new conversation from assessment...');
         const response = await apiService.createConversationFromAssessment({
           assessment_id: assessmentId,
           conversation_type: 'career_guidance',
           include_suggestions: true
         });
-
-        console.log('API Response:', response);
 
         if (response && response.success) {
           setConversation(response.data);

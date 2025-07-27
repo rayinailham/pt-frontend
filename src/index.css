@@ -171,3 +171,91 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* ===== MOBILE RESPONSIVENESS UTILITIES ===== */
+/* Prevent horizontal overflow on mobile */
+.mobile-container {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Ensure buttons don't shrink too much */
+.mobile-button-min {
+  min-width: 2.5rem; /* 40px */
+}
+
+/* Text truncation with ellipsis */
+.text-truncate-mobile {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsive flex gap */
+.gap-responsive {
+  gap: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .gap-responsive {
+    gap: 0.5rem;
+  }
+}
+
+/* Prevent any element from causing horizontal overflow */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Ensure grid containers don't overflow */
+.grid {
+  min-width: 0;
+}
+
+.grid > * {
+  min-width: 0;
+}
+
+/* Sticky header improvements */
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+/* Backdrop blur support */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Smooth transitions for sticky elements */
+.sticky-header {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Position indicator dots */
+.position-dots {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.position-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+}
+
+.position-dot.active {
+  background-color: #111827; /* gray-900 */
+}
+
+.position-dot.inactive {
+  background-color: #d1d5db; /* gray-300 */
+}

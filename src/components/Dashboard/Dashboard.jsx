@@ -66,7 +66,6 @@ export default function Dashboard() {
       // Refresh data after successful deletion
       actions.refreshData();
     } catch (err) {
-      console.error('Failed to delete result:', err);
       alert('Failed to delete result. Please try again.');
     } finally {
       setDeleteLoading(prev => ({ ...prev, [resultId]: false }));
@@ -105,7 +104,7 @@ export default function Dashboard() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
         {/* Loading State */}
         {loading.initial && (
           <motion.div
@@ -150,17 +149,17 @@ export default function Dashboard() {
             transition={{ duration: 0.8, ease: "easeOut", staggerChildren: 0.1 }}
           >
             {/* Main Content Container */}
-            <div className="bg-white border border-slate-200/60 shadow-sm">
-              <div className="p-8 space-y-12">
+            <div className="bg-white border border-slate-200/60 shadow-sm rounded-lg">
+              <div className="p-4 md:p-8 space-y-8 md:space-y-12">
                 {/* Performance Overview Section */}
                 <motion.section
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
                 >
-                  <div className="mb-8">
-                    <h2 className="text-2xl font-semibold text-slate-900 mb-2">Performance Overview</h2>
-                    <p className="text-slate-600">Indikator utama dan wawasan hasil asesmen Anda secara menyeluruh.</p>
+                  <div className="mb-6 md:mb-8">
+                    <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Performance Overview</h2>
+                    <p className="text-sm md:text-base text-slate-600">Indikator utama dan wawasan hasil asesmen Anda secara menyeluruh.</p>
                   </div>
                   <StatsCards
                     data={data}
@@ -170,7 +169,7 @@ export default function Dashboard() {
                 </motion.section>
 
                 {/* Divider */}
-                <div className="border-t-2 border-slate-200"></div>
+                <div className="border-t border-slate-200 md:border-t-2"></div>
 
                 {/* Assessment Results Section */}
                 <motion.section
@@ -178,11 +177,11 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
                 >
-                  <div className="mb-8">
+                  <div className="mb-6 md:mb-8">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h2 className="text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
-                        <p className="text-slate-600">Lihat dan kelola riwayat asesmen Anda secara terstruktur dan profesional.</p>
+                        <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
+                        <p className="text-sm md:text-base text-slate-600">Lihat dan kelola riwayat asesmen Anda secara terstruktur dan profesional.</p>
                       </div>
                     </div>
                   </div>
@@ -200,15 +199,16 @@ export default function Dashboard() {
                 {/* Divider */}
                 <div className="border-t border-slate-200/60"></div>
 
-                {/* Learning Resources Section */}
+                {/* Learning Resources Section - Hidden on small mobile */}
                 <motion.section
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
+                  className="hidden sm:block"
                 >
-                  <div className="mb-8">
-                    <h2 className="text-2xl font-semibold text-slate-900 mb-2">Learning Resources</h2>
-                    <p className="text-slate-600">Artikel dan wawasan pilihan untuk meningkatkan pengetahuan serta pengembangan diri Anda.</p>
+                  <div className="mb-6 md:mb-8">
+                    <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Learning Resources</h2>
+                    <p className="text-sm md:text-base text-slate-600">Artikel dan wawasan pilihan untuk meningkatkan pengetahuan serta pengembangan diri Anda.</p>
                   </div>
                   <ArticlesSection loading={loading} />
                 </motion.section>

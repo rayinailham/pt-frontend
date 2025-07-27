@@ -23,7 +23,6 @@ const AdminLogin = () => {
       // Error handling is done in the context
     } catch (err) {
       // Error handling is done in the context
-      console.error('Login error:', err);
     }
   };
 

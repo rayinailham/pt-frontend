@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Check, BookOpen } from 'lucide-react';
 import AssessmentQuestion from './AssessmentQuestion';
 import AssessmentSidebar from './AssessmentSidebar';
+import MobileAssessmentNavbar from './MobileAssessmentNavbar';
+import MobileBottomNavigation from './MobileBottomNavigation';
+import MobilePhaseMenu from './MobilePhaseMenu';
 
 const AssessmentForm = ({
   assessmentData,
@@ -22,6 +25,7 @@ const AssessmentForm = ({
 }) => {
   const [answers, setAnswers] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
+  const [isPhaseMenuOpen, setIsPhaseMenuOpen] = useState(false);
   // Remove fixed questionsPerPage - we'll use category-based pagination
 
   // Scroll to top when page changes
@@ -269,12 +273,29 @@ const AssessmentForm = ({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mobile-container">
+      {/* Mobile Navigation */}
+      <MobileAssessmentNavbar
+        assessmentData={assessmentData}
+        currentStep={currentStep}
+        totalSteps={totalSteps}
+        answers={answers}
+        onTogglePhaseMenu={() => setIsPhaseMenuOpen(true)}
+      />
+
+      {/* Mobile Phase Menu */}
+      <MobilePhaseMenu
+        currentStep={currentStep}
+        onNavigateToPhase={onNavigateToPhase}
+        onClose={() => setIsPhaseMenuOpen(false)}
+        isOpen={isPhaseMenuOpen}
+      />
+
       <div className="flex max-w-7xl mx-auto">
         {/* Main Content */}
-        <div className="flex-1 lg:mr-80 p-4 lg:p-8">
+        <div className="flex-1 lg:mr-80 p-2 sm:p-4 lg:p-8 pb-32 sm:pb-36 lg:pb-8">
           {/* Desktop Header */}
-          <div className="mb-8 bg-white border border-gray-200 p-8 max-w-3xl mx-auto">
+          <div className="hidden lg:block mb-8 bg-white border border-gray-200 p-8 max-w-3xl mx-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <div className="p-3 bg-gray-100 border border-gray-200">
@@ -298,8 +319,10 @@ const AssessmentForm = ({
             </div>
           </div>
 
+
+
           {/* Questions */}
-          <div className="max-w-3xl mx-auto">
+          <div className="w-full max-w-full sm:max-w-2xl lg:max-w-3xl mx-auto px-1 sm:px-0">
             {currentQuestions.map((q, index) => {
               // Calculate the global question index for this question
               let globalIndex = 0;
@@ -333,7 +356,7 @@ const AssessmentForm = ({
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex max-w-3xl mx-auto mt-8 justify-between items-center">
+          <div className="hidden lg:flex max-w-full sm:max-w-2xl lg:max-w-3xl mx-auto mt-8 justify-between items-center">
             <button
               onClick={handlePreviousCategory}
               disabled={currentPage === 0}
@@ -422,6 +445,24 @@ const AssessmentForm = ({
           onNavigateToPhase={onNavigateToPhase}
         />
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNavigation
+        currentPage={currentPage}
+        totalPages={totalPages}
+        currentStep={currentStep}
+        totalSteps={totalSteps}
+        isLastAssessment={isLastAssessment}
+        isAssessmentComplete={isAssessmentComplete}
+        isProcessingSubmit={isProcessingSubmit}
+        isAutoFillMode={isAutoFillMode}
+        onPreviousCategory={handlePreviousCategory}
+        onNextCategory={handleNextCategory}
+        onPrevious={onPrevious}
+        onSubmitWithValidation={handleSubmitWithValidation}
+        onManualSubmit={onManualSubmit}
+        currentCategoryData={currentCategoryData}
+      />
     </div>
   );
 };

@@ -312,7 +312,7 @@ const ResultOcean = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Loading State */}
         {!result && !error && (
           <EnhancedLoadingScreen
@@ -363,38 +363,38 @@ const ResultOcean = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mb-8"
             >
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6">
+                <div className="mb-4 sm:mb-0">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                     OCEAN Personality Assessment
                   </h1>
-                  <p className="text-gray-600 max-w-2xl">
+                  <p className="text-gray-600 max-w-2xl text-sm sm:text-base">
                     The Big Five personality model reveals your core traits and behavioral tendencies across five key dimensions.
                   </p>
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors text-sm sm:text-base"
                   >
                     ← Back
                   </button>
                   <button
                     onClick={() => navigate('/dashboard')}
-                    className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
+                    className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors text-sm sm:text-base"
                   >
                     Dashboard
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white rounded p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="bg-white rounded p-3 sm:p-4 border border-gray-200 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-600 space-y-2 sm:space-y-0">
                   <div className="flex items-center">
                     <span className="w-2 h-2 bg-gray-900 rounded-sm mr-2"></span>
-                    Completed: {formatDate(result.created_at)}
+                    <span className="text-xs sm:text-sm">Completed: {formatDate(result.created_at)}</span>
                   </div>
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium">
+                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium self-start sm:self-auto">
                     Big Five Model
                   </span>
                 </div>
@@ -409,30 +409,30 @@ const ResultOcean = () => {
               className="mb-8"
             >
               <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-4 sm:p-6">
                   <div className="flex items-center mb-4">
-                    <span className="text-3xl mr-3">🧭</span>
+                    <span className="text-2xl sm:text-3xl mr-3">🧭</span>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">{oceanExplanation.title}</h2>
-                      <p className="text-blue-700 font-medium">The Big Five Personality Model</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{oceanExplanation.title}</h2>
+                      <p className="text-blue-700 font-medium text-sm sm:text-base">The Big Five Personality Model</p>
                     </div>
                   </div>
-                  <p className="text-gray-700 leading-relaxed mb-4">{oceanExplanation.description}</p>
+                  <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">{oceanExplanation.description}</p>
 
-                  <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white p-4 rounded border border-blue-100">
-                      <h4 className="font-semibold text-gray-900 mb-2">👨‍🔬 Pengembang</h4>
-                      <p className="text-sm text-gray-700">{oceanExplanation.developer}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="bg-white p-3 sm:p-4 rounded border border-blue-100">
+                      <h4 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">👨‍🔬 Pengembang</h4>
+                      <p className="text-xs sm:text-sm text-gray-700">{oceanExplanation.developer}</p>
                     </div>
-                    <div className="bg-white p-4 rounded border border-blue-100">
-                      <h4 className="font-semibold text-gray-900 mb-2">✅ Validitas Ilmiah</h4>
-                      <p className="text-sm text-gray-700">{oceanExplanation.validity}</p>
+                    <div className="bg-white p-3 sm:p-4 rounded border border-blue-100">
+                      <h4 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">✅ Validitas Ilmiah</h4>
+                      <p className="text-xs sm:text-sm text-gray-700">{oceanExplanation.validity}</p>
                     </div>
                   </div>
 
-                  <div className="bg-white p-4 rounded border border-blue-100">
-                    <h4 className="font-semibold text-gray-900 mb-2">🎯 Tujuan Assessment</h4>
-                    <p className="text-sm text-gray-700">{oceanExplanation.purpose}</p>
+                  <div className="bg-white p-3 sm:p-4 rounded border border-blue-100">
+                    <h4 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">🎯 Tujuan Assessment</h4>
+                    <p className="text-xs sm:text-sm text-gray-700">{oceanExplanation.purpose}</p>
                   </div>
                 </div>
               </div>
@@ -448,13 +448,13 @@ const ResultOcean = () => {
                 transition={{ duration: 0.5, delay: 0.6 }}
                 className="mb-8"
               >
-                <div className="bg-white rounded border border-gray-200 shadow-sm p-6">
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Profil Kepribadian Anda</h3>
-                    <p className="text-gray-600">Visualisasi lima dimensi kepribadian OCEAN</p>
+                <div className="bg-white rounded border border-gray-200 shadow-sm p-4 sm:p-6">
+                  <div className="text-center mb-4 sm:mb-6">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Profil Kepribadian Anda</h3>
+                    <p className="text-gray-600 text-sm sm:text-base">Visualisasi lima dimensi kepribadian OCEAN</p>
                   </div>
 
-                  <div className="h-96">
+                  <div className="h-64 sm:h-80 lg:h-96">
                     <ResponsiveContainer width="100%" height="100%">
                       <RadarChart data={prepareRadarData(result.assessment_data.ocean)}>
                         <PolarGrid stroke="#e5e7eb" />
@@ -481,7 +481,7 @@ const ResultOcean = () => {
                     </ResponsiveContainer>
                   </div>
 
-                  <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <div className="mt-4 sm:mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                     {prepareRadarData(result.assessment_data.ocean).map((item, index) => {
                       const scoreLevel = getScoreLevel(item.fullValue);
                       return (
@@ -490,13 +490,13 @@ const ResultOcean = () => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-                          className="text-center p-3 bg-gray-50 rounded"
+                          className="text-center p-2 sm:p-3 bg-gray-50 rounded"
                         >
-                          <div className="text-lg font-bold text-blue-600 mb-1">
+                          <div className="text-sm sm:text-base md:text-lg font-bold text-blue-600 mb-1">
                             {item.fullValue.toFixed(1)}
                           </div>
-                          <div className="text-xs text-gray-600 font-medium mb-1">{item.trait}</div>
-                          <div className={`text-xs ${scoreLevel.intensity}`}>
+                          <div className="text-xs sm:text-xs text-gray-600 font-medium mb-1 leading-tight">{item.trait}</div>
+                          <div className={`text-xs ${scoreLevel.intensity} leading-tight`}>
                             {scoreLevel.level}
                           </div>
                         </motion.div>
@@ -509,9 +509,9 @@ const ResultOcean = () => {
 
             {/* Main Grid Layout */}
             {result.assessment_data?.ocean && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* First 3 cards in a row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                   {Object.entries(result.assessment_data.ocean).slice(0, 3).map(([traitKey, score], index) => {
                     const trait = oceanTraits[traitKey];
                     if (!trait) return null;
@@ -548,10 +548,10 @@ const ResultOcean = () => {
                       {/* Content */}
                       <div className="p-6">
                         {/* Description */}
-                        <p className="text-gray-700 mb-4 leading-relaxed">{trait.description}</p>
+                        <p className="text-gray-700 mb-4 leading-relaxed text-sm sm:text-base">{trait.description}</p>
 
                         {/* Progress Bar */}
-                        <div className="mb-6">
+                        <div className="mb-4 sm:mb-6">
                           <div className="bg-gray-200 rounded-sm h-2">
                             <motion.div
                               className="bg-gray-900 h-2 rounded-sm"
@@ -563,13 +563,13 @@ const ResultOcean = () => {
                         </div>
 
                         {/* Characteristics */}
-                        <div className="mb-6">
-                          <h4 className="font-semibold text-gray-900 mb-3">
+                        <div className="mb-4 sm:mb-6">
+                          <h4 className="font-semibold text-gray-900 mb-3 text-sm sm:text-base">
                             {isHigh ? 'Your High Score Indicates:' : 'Your Low Score Indicates:'}
                           </h4>
                           <div className="space-y-2">
                             {relevantTraits.slice(0, 4).map((characteristic, idx) => (
-                              <div key={idx} className="flex items-start text-sm text-gray-700">
+                              <div key={idx} className="flex items-start text-xs sm:text-sm text-gray-700">
                                 <span className="text-gray-400 mr-2 mt-0.5">•</span>
                                 {characteristic}
                               </div>
@@ -578,9 +578,9 @@ const ResultOcean = () => {
                         </div>
 
                         {/* Career Implications */}
-                        <div className="bg-gray-50 rounded p-4 border border-gray-100">
-                          <h4 className="font-semibold text-gray-900 mb-2">Career Implications</h4>
-                          <p className="text-sm text-gray-700">
+                        <div className="bg-gray-50 rounded p-3 sm:p-4 border border-gray-100">
+                          <h4 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Career Implications</h4>
+                          <p className="text-xs sm:text-sm text-gray-700">
                             {isHigh ? trait.careerImplications.high : trait.careerImplications.low}
                           </p>
                         </div>
@@ -591,7 +591,7 @@ const ResultOcean = () => {
                 </div>
 
                 {/* Last 2 cards taking full width */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                   {Object.entries(result.assessment_data.ocean).slice(3, 5).map(([traitKey, score], index) => {
                     const trait = oceanTraits[traitKey];
                     if (!trait) return null;
@@ -609,29 +609,29 @@ const ResultOcean = () => {
                         className="bg-white rounded border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                       >
                         {/* Header */}
-                        <div className="bg-gray-50 border-b border-gray-200 p-6">
+                        <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                              <span className="text-2xl mr-3">{trait.icon}</span>
+                              <span className="text-xl sm:text-2xl mr-3">{trait.icon}</span>
                               <div>
-                                <h3 className="text-xl font-bold text-gray-900">{trait.name}</h3>
-                                <p className="text-sm text-gray-600">{trait.subtitle}</p>
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900">{trait.name}</h3>
+                                <p className="text-xs sm:text-sm text-gray-600">{trait.subtitle}</p>
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="text-2xl font-bold text-gray-900">{score.toFixed(1)}</div>
-                              <div className={`text-sm ${scoreInfo.intensity}`}>{scoreInfo.level}</div>
+                              <div className="text-xl sm:text-2xl font-bold text-gray-900">{score.toFixed(1)}</div>
+                              <div className={`text-xs sm:text-sm ${scoreInfo.intensity}`}>{scoreInfo.level}</div>
                             </div>
                           </div>
                         </div>
 
                         {/* Content */}
-                        <div className="p-6">
+                        <div className="p-4 sm:p-6">
                           {/* Description */}
-                          <p className="text-gray-700 mb-4 leading-relaxed">{trait.description}</p>
+                          <p className="text-gray-700 mb-4 leading-relaxed text-sm sm:text-base">{trait.description}</p>
 
                           {/* Progress Bar */}
-                          <div className="mb-6">
+                          <div className="mb-4 sm:mb-6">
                             <div className="bg-gray-200 rounded-sm h-2">
                               <motion.div
                                 className="bg-gray-900 h-2 rounded-sm"
@@ -643,13 +643,13 @@ const ResultOcean = () => {
                           </div>
 
                           {/* Characteristics */}
-                          <div className="mb-6">
-                            <h4 className="font-semibold text-gray-900 mb-3">
+                          <div className="mb-4 sm:mb-6">
+                            <h4 className="font-semibold text-gray-900 mb-3 text-sm sm:text-base">
                               {isHigh ? 'Your High Score Indicates:' : 'Your Low Score Indicates:'}
                             </h4>
                             <div className="space-y-2">
                               {relevantTraits.slice(0, 4).map((characteristic, idx) => (
-                                <div key={idx} className="flex items-start text-sm text-gray-700">
+                                <div key={idx} className="flex items-start text-xs sm:text-sm text-gray-700">
                                   <span className="text-gray-400 mr-2 mt-0.5">•</span>
                                   {characteristic}
                                 </div>
@@ -658,9 +658,9 @@ const ResultOcean = () => {
                           </div>
 
                           {/* Career Implications */}
-                          <div className="bg-gray-50 rounded p-4 border border-gray-100">
-                            <h4 className="font-semibold text-gray-900 mb-2">Career Implications</h4>
-                            <p className="text-sm text-gray-700">
+                          <div className="bg-gray-50 rounded p-3 sm:p-4 border border-gray-100">
+                            <h4 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Career Implications</h4>
+                            <p className="text-xs sm:text-sm text-gray-700">
                               {isHigh ? trait.careerImplications.high : trait.careerImplications.low}
                             </p>
                           </div>
@@ -680,28 +680,28 @@ const ResultOcean = () => {
               className="mt-16 mb-12"
             >
               <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="bg-gray-50 border-b border-gray-100 px-8 py-6">
+                <div className="bg-gray-50 border-b border-gray-100 px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
                   <div className="flex items-center mb-3">
-                    <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-white text-xl font-semibold">✓</span>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-lg flex items-center justify-center mr-3 sm:mr-4">
+                      <span className="text-white text-lg sm:text-xl font-semibold">✓</span>
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900 mb-1">Akurasi dan Validitas Assessment</h2>
-                      <p className="text-gray-600 font-medium">Mengapa OCEAN Sangat Tepat untuk Assessment Kepribadian</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Akurasi dan Validitas Assessment</h2>
+                      <p className="text-gray-600 font-medium text-sm sm:text-base">Mengapa OCEAN Sangat Tepat untuk Assessment Kepribadian</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-8">
-                  <div className="grid md:grid-cols-2 gap-8 mb-8">
-                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
-                        <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
-                          <span className="text-white text-sm">1</span>
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
+                    <div className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-100">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center text-sm sm:text-base">
+                        <span className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white text-xs sm:text-sm">1</span>
                         </span>
                         Standar Emas Psikologi
                       </h4>
-                      <ul className="text-sm text-gray-700 space-y-3">
+                      <ul className="text-xs sm:text-sm text-gray-700 space-y-3">
                         <li className="flex items-start">
                           <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
                           <span>Model kepribadian paling diterima dalam psikologi modern</span>
@@ -775,21 +775,21 @@ const ResultOcean = () => {
               transition={{ duration: 0.5, delay: 1.2 }}
               className="mb-12"
             >
-              <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-md p-8 mb-8">
+              <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-md p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-md mb-4">
-                    <span className="text-2xl">🧭</span>
+                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-md mb-4">
+                    <span className="text-xl sm:text-2xl">🧭</span>
                   </div>
-                  <h2 className="text-3xl font-light text-slate-900 mb-3 tracking-tight">
+                  <h2 className="text-2xl sm:text-3xl font-light text-slate-900 mb-3 tracking-tight">
                     Jelajahi Profil Lengkap Anda
                   </h2>
-                  <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed font-normal">
+                  <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-normal">
                     Lanjutkan perjalanan Anda dengan mengeksplorasi aspek lain dari hasil assessment. Setiap assessment memberikan wawasan unik tentang berbagai sisi kepribadian dan potensi karier Anda.
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
                 {navigationCards.map((card, index) => (
                   <motion.div
                     key={card.title}
@@ -803,11 +803,11 @@ const ResultOcean = () => {
                     className="group cursor-pointer"
                     onClick={() => navigate(card.path)}
                   >
-                    <div className="bg-white rounded-md p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
+                    <div className="bg-white rounded-md p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
                       <div className="flex flex-col h-full">
                         <div className="flex items-start justify-end mb-4">
                           <motion.svg
-                            className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                            className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -819,22 +819,22 @@ const ResultOcean = () => {
                         </div>
 
                         <div className="flex-grow">
-                          <h3 className="text-xl font-light text-slate-900 mb-2 group-hover:text-slate-700 transition-colors tracking-tight">
+                          <h3 className="text-lg sm:text-xl font-light text-slate-900 mb-2 group-hover:text-slate-700 transition-colors tracking-tight">
                             {card.title}
                           </h3>
-                          <p className="text-sm text-slate-500 mb-3 font-medium uppercase tracking-wide">
+                          <p className="text-xs sm:text-sm text-slate-500 mb-3 font-medium uppercase tracking-wide">
                             {card.subtitle}
                           </p>
-                          <p className="text-slate-600 leading-relaxed font-normal">
+                          <p className="text-slate-600 leading-relaxed font-normal text-sm sm:text-base">
                             {card.description}
                           </p>
                         </div>
 
                         <div className="mt-4 pt-4 border-t border-gray-100">
-                          <div className="flex items-center text-sm font-medium text-slate-500 group-hover:text-slate-800 transition-colors">
+                          <div className="flex items-center text-xs sm:text-sm font-medium text-slate-500 group-hover:text-slate-800 transition-colors">
                             <span>Lihat Assessment</span>
                             <motion.svg
-                              className="w-4 h-4 ml-1"
+                              className="w-3 h-3 sm:w-4 sm:h-4 ml-1"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"

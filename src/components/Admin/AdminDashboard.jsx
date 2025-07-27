@@ -26,8 +26,6 @@ const AdminDashboard = () => {
       // Only get recent users data - admin profile is already available from context
       const usersResponse = await adminService.getUsers(1, 5, '', 'created_at', 'DESC');
 
-      console.log('Users Response:', usersResponse); // Debug log
-
       setStats({
         totalUsers: usersResponse.data.pagination?.total || 0,
         recentUsers: Array.isArray(usersResponse.data.users) ? usersResponse.data.users : [],

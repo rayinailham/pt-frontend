@@ -123,9 +123,8 @@ const AuthPage = () => {
               Platform Pemetaan Talenta Berbasis AI
             </p>
 
-            {/* Enhanced Features List */}
-            {/* Enhanced Features List */}
-            <div className="flex flex-row justify-center space-x-8 mb-16">
+            {/* Enhanced Features List - Responsive */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-16 max-w-2xl mx-auto">
               <div className="flex flex-col items-center space-y-3 group">
                 <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-xl backdrop-blur-sm border border-white/20 group-hover:scale-110 transition-all duration-300">
                   <svg
@@ -142,7 +141,7 @@ const AuthPage = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-blue-100/90 text-lg font-medium group-hover:text-white transition-colors duration-300">
+                <span className="text-blue-100/90 text-base sm:text-lg font-medium group-hover:text-white transition-colors duration-300 text-center">
                   Smart Assessment
                 </span>
               </div>
@@ -163,7 +162,7 @@ const AuthPage = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-blue-100/90 text-lg font-medium group-hover:text-white transition-colors duration-300">
+                <span className="text-blue-100/90 text-base sm:text-lg font-medium group-hover:text-white transition-colors duration-300 text-center">
                   AI-Powered Insights
                 </span>
               </div>
@@ -184,7 +183,7 @@ const AuthPage = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-blue-100/90 text-lg font-medium group-hover:text-white transition-colors duration-300">
+                <span className="text-blue-100/90 text-base sm:text-lg font-medium group-hover:text-white transition-colors duration-300 text-center">
                   Real-time Analytics
                 </span>
               </div>
@@ -216,21 +215,21 @@ const AuthPage = () => {
       </div>
 
       {/* Right Side - Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-12">
         <div className="w-full max-w-md">
           {/* Mobile Header (visible only on small screens) */}
-          <div className="lg:hidden text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <div className="lg:hidden text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
               Peta Talenta Platform
             </h1>
-            <p className="text-gray-500">Platform Pemetaan Talenta Berbasis AI</p>
+            <p className="text-sm sm:text-base text-gray-500">Platform Pemetaan Talenta Berbasis AI</p>
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
+          <div className="flex mb-6 sm:mb-8 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setIsLogin(true)}
-              className={`flex-1 py-3 px-4 text-sm font-medium rounded-md transition-all duration-300 ${
+              className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 text-sm font-medium rounded-md transition-all duration-300 ${
                 isLogin
                   ? "bg-white text-blue-600 shadow-sm"
                   : "text-gray-600 hover:text-gray-800"
@@ -240,7 +239,7 @@ const AuthPage = () => {
             </button>
             <button
               onClick={() => setIsLogin(false)}
-              className={`flex-1 py-3 px-4 text-sm font-medium rounded-md transition-all duration-300 ${
+              className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 text-sm font-medium rounded-md transition-all duration-300 ${
                 !isLogin
                   ? "bg-white text-blue-600 shadow-sm"
                   : "text-gray-600 hover:text-gray-800"
@@ -260,8 +259,8 @@ const AuthPage = () => {
           </div>
 
           {/* Footer */}
-          <div className="text-center mt-8">
-            <p className="text-sm text-gray-400">
+          <div className="text-center mt-6 sm:mt-8">
+            <p className="text-xs sm:text-sm text-gray-400">
               © 2025 Peta Talenta Platform. All rights reserved.
             </p>
           </div>

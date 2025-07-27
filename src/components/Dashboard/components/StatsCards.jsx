@@ -33,7 +33,7 @@ const StatsCards = ({ data, loading, statusCounts }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {cards.map((card, index) => (
         <motion.div
           key={card.title}
@@ -43,10 +43,10 @@ const StatsCards = ({ data, loading, statusCounts }) => {
           whileHover={{ y: -2, transition: { duration: 0.2 } }}
           className="relative overflow-hidden"
         >
-          <div className="bg-white rounded-md p-6 border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300">
+          <div className="bg-white rounded-md p-4 md:p-6 border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-600 mb-3">
+                <p className="text-xs md:text-sm font-medium text-slate-600 mb-2 md:mb-3">
                   {card.title}
                 </p>
                 {card.loading ? (
@@ -58,15 +58,15 @@ const StatsCards = ({ data, loading, statusCounts }) => {
                   <motion.p
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
-                    className={`text-3xl font-bold ${card.textColor}`}
+                    className={`text-2xl md:text-3xl font-bold ${card.textColor}`}
                   >
                     {card.value?.toLocaleString() || '0'}
                   </motion.p>
                 )}
               </div>
 
-              <div className={`p-3 ${card.iconBg} rounded-md`}>
-                <card.icon className={`h-6 w-6 ${card.iconColor}`} />
+              <div className={`p-2 md:p-3 ${card.iconBg} rounded-md`}>
+                <card.icon className={`h-5 w-5 md:h-6 md:w-6 ${card.iconColor}`} />
               </div>
             </div>
           </div>

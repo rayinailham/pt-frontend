@@ -134,8 +134,8 @@ const Register = ({ onRegister }) => {
         </div>
 
         {/* Terms and Conditions */}
-        <div className="flex items-start">
-          <div className="flex items-center h-5">
+        <div className="flex items-start space-x-3">
+          <div className="flex items-center h-5 mt-0.5">
             <input
               id="terms"
               name="terms"
@@ -144,14 +144,14 @@ const Register = ({ onRegister }) => {
               required
             />
           </div>
-          <div className="ml-3 text-sm">
-            <label htmlFor="terms" className="text-gray-700">
+          <div className="text-sm">
+            <label htmlFor="terms" className="text-gray-700 leading-relaxed">
               I agree to the{' '}
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 underline">
                 Terms and Conditions
               </a>{' '}
               and{' '}
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 underline">
                 Privacy Policy
               </a>
             </label>
@@ -172,7 +172,7 @@ const Register = ({ onRegister }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 px-4 bg-gradient-to-r from-slate-600 to-blue-600 text-white font-medium rounded-lg hover:from-slate-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-md"
+          className="w-full py-3 sm:py-3.5 px-4 bg-gradient-to-r from-slate-600 to-blue-600 text-white font-medium rounded-lg hover:from-slate-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-md touch-manipulation"
         >
           {isLoading ? (
             <div className="flex items-center justify-center">

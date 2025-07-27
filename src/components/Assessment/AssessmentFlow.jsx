@@ -73,7 +73,6 @@ const AssessmentFlow = () => {
 
       return apiData;
     } catch (error) {
-      console.error('🔍 DEBUG - Score transformation error:', error);
       throw error;
     }
   };
@@ -231,7 +230,6 @@ const AssessmentFlow = () => {
 
     // Stay on current step to allow manual editing
     // User can navigate between assessments to review and edit answers
-    console.log('✅ Auto-filled all 200 assessment questions. You can now review and edit answers manually.');
   };
 
   /**
@@ -251,7 +249,6 @@ const AssessmentFlow = () => {
         throw new Error(response.message || 'Failed to submit assessment');
       }
     } catch (err) {
-      console.error('🔍 DEBUG - API submission error:', err);
       setError(err.response?.data?.message || err.message || 'Failed to submit assessment');
       setHasSubmitted(false); // Reset flag on error to allow retry
       setIsProcessingSubmit(false); // Reset processing flag on error

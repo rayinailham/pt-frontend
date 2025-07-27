@@ -119,39 +119,39 @@ const ResultOverview = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="mb-16"
       >
-        <div className="bg-white rounded-xl border border-gray-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">
-          <div className="bg-gradient-to-b from-gray-50/30 to-white p-10 border-b border-gray-100/60">
+        <div className="bg-white rounded-xl border border-gray-200/60 shadow-xs overflow-hidden">
+          <div className="bg-gradient-to-b from-gray-50/30 to-white p-4 sm:p-6 lg:p-10 border-b border-gray-100/60">
             <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-2xl font-medium text-gray-900 mb-3 tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-medium text-gray-900 mb-3 tracking-tight">
                 Visualisasi Hasil Assessment
               </h2>
-              <p className="text-gray-600 text-base font-normal leading-relaxed">
+              <p className="text-gray-600 text-sm sm:text-base font-normal leading-relaxed">
                 Gambaran visual dari kekuatan utama Anda di setiap dimensi assessment
               </p>
             </div>
           </div>
 
-          <div className="p-10">
-            <div className="grid lg:grid-cols-3 gap-8">
+          <div className="p-4 sm:p-6 lg:p-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {/* VIA Character Strengths */}
-              <div className="bg-white rounded-xl p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
-                <div className="flex items-start mb-6">
-                  <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
-                    <span className="text-gray-700 text-xl">⭐</span>
+              <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="flex items-start mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
+                    <span className="text-gray-700 text-lg sm:text-xl">⭐</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900 text-lg mb-1">Character Strengths</h3>
+                    <h3 className="font-medium text-gray-900 text-base sm:text-lg mb-1">Character Strengths</h3>
                     <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">VIA-IS Assessment</p>
                   </div>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {viaTopScores.map((item, index) => (
                     <div key={index} className="flex items-center justify-between group">
-                      <span className="text-sm text-gray-700 capitalize font-medium">
+                      <span className="text-xs sm:text-sm text-gray-700 capitalize font-medium flex-1 pr-2">
                         {item.name}
                       </span>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="w-16 sm:w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                           <motion.div
                             className={`h-full ${getScoreColor(item.score)} rounded-full`}
                             initial={{ width: 0 }}
@@ -159,7 +159,7 @@ const ResultOverview = () => {
                             transition={{ duration: 1.2, delay: 0.5 + index * 0.15, ease: "easeOut" }}
                           />
                         </div>
-                        <span className="text-xs font-medium text-gray-600 w-8 text-right tabular-nums">
+                        <span className="text-xs font-medium text-gray-600 w-6 sm:w-8 text-right tabular-nums">
                           {item.score.toFixed(0)}
                         </span>
                       </div>
@@ -169,24 +169,24 @@ const ResultOverview = () => {
               </div>
 
               {/* RIASEC Interests */}
-              <div className="bg-white rounded-xl p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
-                <div className="flex items-start mb-6">
-                  <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
-                    <span className="text-gray-700 text-xl">🎯</span>
+              <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="flex items-start mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
+                    <span className="text-gray-700 text-lg sm:text-xl">🎯</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900 text-lg mb-1">Career Interests</h3>
+                    <h3 className="font-medium text-gray-900 text-base sm:text-lg mb-1">Career Interests</h3>
                     <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">RIASEC Assessment</p>
                   </div>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {riasecTopScores.map((item, index) => (
                     <div key={index} className="flex items-center justify-between group">
-                      <span className="text-sm text-gray-700 capitalize font-medium">
+                      <span className="text-xs sm:text-sm text-gray-700 capitalize font-medium flex-1 pr-2">
                         {item.name}
                       </span>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="w-16 sm:w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                           <motion.div
                             className={`h-full ${getScoreColor(item.score)} rounded-full`}
                             initial={{ width: 0 }}
@@ -194,7 +194,7 @@ const ResultOverview = () => {
                             transition={{ duration: 1.2, delay: 0.7 + index * 0.15, ease: "easeOut" }}
                           />
                         </div>
-                        <span className="text-xs font-medium text-gray-600 w-8 text-right tabular-nums">
+                        <span className="text-xs font-medium text-gray-600 w-6 sm:w-8 text-right tabular-nums">
                           {item.score.toFixed(0)}
                         </span>
                       </div>
@@ -204,24 +204,24 @@ const ResultOverview = () => {
               </div>
 
               {/* OCEAN Personality */}
-              <div className="bg-white rounded-xl p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
-                <div className="flex items-start mb-6">
-                  <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
-                    <span className="text-gray-700 text-xl">🧭</span>
+              <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="flex items-start mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
+                    <span className="text-gray-700 text-lg sm:text-xl">🧭</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900 text-lg mb-1">Personality Traits</h3>
+                    <h3 className="font-medium text-gray-900 text-base sm:text-lg mb-1">Personality Traits</h3>
                     <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">OCEAN Assessment</p>
                   </div>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {oceanTopScores.map((item, index) => (
                     <div key={index} className="flex items-center justify-between group">
-                      <span className="text-sm text-gray-700 capitalize font-medium">
+                      <span className="text-xs sm:text-sm text-gray-700 capitalize font-medium flex-1 pr-2">
                         {item.name}
                       </span>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="w-16 sm:w-20 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                           <motion.div
                             className={`h-full ${getScoreColor(item.score)} rounded-full`}
                             initial={{ width: 0 }}
@@ -229,7 +229,7 @@ const ResultOverview = () => {
                             transition={{ duration: 1.2, delay: 0.9 + index * 0.15, ease: "easeOut" }}
                           />
                         </div>
-                        <span className="text-xs font-medium text-gray-600 w-8 text-right tabular-nums">
+                        <span className="text-xs font-medium text-gray-600 w-6 sm:w-8 text-right tabular-nums">
                           {item.score.toFixed(0)}
                         </span>
                       </div>
@@ -240,44 +240,44 @@ const ResultOverview = () => {
             </div>
 
             {/* Overall Score Summary */}
-            <div className="mt-10 pt-8 border-t border-gray-200/60">
-              <h4 className="text-lg font-medium text-gray-900 text-center mb-8">Skor Tertinggi Anda</h4>
-              <div className="grid grid-cols-3 gap-6 text-center">
+            <div className="mt-6 sm:mt-8 lg:mt-10 pt-6 sm:pt-8 border-t border-gray-200/60">
+              <h4 className="text-base sm:text-lg font-medium text-gray-900 text-center mb-6 sm:mb-8">Skor Tertinggi Anda</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
                 <motion.div
-                  className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
+                  className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
                   whileHover={{ scale: 1.01, y: -1 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  <div className="text-3xl font-medium text-gray-900 mb-3 tabular-nums">
+                  <div className="text-2xl sm:text-3xl font-medium text-gray-900 mb-2 sm:mb-3 tabular-nums">
                     {viaTopScores.length > 0 ? viaTopScores[0].score.toFixed(0) : 'N/A'}
                   </div>
-                  <div className="text-sm text-gray-600 font-medium mb-2">Top Character Strength</div>
+                  <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1 sm:mb-2">Top Character Strength</div>
                   <div className="text-xs text-gray-500 font-medium capitalize">
                     {viaTopScores.length > 0 ? viaTopScores[0].name : 'No data'}
                   </div>
                 </motion.div>
                 <motion.div
-                  className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
+                  className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
                   whileHover={{ scale: 1.01, y: -1 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  <div className="text-3xl font-medium text-gray-900 mb-3 tabular-nums">
+                  <div className="text-2xl sm:text-3xl font-medium text-gray-900 mb-2 sm:mb-3 tabular-nums">
                     {riasecTopScores.length > 0 ? riasecTopScores[0].score.toFixed(0) : 'N/A'}
                   </div>
-                  <div className="text-sm text-gray-600 font-medium mb-2">Top Career Interest</div>
+                  <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1 sm:mb-2">Top Career Interest</div>
                   <div className="text-xs text-gray-500 font-medium capitalize">
                     {riasecTopScores.length > 0 ? riasecTopScores[0].name : 'No data'}
                   </div>
                 </motion.div>
                 <motion.div
-                  className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
+                  className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
                   whileHover={{ scale: 1.01, y: -1 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  <div className="text-3xl font-medium text-gray-900 mb-3 tabular-nums">
+                  <div className="text-2xl sm:text-3xl font-medium text-gray-900 mb-2 sm:mb-3 tabular-nums">
                     {oceanTopScores.length > 0 ? oceanTopScores[0].score.toFixed(0) : 'N/A'}
                   </div>
-                  <div className="text-sm text-gray-600 font-medium mb-2">Top Personality Trait</div>
+                  <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1 sm:mb-2">Top Personality Trait</div>
                   <div className="text-xs text-gray-500 font-medium capitalize">
                     {oceanTopScores.length > 0 ? oceanTopScores[0].name : 'No data'}
                   </div>
@@ -300,10 +300,8 @@ const ResultOverview = () => {
 
   const getTopRiasecInterests = (riasecData) => {
     if (!riasecData) {
-      console.log('RIASEC data is null/undefined:', riasecData);
       return [];
     }
-    console.log('RIASEC data:', riasecData);
     return Object.entries(riasecData)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 3)
@@ -312,21 +310,13 @@ const ResultOverview = () => {
 
   const getTopOceanTraits = (oceanData) => {
     if (!oceanData) {
-      console.log('OCEAN data is null/undefined:', oceanData);
       return [];
     }
-    console.log('OCEAN data:', oceanData);
     return Object.entries(oceanData)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 3)
       .map(([trait, score]) => ({ strength: trait, score }));
   };
-
-  // Debug logging
-  console.log('Result data:', result);
-  console.log('Assessment data:', result?.assessment_data);
-  console.log('RIASEC data:', result?.assessment_data?.riasec);
-  console.log('OCEAN data:', result?.assessment_data?.ocean);
 
   const navigationCards = [
     {
@@ -366,7 +356,7 @@ const ResultOverview = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content Area */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* Loading State */}
         {!result && !error && (
           <motion.div
@@ -439,14 +429,14 @@ const ResultOverview = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-12"
+              className="mb-8 sm:mb-10 lg:mb-12"
             >
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6 space-y-4 sm:space-y-0">
+                <div className="flex-1">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                     Hasil Assessment
                   </h1>
-                  <p className="text-lg text-gray-600 max-w-2xl">
+                  <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl leading-relaxed">
                     Analisis assessment kepribadian dan karir komprehensif Anda telah selesai.
                     Jelajahi setiap bagian di bawah ini untuk memahami profil unik Anda dan menemukan
                     peluang karir yang selaras dengan kekuatan Anda.
@@ -454,15 +444,15 @@ const ResultOverview = () => {
                 </div>
                 <button
                   onClick={() => navigate('/dashboard')}
-                  className="bg-gray-900 text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-medium"
+                  className="bg-gray-900 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-medium text-sm sm:text-base w-full sm:w-auto"
                 >
                   Dashboard
                 </button>
               </div>
 
-              <div className="bg-white rounded-xl border border-gray-200/40 p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-6 text-sm text-gray-600">
+              <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-6 text-xs sm:text-sm text-gray-600 space-y-2 sm:space-y-0">
                     <div className="flex items-center">
                       <svg className="w-4 h-4 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
@@ -485,40 +475,40 @@ const ResultOverview = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-12"
+              className="mb-8 sm:mb-10 lg:mb-12"
             >
-              <div className="grid lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Career Persona Summary */}
                 {result.persona_profile?.archetype && (
-                  <div className="bg-white rounded-xl border border-gray-200/40 p-6">
-                    <h2 className="text-lg font-medium text-gray-900 mb-4">
+                  <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
+                    <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
                       Career Persona Anda
                     </h2>
                     <motion.div
-                      className="inline-block bg-gray-50 px-4 py-2 rounded-lg border border-gray-200/40 shadow-sm mb-4"
+                      className="inline-block bg-gray-50 px-3 sm:px-4 py-2 rounded-lg border border-gray-200/40 shadow-xs mb-3 sm:mb-4"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <span className="text-base font-medium text-gray-900">
+                      <span className="text-sm sm:text-base font-medium text-gray-900">
                         {result.persona_profile.archetype}
                       </span>
                     </motion.div>
-                    <p className="text-gray-600 leading-relaxed text-sm">
+                    <p className="text-gray-600 leading-relaxed text-xs sm:text-sm">
                       {result.persona_profile.shortSummary}
                     </p>
                   </div>
                 )}
 
                 {/* Introduction Section */}
-                <div className="bg-white rounded-xl border border-gray-200/40 p-6">
-                  <h2 className="text-lg font-medium text-gray-900 mb-4">
+                <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
+                  <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
                     Memahami Hasil Assessment Anda
                   </h2>
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                  <p className="text-gray-600 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed">
                     Hasil assessment Anda diorganisir dalam empat bagian komprehensif yang saling terintegrasi.
                     Visualisasi di bawah menunjukkan kekuatan utama Anda di setiap dimensi.
                   </p>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-600">
                     <div><strong className="text-gray-900">Character Strengths:</strong> Nilai-nilai inti dan kekuatan karakter Anda.</div>
                     <div><strong className="text-gray-900">Career Interests:</strong> Minat terhadap lingkungan karir dan aktivitas.</div>
                     <div><strong className="text-gray-900">Personality Traits:</strong> Dimensi kepribadian dan gaya kerja Anda.</div>
@@ -531,18 +521,23 @@ const ResultOverview = () => {
             {/* Assessment Results Graphic */}
             <AssessmentResultsGraphic assessmentData={result.assessment_data} />
 
+            {/* Assessment Explanations */}
+            <div className="mt-12 sm:mt-14 lg:mt-16">
+              <AssessmentExplanations delay={0.3}/>
+            </div>
+
             {/* Assessment Sections */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="space-y-6"
+              className="space-y-4 sm:space-y-6"
             >
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                 Jelajahi Hasil Assessment Anda
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {navigationCards.map((card, index) => (
                   <motion.div
                     key={card.title}
@@ -556,25 +551,25 @@ const ResultOverview = () => {
                     className="bg-white rounded-xl border border-gray-200/60 hover:border-gray-300/80 hover:shadow-lg transition-all duration-300 cursor-pointer group"
                     onClick={() => navigate(card.path)}
                   >
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center">
+                    <div className="p-4 sm:p-6">
+                      <div className="flex items-start justify-between mb-3 sm:mb-4">
+                        <div className="flex items-start flex-1">
                           <motion.div
-                            className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gray-200 transition-colors"
+                            className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4 group-hover:bg-gray-200 transition-colors flex-shrink-0"
                             whileHover={{ rotate: 3 }}
                             transition={{ duration: 0.2 }}
                           >
-                            <span className="text-lg">{card.icon}</span>
+                            <span className="text-base sm:text-lg">{card.icon}</span>
                           </motion.div>
-                          <div>
-                            <h3 className="text-lg font-medium text-gray-900 group-hover:text-gray-700 transition-colors">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 group-hover:text-gray-700 transition-colors leading-tight">
                               {card.title}
                             </h3>
-                            <p className="text-gray-600 text-sm mt-1">{card.description}</p>
+                            <p className="text-gray-600 text-xs sm:text-sm mt-1 leading-relaxed">{card.description}</p>
                           </div>
                         </div>
                         <motion.svg
-                          className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors"
+                          className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0 ml-2"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -586,25 +581,25 @@ const ResultOverview = () => {
                       </div>
 
                       {/* Preview Data */}
-                      <div className="mt-4 pt-4 border-t border-gray-100">
+                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
                         {card.preview && card.preview.length > 0 ? (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             transition={{ duration: 0.3, delay: 0.1 }}
                           >
-                            <h4 className="text-sm font-medium text-gray-700 mb-3">Highlights Utama:</h4>
-                            <div className="space-y-2">
+                            <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">Highlights Utama:</h4>
+                            <div className="space-y-1.5 sm:space-y-2">
                               {card.preview.slice(0, 3).map((item, idx) => (
                                 <motion.div
                                   key={idx}
-                                  className="flex justify-between items-center text-sm"
+                                  className="flex justify-between items-center text-xs sm:text-sm"
                                   initial={{ opacity: 0, x: -10 }}
                                   animate={{ opacity: 1, x: 0 }}
                                   transition={{ duration: 0.2, delay: idx * 0.1 }}
                                 >
-                                  <span className="text-gray-600 capitalize">{item.strength}</span>
-                                  <span className="font-medium text-gray-900 bg-gray-50 px-2 py-1 rounded text-xs">
+                                  <span className="text-gray-600 capitalize flex-1 pr-2 truncate">{item.strength}</span>
+                                  <span className="font-medium text-gray-900 bg-gray-50 px-2 py-1 rounded text-xs flex-shrink-0">
                                     {typeof item.score === 'number' ? item.score.toFixed(1) : item.score}
                                   </span>
                                 </motion.div>
@@ -612,8 +607,8 @@ const ResultOverview = () => {
                             </div>
                           </motion.div>
                         ) : (
-                          <div className="text-center py-4">
-                            <p className="text-sm text-gray-500">
+                          <div className="text-center py-3 sm:py-4">
+                            <p className="text-xs sm:text-sm text-gray-500">
                               {card.title.includes('VIA-IS') ? 'Data kekuatan karakter tidak tersedia' :
                                card.title.includes('RIASEC') ? 'Data minat karir tidak tersedia' :
                                card.title.includes('OCEAN') ? 'Data kepribadian tidak tersedia' :
@@ -627,11 +622,6 @@ const ResultOverview = () => {
                 ))}
               </div>
             </motion.div>
-
-            {/* Assessment Explanations */}
-            <div className="mt-16">
-              <AssessmentExplanations delay={0.3}/>
-            </div>
           </>
         )}
       </main>

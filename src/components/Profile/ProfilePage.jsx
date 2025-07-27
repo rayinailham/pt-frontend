@@ -83,7 +83,6 @@ const ProfilePage = () => {
         resetProfile(formValues);
       }
     } catch (err) {
-      console.error('Profile fetch error:', err);
       setError(err.response?.data?.message || 'Failed to fetch profile');
     } finally {
       setProfileLoading(false);
@@ -126,7 +125,6 @@ const ProfilePage = () => {
         resetProfile(formValues);
       }
     } catch (err) {
-      console.error('Profile update error:', err); // Debug log
       setError(err.response?.data?.message || 'Failed to update profile');
     } finally {
       setIsLoading(false);
@@ -180,7 +178,7 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50">
         {/* Main Content Area */}
-        <main className="flex-1 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+        <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-12">
           {/* Loading State */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -202,25 +200,25 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50">
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-12">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
-          <div className="flex justify-between items-center border-b border-slate-200/60 pb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-slate-200/60 pb-6 sm:pb-8 space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-4xl font-light tracking-tight text-slate-900 mb-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-slate-900 mb-2 sm:mb-3">
                 Account Settings
               </h1>
-              <p className="text-slate-600 font-light text-lg">Manage your profile and security preferences</p>
+              <p className="text-slate-600 font-light text-base sm:text-lg">Manage your profile and security preferences</p>
             </div>
             <div className="flex space-x-4">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-colors duration-200 font-light shadow-sm"
+                className="bg-slate-900 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-md hover:bg-slate-800 transition-colors duration-200 font-light shadow-sm text-sm sm:text-base touch-manipulation"
               >
                 Back to Dashboard
               </button>
@@ -233,18 +231,18 @@ const ProfilePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-white border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-md p-8 mb-8"
+          className="bg-white border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-md p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
             <div>
-              <h3 className="text-xl font-medium text-slate-900 mb-1">Available Credits</h3>
-              <p className="text-slate-500 font-light">Assessment tokens remaining</p>
+              <h3 className="text-lg sm:text-xl font-medium text-slate-900 mb-1">Available Credits</h3>
+              <p className="text-slate-500 font-light text-sm sm:text-base">Assessment tokens remaining</p>
             </div>
-            <div className="text-right">
-              <div className="text-4xl font-light text-slate-900 tracking-tight">
+            <div className="text-left sm:text-right">
+              <div className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight">
                 {profileData?.user?.token_balance ?? '...'}
               </div>
-              <div className="text-sm text-slate-400 uppercase tracking-wider font-medium">Credits</div>
+              <div className="text-xs sm:text-sm text-slate-400 uppercase tracking-wider font-medium">Credits</div>
             </div>
           </div>
         </motion.div>
@@ -257,23 +255,24 @@ const ProfilePage = () => {
           className="bg-white border border-slate-200/60 shadow-sm rounded-md overflow-hidden"
         >
           <div className="border-b border-slate-200/60">
-            <nav className="flex">
+            <nav className="flex flex-col sm:flex-row overflow-x-auto">
               <button
                 onClick={() => setActiveTab('profile')}
-                className={`py-5 px-8 text-sm font-medium transition-all duration-300 relative ${
+                className={`py-3 sm:py-5 px-4 sm:px-8 text-xs sm:text-sm font-medium transition-all duration-300 relative whitespace-nowrap ${
                   activeTab === 'profile'
                     ? 'text-slate-900 bg-slate-50/50'
                     : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/30'
                 }`}
               >
-                Profile Information
+                <span className="hidden sm:inline">Profile Information</span>
+                <span className="sm:hidden">Profile</span>
                 {activeTab === 'profile' && (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900"></div>
                 )}
               </button>
               <button
                 onClick={() => setActiveTab('password')}
-                className={`py-5 px-8 text-sm font-medium transition-all duration-300 relative ${
+                className={`py-3 sm:py-5 px-4 sm:px-8 text-xs sm:text-sm font-medium transition-all duration-300 relative whitespace-nowrap ${
                   activeTab === 'password'
                     ? 'text-slate-900 bg-slate-50/50'
                     : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/30'
@@ -286,13 +285,14 @@ const ProfilePage = () => {
               </button>
               <button
                 onClick={() => setActiveTab('account')}
-                className={`py-5 px-8 text-sm font-medium transition-all duration-300 relative ${
+                className={`py-3 sm:py-5 px-4 sm:px-8 text-xs sm:text-sm font-medium transition-all duration-300 relative whitespace-nowrap ${
                   activeTab === 'account'
                     ? 'text-slate-900 bg-slate-50/50'
                     : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/30'
                 }`}
               >
-                Account Management
+                <span className="hidden sm:inline">Account Management</span>
+                <span className="sm:hidden">Account</span>
                 {activeTab === 'account' && (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900"></div>
                 )}
@@ -300,7 +300,7 @@ const ProfilePage = () => {
             </nav>
           </div>
 
-          <div className="p-10">
+          <div className="p-4 sm:p-6 lg:p-10">
             {/* Success/Error Messages */}
             {error && (
               <ErrorMessage
@@ -327,8 +327,8 @@ const ProfilePage = () => {
 
             {/* Profile Tab */}
             {activeTab === 'profile' && (
-              <div className="bg-slate-50/30 rounded-md p-8">
-                <form onSubmit={handleSubmitProfile(onUpdateProfile)} className="space-y-8">
+              <div className="bg-slate-50/30 rounded-md p-4 sm:p-6 lg:p-8">
+                <form onSubmit={handleSubmitProfile(onUpdateProfile)} className="space-y-6 sm:space-y-8">
                   {/* Read-only Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-3">
@@ -440,11 +440,11 @@ const ProfilePage = () => {
 
 
 
-                  <div className="flex justify-end pt-6 border-t border-slate-200/60">
+                  <div className="flex justify-end pt-4 sm:pt-6 border-t border-slate-200/60">
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-slate-900 text-white px-8 py-3.5 rounded-md font-medium hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm"
+                      className="w-full sm:w-auto bg-slate-900 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-md font-medium hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm touch-manipulation"
                     >
                       {isLoading ? 'Updating...' : 'Update Profile'}
                     </button>
@@ -455,8 +455,8 @@ const ProfilePage = () => {
 
             {/* Password Tab */}
             {activeTab === 'password' && (
-              <div className="bg-slate-50/30 rounded-md p-8">
-                <form onSubmit={handleSubmitPassword(onChangePassword)} className="space-y-8">
+              <div className="bg-slate-50/30 rounded-md p-4 sm:p-6 lg:p-8">
+                <form onSubmit={handleSubmitPassword(onChangePassword)} className="space-y-6 sm:space-y-8">
                   <div>
                     <label htmlFor="currentPassword" className="block text-sm font-medium text-slate-700 mb-3">
                       Current Password
@@ -521,11 +521,11 @@ const ProfilePage = () => {
                     )}
                   </div>
 
-                  <div className="flex justify-end pt-6 border-t border-slate-200/60">
+                  <div className="flex justify-end pt-4 sm:pt-6 border-t border-slate-200/60">
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-slate-900 text-white px-8 py-3.5 rounded-md font-medium hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm"
+                      className="w-full sm:w-auto bg-slate-900 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-md font-medium hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm touch-manipulation"
                     >
                       {isLoading ? 'Changing...' : 'Update Password'}
                     </button>
@@ -536,8 +536,8 @@ const ProfilePage = () => {
 
             {/* Account Settings Tab */}
             {activeTab === 'account' && (
-              <div className="bg-slate-50/30 rounded-md p-8">
-                <div className="space-y-8">
+              <div className="bg-slate-50/30 rounded-md p-4 sm:p-6 lg:p-8">
+                <div className="space-y-6 sm:space-y-8">
                   <div className="bg-red-50 border border-red-200/60 rounded-md p-6">
                     <div className="flex">
                       <div className="flex-shrink-0">
@@ -554,38 +554,38 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="bg-white border border-slate-200/60 rounded-md p-8">
-                    <h4 className="text-xl font-medium text-slate-900 mb-3">Account Deletion</h4>
-                    <p className="text-slate-600 font-light mb-8 leading-relaxed">
+                  <div className="bg-white border border-slate-200/60 rounded-md p-4 sm:p-6 lg:p-8">
+                    <h4 className="text-lg sm:text-xl font-medium text-slate-900 mb-3">Account Deletion</h4>
+                    <p className="text-slate-600 font-light mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                       Permanently remove your account and all associated data. This action is irreversible and cannot be undone.
                     </p>
 
                     {!showDeleteConfirm ? (
                       <button
                         onClick={() => setShowDeleteConfirm(true)}
-                        className="bg-red-600 text-white px-8 py-3.5 rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+                        className="w-full sm:w-auto bg-red-600 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 shadow-sm touch-manipulation"
                       >
                         Delete Account
                       </button>
                     ) : (
-                      <div className="space-y-6">
-                        <div className="bg-red-50 border border-red-200/60 rounded-md p-4">
-                          <p className="text-sm font-medium text-red-800">
+                      <div className="space-y-4 sm:space-y-6">
+                        <div className="bg-red-50 border border-red-200/60 rounded-md p-3 sm:p-4">
+                          <p className="text-xs sm:text-sm font-medium text-red-800">
                             Confirm account deletion. This action is permanent and irreversible.
                           </p>
                         </div>
-                        <div className="flex space-x-4">
+                        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                           <button
                             onClick={onDeleteAccount}
                             disabled={isLoading}
-                            className="bg-red-600 text-white px-8 py-3.5 rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm"
+                            className="w-full sm:w-auto bg-red-600 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow-sm touch-manipulation"
                           >
                             {isLoading ? 'Processing...' : 'Confirm Deletion'}
                           </button>
                           <button
                             onClick={() => setShowDeleteConfirm(false)}
                             disabled={isLoading}
-                            className="bg-slate-200 text-slate-700 px-8 py-3.5 rounded-md font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200"
+                            className="w-full sm:w-auto bg-slate-200 text-slate-700 px-6 sm:px-8 py-3 sm:py-3.5 rounded-md font-medium hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 touch-manipulation"
                           >
                             Cancel
                           </button>
