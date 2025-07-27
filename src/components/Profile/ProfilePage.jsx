@@ -5,7 +5,7 @@ import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import ErrorMessage from '../UI/ErrorMessage';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { debugProfile } from '../../utils/profileDebug';
+
 
 
 const ProfilePage = () => {
@@ -19,68 +19,69 @@ const ProfilePage = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Profile form
-  const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors }, setValue, reset: resetProfile, watch } = useForm({
+  const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors }, setValue, reset: resetProfile } = useForm({
+    mode: 'onChange',
     defaultValues: {
       username: '',
       full_name: '',
       date_of_birth: '',
-      gender: '',
-      school_id: ''
+      gender: ''
     }
   });
 
   // Password form
   const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors }, reset: resetPassword } = useForm();
 
-  // Watch form values for debugging
-  const watchedValues = watch();
+
 
   useEffect(() => {
     fetchProfile();
   }, []);
 
-  // Debug: Log form values when they change
+  // Update form values when profileData changes
   useEffect(() => {
-    console.log('Form values changed:', watchedValues);
-  }, [watchedValues]);
+    if (profileData) {
+      const userData = profileData.user || {};
+      const profile = userData.profile || profileData.profile || {};
 
-  // Debug function
-  const handleDebugProfile = async () => {
-    try {
-      await debugProfile();
-    } catch (error) {
-      console.error('Debug failed:', error);
+      const formValues = {
+        username: userData.username || '',
+        full_name: profile.full_name || '',
+        date_of_birth: profile.date_of_birth || '',
+        gender: profile.gender || ''
+      };
+
+      // Use setTimeout to ensure form is ready
+      setTimeout(() => {
+        resetProfile(formValues);
+      }, 100);
     }
-  };
+  }, [profileData, resetProfile]);
 
   const fetchProfile = async () => {
     setProfileLoading(true);
     try {
       const response = await apiService.getProfile();
-      console.log('Profile response:', response); // Debug log
+
       if (response.success) {
         setProfileData(response.data);
 
         // Set form values with proper handling
         const userData = response.data.user || {};
-        const profileData = response.data.profile || {};
+        const profileData = userData.profile || response.data.profile || {};
 
-        console.log('Setting form values:', { userData, profileData }); // Debug log
-
-        // Reset form with new data
-        const formData = {
+        const formValues = {
           username: userData.username || '',
           full_name: profileData.full_name || '',
           date_of_birth: profileData.date_of_birth || '',
-          gender: profileData.gender || '',
-          school_id: profileData.school_id ? String(profileData.school_id) : ''
+          gender: profileData.gender || ''
         };
 
-        console.log('Resetting form with data:', formData);
-        resetProfile(formData);
+        // Use reset to ensure form updates properly
+        resetProfile(formValues);
       }
     } catch (err) {
-      console.error('Profile fetch error:', err); // Debug log
+      console.error('Profile fetch error:', err);
       setError(err.response?.data?.message || 'Failed to fetch profile');
     } finally {
       setProfileLoading(false);
@@ -93,20 +94,14 @@ const ProfilePage = () => {
     setSuccess('');
 
     try {
-      // Clean up data - remove empty strings and convert school_id to number
+      // Clean up data - remove empty strings
       const cleanData = {};
       if (data.username && data.username.trim()) cleanData.username = data.username.trim();
       if (data.full_name && data.full_name.trim()) cleanData.full_name = data.full_name.trim();
       if (data.date_of_birth && data.date_of_birth.trim()) cleanData.date_of_birth = data.date_of_birth;
       if (data.gender && data.gender.trim()) cleanData.gender = data.gender;
-      if (data.school_id && data.school_id !== '' && !isNaN(data.school_id)) {
-        cleanData.school_id = parseInt(data.school_id);
-      }
-
-      console.log('Updating profile with data:', cleanData); // Debug log
 
       const response = await apiService.updateProfile(cleanData);
-      console.log('Update response:', response); // Debug log
 
       if (response.success) {
         // Update user context with new data
@@ -115,10 +110,18 @@ const ProfilePage = () => {
         setProfileData(response.data);
         setSuccess('Profile updated successfully');
 
-        // Refresh the form with updated data
-        setTimeout(() => {
-          fetchProfile();
-        }, 500);
+        // Update form values immediately with the response data
+        const userData = response.data.user || {};
+        const profileData = userData.profile || response.data.profile || {};
+
+        const formValues = {
+          username: userData.username || '',
+          full_name: profileData.full_name || '',
+          date_of_birth: profileData.date_of_birth || '',
+          gender: profileData.gender || ''
+        };
+
+        resetProfile(formValues);
       }
     } catch (err) {
       console.error('Profile update error:', err); // Debug log
@@ -210,15 +213,7 @@ const ProfilePage = () => {
           </h1>
           <p className="mt-2 text-gray-600">Manage your account settings and preferences</p>
 
-          {/* Debug button - remove in production */}
-          {process.env.NODE_ENV === 'development' && (
-            <button
-              onClick={handleDebugProfile}
-              className="mt-2 px-3 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600"
-            >
-              Debug Profile
-            </button>
-          )}
+
         </motion.div>
 
         {/* Token Balance Card */}
@@ -422,27 +417,7 @@ const ProfilePage = () => {
                     )}
                   </div>
 
-                  {/* School ID */}
-                  <div>
-                    <label htmlFor="school_id" className="block text-sm font-semibold text-gray-700 mb-2">
-                      School ID
-                    </label>
-                    <input
-                      type="number"
-                      id="school_id"
-                      {...registerProfile('school_id', {
-                        min: {
-                          value: 1,
-                          message: 'School ID must be a positive number'
-                        }
-                      })}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
-                      placeholder="Enter your school ID"
-                    />
-                    {profileErrors.school_id && (
-                      <p className="mt-2 text-sm text-red-600">{profileErrors.school_id.message}</p>
-                    )}
-                  </div>
+
 
                   <div className="flex justify-end pt-4">
                     <button

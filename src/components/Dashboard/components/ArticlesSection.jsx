@@ -10,9 +10,9 @@ const ArticlesSection = ({ loading }) => {
       description: 'Pelajari bagaimana memahami tipe kepribadian Anda melalui assessment Big Five dan RIASEC untuk pengembangan karir yang optimal.',
       readTime: '5 min read',
       icon: User,
-      gradient: 'from-blue-500 to-indigo-600',
-      bgGradient: 'from-blue-50 to-indigo-50',
-      hoverGradient: 'from-blue-100 to-indigo-100'
+      gradient: 'from-indigo-500 to-indigo-600',
+      bgGradient: 'from-white to-white',
+      hoverGradient: 'from-gray-50 to-gray-50'
     },
     {
       id: 2,
@@ -21,9 +21,9 @@ const ArticlesSection = ({ loading }) => {
       description: 'Temukan strategi efektif untuk mengembangkan karir berdasarkan hasil assessment talenta dan kekuatan karakter Anda.',
       readTime: '7 min read',
       icon: BarChart3,
-      gradient: 'from-emerald-500 to-green-600',
-      bgGradient: 'from-emerald-50 to-green-50',
-      hoverGradient: 'from-emerald-100 to-green-100'
+      gradient: 'from-emerald-500 to-emerald-600',
+      bgGradient: 'from-white to-white',
+      hoverGradient: 'from-gray-50 to-gray-50'
     },
     {
       id: 3,
@@ -32,9 +32,9 @@ const ArticlesSection = ({ loading }) => {
       description: 'Pelajari cara mengidentifikasi dan mengoptimalkan 24 kekuatan karakter VIA untuk meningkatkan performa dan kepuasan hidup.',
       readTime: '6 min read',
       icon: Activity,
-      gradient: 'from-purple-500 to-violet-600',
-      bgGradient: 'from-purple-50 to-violet-50',
-      hoverGradient: 'from-purple-100 to-violet-100'
+      gradient: 'from-slate-500 to-slate-600',
+      bgGradient: 'from-white to-white',
+      hoverGradient: 'from-gray-50 to-gray-50'
     },
     {
       id: 4,
@@ -43,9 +43,9 @@ const ArticlesSection = ({ loading }) => {
       description: 'Panduan lengkap untuk mendapatkan hasil assessment yang akurat dan bermakna untuk pengembangan diri Anda.',
       readTime: '4 min read',
       icon: CheckCircle,
-      gradient: 'from-orange-500 to-amber-600',
-      bgGradient: 'from-orange-50 to-amber-50',
-      hoverGradient: 'from-orange-100 to-amber-100'
+      gradient: 'from-purple-500 to-purple-600',
+      bgGradient: 'from-white to-white',
+      hoverGradient: 'from-gray-50 to-gray-50'
     },
     {
       id: 5,
@@ -54,9 +54,9 @@ const ArticlesSection = ({ loading }) => {
       description: 'Strategi mengelola keuangan dan investasi untuk mendukung perjalanan karir dan pengembangan talenta jangka panjang.',
       readTime: '8 min read',
       icon: Coins,
-      gradient: 'from-teal-500 to-cyan-600',
-      bgGradient: 'from-teal-50 to-cyan-50',
-      hoverGradient: 'from-teal-100 to-cyan-100'
+      gradient: 'from-amber-500 to-orange-500',
+      bgGradient: 'from-white to-white',
+      hoverGradient: 'from-gray-50 to-gray-50'
     },
     {
       id: 6,
@@ -65,9 +65,9 @@ const ArticlesSection = ({ loading }) => {
       description: 'Temukan keseimbangan ideal antara pengembangan karir dan kehidupan personal untuk mencapai kesuksesan holistik.',
       readTime: '6 min read',
       icon: Clock,
-      gradient: 'from-rose-500 to-pink-600',
-      bgGradient: 'from-rose-50 to-pink-50',
-      hoverGradient: 'from-rose-100 to-pink-100'
+      gradient: 'from-blue-500 to-blue-600',
+      bgGradient: 'from-white to-white',
+      hoverGradient: 'from-gray-50 to-gray-50'
     }
   ];
 
@@ -100,7 +100,7 @@ const ArticlesSection = ({ loading }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className={`bg-gradient-to-br ${article.bgGradient} hover:${article.hoverGradient} rounded-2xl p-6 cursor-pointer transition-all duration-200 border border-white/50 hover:border-white/80 hover:shadow-sm group`}
+                className={`bg-gradient-to-br ${article.bgGradient} hover:${article.hoverGradient} rounded-2xl p-6 cursor-pointer transition-all duration-200 border border-gray-200/60 hover:border-gray-300/80 hover:shadow-md shadow-sm group`}
               >
                 {/* Icon & Header */}
                 <div className="flex items-center mb-4">

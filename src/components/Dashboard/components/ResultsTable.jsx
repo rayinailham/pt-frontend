@@ -1,13 +1,14 @@
 import { Activity, Eye, Trash2, Plus, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const ResultsTable = ({ 
-  data, 
-  loading, 
-  onView, 
-  onDelete, 
+const ResultsTable = ({
+  data,
+  loading,
+  onView,
+  onDelete,
   onNewAssessment,
-  deleteLoading = {} 
+  onRefresh,
+  deleteLoading = {}
 }) => {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-GB', {
@@ -63,16 +64,32 @@ const ResultsTable = ({
             </div>
             Recent Results
           </h3>
-          
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onNewAssessment}
-            className="flex items-center space-x-2 px-4 py-2.5 text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-sm hover:shadow-md"
-          >
-            <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline font-medium">New Assessment</span>
-          </motion.button>
+
+          <div className="flex items-center space-x-3">
+            {onRefresh && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onRefresh}
+                disabled={loading.results}
+                className="flex items-center space-x-2 px-3 py-2.5 text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Refresh results table"
+              >
+                <RefreshCw className={`h-4 w-4 ${loading.results ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline font-medium">Refresh Results</span>
+              </motion.button>
+            )}
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={onNewAssessment}
+              className="flex items-center space-x-2 px-4 py-2.5 text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline font-medium">New Assessment</span>
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -115,13 +132,13 @@ const ResultsTable = ({
               </thead>
               <tbody className="bg-white/50 divide-y divide-gray-100">
                 {data.results.map((result, index) => (
-                  <motion.tr
-                    key={result.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="hover:bg-gray-50/50 transition-colors duration-200"
-                  >
+                    <motion.tr
+                      key={result.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className="hover:bg-gray-50/50 transition-colors duration-200"
+                    >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
                         {result.assessment_name || 'Peta Talenta Assessment'}
@@ -133,13 +150,27 @@ const ResultsTable = ({
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {result.status === 'completed' && result.persona_profile?.archetype ? (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
-                          {result.persona_profile.archetype}
+                      {result.status === 'completed' ? (
+                        result.persona_profile?.archetype ? (
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
+                            {result.persona_profile.archetype}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 text-xs">
+                            No archetype
+                          </span>
+                        )
+                      ) : result.status === 'processing' ? (
+                        <span className="text-blue-600 text-xs">
+                          Processing...
+                        </span>
+                      ) : result.status === 'failed' ? (
+                        <span className="text-red-600 text-xs">
+                          Failed
                         </span>
                       ) : (
                         <span className="text-gray-400 text-xs">
-                          {result.status === 'completed' ? 'No archetype' : 'Processing...'}
+                          Unknown
                         </span>
                       )}
                     </td>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import apiService from '../services/apiService';
 
 /**
@@ -64,6 +64,17 @@ export const useDashboard = () => {
         limit,
         sort: 'created_at',
         order: 'DESC'
+      });
+
+      // Debug logging untuk melihat struktur data yang dikembalikan
+      console.log('Dashboard Results:', {
+        total_results: response.data.results?.length || 0,
+        results_summary: response.data.results?.map(r => ({
+          id: r.id,
+          status: r.status,
+          has_persona_profile: !!r.persona_profile,
+          archetype: r.persona_profile?.archetype || 'none'
+        })) || []
       });
 
       setData(prev => ({

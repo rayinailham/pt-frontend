@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Check, Clock, BookOpen } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, BookOpen } from 'lucide-react';
 import AssessmentQuestion from './AssessmentQuestion';
+import AssessmentSidebar from './AssessmentSidebar';
 
 const AssessmentForm = ({
   assessmentData,
@@ -11,32 +12,64 @@ const AssessmentForm = ({
   currentStep = 1,
   totalSteps = 3,
   isDebugMode = false,
+  isProcessingSubmit = false,
+  onFillAllAssessments,
+  allAssessmentsFilled = false,
+  prefilledAnswers = null, // New prop for prefilled answers from auto fill
+  isAutoFillMode = false, // Flag indicating auto-fill mode
+  onManualSubmit, // Manual submit function for auto-fill mode
+  onNavigateToPhase, // New prop for phase navigation
 }) => {
   const [answers, setAnswers] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
-  const questionsPerPage = 5;
+  // Remove fixed questionsPerPage - we'll use category-based pagination
 
   // Scroll to top when page changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
 
-  // Auto-fill answers in debug mode
+  // Reset to first category when assessment step changes (for better UX)
   useEffect(() => {
-    if (isDebugMode && import.meta.env.DEV) {
-      const autoAnswers = {};
+    setCurrentPage(0);
+  }, [currentStep]);
 
-      // Generate random answers for all questions (5-7 range for good scores)
-      allQuestions.forEach((q) => {
-        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 5; // Random 5-7
+  // Get categories as an array for pagination
+  const categories = Object.entries(assessmentData.categories);
+  const totalPages = categories.length;
+
+  // Get current category and its questions
+  const currentCategory = categories[currentPage];
+  const currentCategoryKey = currentCategory ? currentCategory[0] : null;
+  const currentCategoryData = currentCategory ? currentCategory[1] : null;
+
+  // Get all questions for current category
+  const currentQuestions = [];
+  if (currentCategoryData) {
+    // Regular questions
+    currentCategoryData.questions.forEach((question, index) => {
+      currentQuestions.push({
+        question,
+        categoryKey: currentCategoryKey,
+        questionKey: `${currentCategoryKey}_${index}`,
+        isReverse: false
       });
+    });
 
-      setAnswers(autoAnswers);
-      setCurrentPage(Math.max(0, Math.ceil(allQuestions.length / questionsPerPage) - 1)); // Go to last page
+    // Reverse questions (for Big Five)
+    if (currentCategoryData.reverseQuestions) {
+      currentCategoryData.reverseQuestions.forEach((question, index) => {
+        currentQuestions.push({
+          question,
+          categoryKey: currentCategoryKey,
+          questionKey: `${currentCategoryKey}_reverse_${index}`,
+          isReverse: true
+        });
+      });
     }
-  }, [isDebugMode, assessmentData.title]);
-  
-  // Flatten all questions from all categories
+  }
+
+  // Flatten all questions from all categories (for compatibility with existing functions)
   const allQuestions = [];
   Object.entries(assessmentData.categories).forEach(([categoryKey, category]) => {
     // Regular questions
@@ -48,7 +81,7 @@ const AssessmentForm = ({
         isReverse: false
       });
     });
-    
+
     // Reverse questions (for Big Five)
     if (category.reverseQuestions) {
       category.reverseQuestions.forEach((question, index) => {
@@ -62,11 +95,59 @@ const AssessmentForm = ({
     }
   });
 
-  const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
-  const currentQuestions = allQuestions.slice(
-    currentPage * questionsPerPage,
-    (currentPage + 1) * questionsPerPage
-  );
+  // Auto-fill answers in debug mode
+  useEffect(() => {
+    if (isDebugMode && import.meta.env.DEV) {
+      const autoAnswers = {};
+
+      // Generate random answers for all questions (5-7 range for good scores)
+      allQuestions.forEach((q) => {
+        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 5; // Random 5-7
+      });
+
+      setAnswers(autoAnswers);
+      setCurrentPage(Math.max(0, totalPages - 1)); // Go to last category
+    }
+  }, [isDebugMode, assessmentData.title]);
+
+  // Load prefilled answers when available (from auto fill all assessments)
+  useEffect(() => {
+    if (prefilledAnswers) {
+      // Filter answers for current assessment
+      const currentAssessmentAnswers = {};
+      allQuestions.forEach((q) => {
+        if (prefilledAnswers[q.questionKey] !== undefined) {
+          currentAssessmentAnswers[q.questionKey] = prefilledAnswers[q.questionKey];
+        }
+      });
+      setAnswers(currentAssessmentAnswers);
+    }
+  }, [prefilledAnswers, assessmentData.title]);
+
+  // Auto-fill answers when all assessments are filled and we're in the last phase
+  useEffect(() => {
+    if (allAssessmentsFilled && currentStep === 3 && import.meta.env.DEV && !prefilledAnswers) {
+      const autoAnswers = {};
+
+      // Generate random answers for all questions (5-7 range for good scores)
+      allQuestions.forEach((q) => {
+        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 5; // Random 5-7
+      });
+
+      setAnswers(autoAnswers);
+      setCurrentPage(Math.max(0, totalPages - 1)); // Go to last category
+    }
+  }, [allAssessmentsFilled, currentStep, assessmentData.title, prefilledAnswers]);
+
+  // Navigate to last category when all assessments are filled and we're in the last phase
+  useEffect(() => {
+    if (allAssessmentsFilled && currentStep === 3) {
+      // Small delay to ensure state is updated
+      setTimeout(() => {
+        setCurrentPage(Math.max(0, totalPages - 1)); // Go to last category
+      }, 100);
+    }
+  }, [allAssessmentsFilled, currentStep, totalPages]);
 
   const handleAnswerChange = (questionKey, value) => {
     setAnswers(prev => ({
@@ -75,13 +156,13 @@ const AssessmentForm = ({
     }));
   };
 
-  const handleNextPage = () => {
+  const handleNextCategory = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(prev => prev + 1);
     }
   };
 
-  const handlePreviousPage = () => {
+  const handlePreviousCategory = () => {
     if (currentPage > 0) {
       setCurrentPage(prev => prev - 1);
     }
@@ -127,17 +208,38 @@ const AssessmentForm = ({
   const handleSubmit = () => {
     const scores = calculateScores();
     onSubmit(scores);
+
+    // If not the last assessment, automatically move to next
+    if (!isLastAssessment) {
+      onNext();
+    }
   };
 
   const isAssessmentComplete = () => {
     return allQuestions.every(q => answers[q.questionKey] !== undefined);
   };
 
-  // Function to find first unanswered question
-  const findFirstUnansweredQuestion = () => {
-    for (let i = 0; i < allQuestions.length; i++) {
-      if (answers[allQuestions[i].questionKey] === undefined) {
-        return Math.floor(i / questionsPerPage);
+  // Function to find first unanswered category
+  const findFirstUnansweredCategory = () => {
+    for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
+      const [categoryKey, categoryData] = categories[categoryIndex];
+
+      // Check regular questions
+      const hasUnansweredRegular = categoryData.questions.some((_, index) => {
+        const questionKey = `${categoryKey}_${index}`;
+        return answers[questionKey] === undefined;
+      });
+
+      if (hasUnansweredRegular) return categoryIndex;
+
+      // Check reverse questions
+      if (categoryData.reverseQuestions) {
+        const hasUnansweredReverse = categoryData.reverseQuestions.some((_, index) => {
+          const questionKey = `${categoryKey}_reverse_${index}`;
+          return answers[questionKey] === undefined;
+        });
+
+        if (hasUnansweredReverse) return categoryIndex;
       }
     }
     return currentPage;
@@ -146,12 +248,24 @@ const AssessmentForm = ({
   // Enhanced submit handler with validation
   const handleSubmitWithValidation = () => {
     if (!isAssessmentComplete()) {
-      const firstUnansweredPage = findFirstUnansweredQuestion();
-      setCurrentPage(firstUnansweredPage);
+      const firstUnansweredCategory = findFirstUnansweredCategory();
+      setCurrentPage(firstUnansweredCategory);
       // You could also show a toast or alert here
       return;
     }
     handleSubmit();
+  };
+
+  // Function to fill all answers with random values
+  const fillRandomAnswers = () => {
+    const randomAnswers = {};
+
+    // Generate random answers for all questions (1-7 range)
+    allQuestions.forEach((q) => {
+      randomAnswers[q.questionKey] = Math.floor(Math.random() * 7) + 1; // Random 1-7
+    });
+
+    setAnswers(randomAnswers);
   };
 
   return (
@@ -173,6 +287,12 @@ const AssessmentForm = ({
                   <p className="text-gray-600 text-sm mt-1">
                     Assessment {currentStep} of {totalSteps} - {assessmentData.description}
                   </p>
+                  {isAutoFillMode && (
+                    <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      <Check className="h-3 w-3 mr-1" />
+                      Auto-filled - You can edit answers manually
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -180,34 +300,52 @@ const AssessmentForm = ({
 
           {/* Questions */}
           <div className="max-w-3xl mx-auto">
-            {currentQuestions.map((q, index) => (
-              <AssessmentQuestion
-                key={q.questionKey}
-                question={q.question}
-                questionIndex={currentPage * questionsPerPage + index}
-                totalQuestions={allQuestions.length}
-                scale={assessmentData.scale}
-                value={answers[q.questionKey]}
-                onChange={(value) => handleAnswerChange(q.questionKey, value)}
-                isReverse={q.isReverse}
-              />
-            ))}
+            {currentQuestions.map((q, index) => {
+              // Calculate the global question index for this question
+              let globalIndex = 0;
+              const categoriesArray = Object.entries(assessmentData.categories);
+
+              // Count questions from previous categories
+              for (let i = 0; i < currentPage; i++) {
+                const [, categoryData] = categoriesArray[i];
+                globalIndex += categoryData.questions.length;
+                if (categoryData.reverseQuestions) {
+                  globalIndex += categoryData.reverseQuestions.length;
+                }
+              }
+
+              // Add current question index within current category
+              globalIndex += index + 1;
+
+              return (
+                <AssessmentQuestion
+                  key={q.questionKey}
+                  question={q.question}
+                  questionIndex={globalIndex}
+                  totalQuestions={allQuestions.length}
+                  scale={assessmentData.scale}
+                  value={answers[q.questionKey]}
+                  onChange={(value) => handleAnswerChange(q.questionKey, value)}
+                  isReverse={q.isReverse}
+                />
+              );
+            })}
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex max-w-3xl mx-auto mt-8 justify-between items-center">
             <button
-              onClick={handlePreviousPage}
+              onClick={handlePreviousCategory}
               disabled={currentPage === 0}
               className="flex items-center space-x-2 px-6 py-3 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
             >
               <ChevronLeft className="h-5 w-5" />
-              <span>Previous Page</span>
+              <span>Previous Category</span>
             </button>
 
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">
-                Page {currentPage + 1} of {totalPages}
+                {currentCategoryData?.name} ({currentPage + 1} of {totalPages})
               </span>
 
               {/* Previous Assessment Button */}
@@ -222,36 +360,48 @@ const AssessmentForm = ({
               )}
 
               {/* Submit Assessment Button */}
-              {currentPage === totalPages - 1 && isLastAssessment && (
+              {currentPage === totalPages - 1 && isLastAssessment && !isAutoFillMode && (
                 <button
                   onClick={handleSubmitWithValidation}
-                  disabled={!isAssessmentComplete()}
+                  disabled={!isAssessmentComplete() || isProcessingSubmit}
                   className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
                 >
                   <Check className="h-5 w-5" />
-                  <span>Submit Assessment</span>
+                  <span>{isProcessingSubmit ? 'Submitting...' : 'Submit Assessment'}</span>
+                </button>
+              )}
+
+              {/* Manual Submit Button for Auto-Fill Mode */}
+              {isAutoFillMode && isLastAssessment && (
+                <button
+                  onClick={onManualSubmit}
+                  disabled={isProcessingSubmit}
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+                >
+                  <Check className="h-5 w-5" />
+                  <span>{isProcessingSubmit ? 'Submitting...' : 'Submit All Assessments'}</span>
                 </button>
               )}
 
               {/* Next Assessment Button */}
               {currentPage === totalPages - 1 && !isLastAssessment && (
                 <button
-                  onClick={onNext}
-                  disabled={!isAssessmentComplete()}
+                  onClick={handleSubmitWithValidation}
+                  disabled={!isAssessmentComplete() || isProcessingSubmit}
                   className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
                 >
-                  <span>Next Assessment</span>
+                  <span>{isProcessingSubmit ? 'Processing...' : 'Next Assessment'}</span>
                   <ChevronRight className="h-5 w-5" />
                 </button>
               )}
 
-              {/* Next Page Button */}
+              {/* Next Category Button */}
               {currentPage < totalPages - 1 && (
                 <button
-                  onClick={handleNextPage}
+                  onClick={handleNextCategory}
                   className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg"
                 >
-                  <span>Next Page</span>
+                  <span>Next Category</span>
                   <ChevronRight className="h-5 w-5" />
                 </button>
               )}
@@ -260,75 +410,17 @@ const AssessmentForm = ({
         </div>
 
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block fixed right-0 top-0 h-full w-80 bg-white shadow-xl border-l border-gray-100 overflow-y-auto z-20">
-          <div className="p-6 h-full flex flex-col">
-            {/* Assessment Info */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-                <div className="p-1 bg-indigo-100 rounded">
-                  <Clock className="h-4 w-4 text-indigo-600" />
-                </div>
-                <span>Assessment Progress</span>
-              </h3>
-
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-indigo-600">
-                    {Object.keys(answers).length}
-                  </div>
-                  <div className="text-xs text-gray-500">Completed</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-400">
-                    {allQuestions.length - Object.keys(answers).length}
-                  </div>
-                  <div className="text-xs text-gray-500">Remaining</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Page Navigation */}
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Quick Navigation
-              </h3>
-
-              <div className="grid grid-cols-4 gap-2">
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i)}
-                    className={`
-                      p-3 rounded-lg text-sm font-medium transition-all duration-200
-                      ${currentPage === i
-                        ? 'bg-indigo-600 text-white shadow-lg scale-105'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:scale-105'
-                      }
-                    `}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Total Progress - Bottom Section */}
-            <div className="mt-auto pt-6 border-t border-gray-200">
-              <div className="text-center mb-4">
-                <h4 className="text-base font-medium text-gray-600 mb-3">Total Progress</h4>
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div
-                    className="bg-gray-400 h-3 rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${(Object.keys(answers).length / allQuestions.length) * 100}%` }}
-                  ></div>
-                </div>
-                <div className="text-sm text-gray-500 mt-2">
-                  {Math.round((Object.keys(answers).length / allQuestions.length) * 100)}% Complete
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AssessmentSidebar
+          assessmentData={assessmentData}
+          answers={answers}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          onFillRandomAnswers={fillRandomAnswers}
+          onFillAllAssessments={onFillAllAssessments}
+          onNavigateToPhase={onNavigateToPhase}
+        />
       </div>
     </div>
   );

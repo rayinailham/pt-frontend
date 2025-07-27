@@ -134,8 +134,12 @@ class ApiService {
    * @param {Object} assessmentData.viaIs - VIA Character Strengths scores
    */
   async submitAssessment(assessmentData) {
-    const response = await axios.post(API_ENDPOINTS.ASSESSMENT.SUBMIT, assessmentData);
-    return response.data;
+    try {
+      const response = await axios.post(API_ENDPOINTS.ASSESSMENT.SUBMIT, assessmentData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**

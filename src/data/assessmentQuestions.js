@@ -12,216 +12,150 @@ export const viaQuestions = {
     { value: 7, label: "Sangat sesuai dengan saya" }
   ],
   categories: {
-    creativity: {
-      name: "Kreativitas",
+    wisdomAndKnowledge: {
+      name: "Wisdom and Knowledge",
       questions: [
+        // Creativity questions
         "Saya sering menemukan pendekatan baru dalam menyelesaikan tugas.",
         "Menghasilkan ide-ide orisinal adalah salah satu kekuatan utama saya.",
         "Saya mampu berpikir secara kreatif dan berbeda dari yang lain.",
-        "Saya menikmati menciptakan solusi inovatif saat menghadapi masalah."
-      ]
-    },
-    curiosity: {
-      name: "Rasa Ingin Tahu",
-      questions: [
+        "Saya menikmati menciptakan solusi inovatif saat menghadapi masalah.",
+        // Curiosity questions
         "Saya memiliki dorongan kuat untuk memahami alasan di balik berbagai hal.",
         "Saya sering merasa tertarik untuk mempelajari hal-hal baru.",
         "Saya mudah kehilangan minat terhadap hal-hal yang sudah saya kenal.",
-        "Saya gemar menjelajahi tempat baru dan mempelajari hal-hal di dalamnya."
-      ]
-    },
-    judgment: {
-      name: "Daya Nilai / Berpikir Kritis",
-      questions: [
+        "Saya gemar menjelajahi tempat baru dan mempelajari hal-hal di dalamnya.",
+        // Judgment questions
         "Saya mempertimbangkan berbagai sudut pandang sebelum mengambil keputusan.",
         "Orang lain sering meminta pendapat saya karena saya dianggap objektif dan jernih.",
         "Saya mengumpulkan informasi secara menyeluruh sebelum membentuk opini.",
-        "Saya terbiasa menilai sesuatu secara rasional dan menyeluruh."
-      ]
-    },
-    loveOfLearning: {
-      name: "Kecintaan Belajar",
-      questions: [
+        "Saya terbiasa menilai sesuatu secara rasional dan menyeluruh.",
+        // Love of Learning questions
         "Saya merasa antusias ketika memperoleh pengetahuan baru.",
         "Saya menikmati proses memahami topik yang kompleks.",
         "Saya memiliki komitmen untuk terus belajar sepanjang hidup.",
-        "Saya secara aktif mencari informasi melalui buku atau artikel."
-      ]
-    },
-    perspective: {
-      name: "Perspektif",
-      questions: [
+        "Saya secara aktif mencari informasi melalui buku atau artikel.",
+        // Perspective questions
         "Orang lain menganggap saya sebagai pribadi yang bijaksana.",
         "Saya mampu memahami gambaran besar dalam situasi yang kompleks.",
         "Saya bisa melihat suatu hal dari berbagai sisi, yang membantu saya memberi nasihat yang berguna.",
         "Saya sering dapat memahami situasi secara menyeluruh, bahkan saat orang lain merasa bingung."
       ]
     },
-    bravery: {
-      name: "Keberanian",
+    courage: {
+      name: "Courage",
       questions: [
+        // Bravery questions
         "Saya mampu bertindak meskipun merasa takut.",
         "Saya tidak ragu membela prinsip yang saya yakini, walaupun menghadapi penolakan.",
         "Saya tidak menghindari tantangan atau risiko yang sulit.",
-        "Saya merasa lebih kuat setiap kali berhasil menghadapi ketakutan."
-      ]
-    },
-    perseverance: {
-      name: "Kegigihan",
-      questions: [
+        "Saya merasa lebih kuat setiap kali berhasil menghadapi ketakutan.",
+        // Perseverance questions
         "Saya terus mengejar tujuan hingga tuntas.",
         "Saya bekerja keras dan menyelesaikan apa yang telah saya mulai.",
         "Kegagalan tidak melemahkan semangat saya, tetapi justru memotivasi saya.",
-        "Saya memiliki disiplin tinggi dalam menyelesaikan tugas."
-      ]
-    },
-    honesty: {
-      name: "Kejujuran",
-      questions: [
+        "Saya memiliki disiplin tinggi dalam menyelesaikan tugas.",
+        // Honesty questions
         "Saya menjalani hidup secara jujur dan otentik.",
         "Saya lebih mengutamakan kejujuran daripada popularitas.",
         "Saya menampilkan diri saya yang sebenarnya tanpa berpura-pura.",
-        "Orang-orang terdekat tahu bahwa saya berbicara dengan jujur dan apa adanya."
-      ]
-    },
-    zest: {
-      name: "Semangat",
-      questions: [
+        "Orang-orang terdekat tahu bahwa saya berbicara dengan jujur dan apa adanya.",
+        // Zest questions
         "Saya memulai hari dengan semangat dan antusiasme.",
         "Saya melakukan berbagai hal dengan energi penuh.",
         "Saya merasa hidup dan penuh gairah.",
         "Saya berusaha menjalani hidup secara maksimal."
       ]
     },
-    love: {
-      name: "Cinta",
+    humanity: {
+      name: "Humanity",
       questions: [
+        // Love questions
         "Saya memiliki hubungan yang erat dan penuh makna dengan orang-orang terdekat.",
         "Saya memiliki kemampuan untuk memberi dan menerima kasih sayang.",
         "Saya menghargai koneksi yang mendalam dengan orang lain.",
-        "Saya mampu membangun hubungan yang penuh cinta dan keintiman."
-      ]
-    },
-    kindness: {
-      name: "Kebaikan Hati",
-      questions: [
+        "Saya mampu membangun hubungan yang penuh cinta dan keintiman.",
+        // Kindness questions
         "Saya bersikap baik dan peduli terhadap orang lain.",
         "Saya berusaha membantu mereka yang membutuhkan.",
         "Saya memperlakukan setiap orang dengan hormat dan martabat.",
-        "Saya dengan sukarela memberikan waktu dan sumber daya saya."
-      ]
-    },
-    socialIntelligence: {
-      name: "Kecerdasan Sosial",
-      questions: [
+        "Saya dengan sukarela memberikan waktu dan sumber daya saya.",
+        // Social Intelligence questions
         "Saya memahami perasaan dan motivasi orang lain.",
         "Saya mampu menyesuaikan diri dalam berbagai situasi sosial.",
         "Saya mengerti apa yang mendorong perilaku orang lain.",
         "Saya peka terhadap emosi orang lain."
       ]
     },
-    teamwork: {
-      name: "Kerja Sama Tim",
+    justice: {
+      name: "Justice",
       questions: [
+        // Teamwork questions
         "Saya bekerja dengan baik dalam tim.",
         "Saya mampu berkolaborasi untuk mencapai tujuan bersama.",
         "Saya setia dan mendukung kelompok saya.",
-        "Saya selalu menjalankan peran saya dalam pekerjaan tim."
-      ]
-    },
-    fairness: {
-      name: "Keadilan",
-      questions: [
+        "Saya selalu menjalankan peran saya dalam pekerjaan tim.",
+        // Fairness questions
         "Saya memperlakukan setiap orang secara adil tanpa memandang latar belakangnya.",
         "Saya yakin bahwa setiap orang layak mendapatkan kesempatan yang sama.",
         "Saya membuat keputusan secara objektif dan tidak memihak.",
-        "Saya menentang perlakuan tidak adil dan diskriminasi."
-      ]
-    },
-    leadership: {
-      name: "Kepemimpinan",
-      questions: [
+        "Saya menentang perlakuan tidak adil dan diskriminasi.",
+        // Leadership questions
         "Saya dapat mengorganisasi kegiatan kelompok dengan efektif.",
         "Saya lebih suka memimpin daripada mengikuti.",
         "Saya mampu menyatukan orang-orang untuk bekerja sama.",
         "Saya siap mengambil kendali ketika situasi membutuhkan kepemimpinan."
       ]
     },
-    forgiveness: {
-      name: "Pemaafan",
+    temperance: {
+      name: "Temperance",
       questions: [
+        // Forgiveness questions
         "Saya memaafkan orang yang telah menyakiti saya.",
         "Saya memberikan kesempatan kedua kepada orang lain.",
         "Saya tidak menyimpan dendam meskipun pernah disakiti.",
-        "Saya percaya bahwa setiap orang dapat berubah menjadi lebih baik."
-      ]
-    },
-    humility: {
-      name: "Kerendahan Hati",
-      questions: [
+        "Saya percaya bahwa setiap orang dapat berubah menjadi lebih baik.",
+        // Humility questions
         "Saya tidak membanggakan pencapaian saya.",
         "Saya membiarkan hasil kerja saya berbicara sendiri.",
         "Saya bersikap rendah hati meskipun meraih kesuksesan.",
-        "Saya tidak menganggap diri saya lebih unggul dari orang lain."
-      ]
-    },
-    prudence: {
-      name: "Kehati-hatian",
-      questions: [
+        "Saya tidak menganggap diri saya lebih unggul dari orang lain.",
+        // Prudence questions
         "Saya berhati-hati dalam bertindak.",
         "Saya mempertimbangkan dengan matang sebelum berbicara.",
         "Saya menghindari risiko yang tidak perlu.",
-        "Saya membuat keputusan berdasarkan pertimbangan yang matang."
-      ]
-    },
-    selfRegulation: {
-      name: "Regulasi Diri",
-      questions: [
+        "Saya membuat keputusan berdasarkan pertimbangan yang matang.",
+        // Self Regulation questions
         "Saya memiliki kemampuan untuk mengendalikan diri.",
         "Saya dapat menahan diri dari godaan.",
         "Saya disiplin dalam kebiasaan sehari-hari.",
         "Saya mampu mengelola emosi saya dengan baik."
       ]
     },
-    appreciationOfBeauty: {
-      name: "Apresiasi Keindahan",
+    transcendence: {
+      name: "Transcendence",
       questions: [
+        // Appreciation of Beauty questions
         "Saya mampu menghargai keindahan dalam berbagai bentuk.",
         "Saya tersentuh oleh pengalaman yang indah.",
         "Saya secara aktif mencari momen yang mengandung keindahan.",
-        "Saya memiliki apresiasi yang mendalam terhadap seni, musik, atau alam."
-      ]
-    },
-    gratitude: {
-      name: "Rasa Syukur",
-      questions: [
+        "Saya memiliki apresiasi yang mendalam terhadap seni, musik, atau alam.",
+        // Gratitude questions
         "Saya bersyukur atas hal-hal yang saya miliki dalam hidup.",
         "Saya secara rutin mengucapkan terima kasih kepada orang-orang yang penting bagi saya.",
         "Saya meluangkan waktu untuk mengapresiasi kebaikan dalam hidup saya.",
-        "Saya menyadari dan menghargai berkat yang saya terima."
-      ]
-    },
-    hope: {
-      name: "Harapan",
-      questions: [
+        "Saya menyadari dan menghargai berkat yang saya terima.",
+        // Hope questions
         "Saya memiliki pandangan positif tentang masa depan.",
         "Saya yakin bahwa hal-hal baik akan terjadi dalam hidup saya.",
         "Saya memiliki sikap optimis terhadap kehidupan.",
-        "Saya mempercayai potensi positif dalam orang-orang dan situasi."
-      ]
-    },
-    humor: {
-      name: "Humor",
-      questions: [
+        "Saya mempercayai potensi positif dalam orang-orang dan situasi.",
+        // Humor questions
         "Saya senang tertawa dan membuat orang lain tertawa.",
         "Saya mampu menemukan sisi lucu dalam situasi yang sulit.",
         "Saya menikmati lelucon ringan bersama teman-teman.",
-        "Saya menggunakan humor untuk membangkitkan semangat orang lain."
-      ]
-    },
-    spirituality: {
-      name: "Spiritualitas",
-      questions: [
+        "Saya menggunakan humor untuk membangkitkan semangat orang lain.",
+        // Spirituality questions
         "Saya memiliki rasa tujuan hidup yang kuat.",
         "Saya percaya bahwa hidup memiliki makna yang lebih dalam dari sekadar materi.",
         "Saya memiliki keyakinan tentang arah dan makna hidup.",
@@ -246,7 +180,7 @@ export const riasecQuestions = {
   ],
   categories: {
     realistic: {
-      name: "Realistis (Para Pelaku)",
+      name: "Realistic",
       questions: [
         "Saya menikmati bekerja secara fisik dengan tangan, alat, atau mesin.",
         "Saya merasa puas ketika membangun, memperbaiki, atau merakit sesuatu.",
@@ -261,7 +195,7 @@ export const riasecQuestions = {
       ]
     },
     investigative: {
-      name: "Investigatif (Para Pemikir)",
+      name: "Investigative",
       questions: [
         "Saya memiliki rasa ingin tahu tinggi terhadap dunia fisik dan alam.",
         "Saya menikmati menyelesaikan persoalan kompleks yang membutuhkan analisis mendalam.",
@@ -276,7 +210,7 @@ export const riasecQuestions = {
       ]
     },
     artistic: {
-      name: "Artistik (Para Pencipta)",
+      name: "Artistic",
       questions: [
         "Saya memiliki imajinasi kuat dan suka mengekspresikan diri secara kreatif.",
         "Saya merasa nyaman bekerja dalam lingkungan yang fleksibel dan tidak terstruktur.",
@@ -291,7 +225,7 @@ export const riasecQuestions = {
       ]
     },
     social: {
-      name: "Sosial (Para Penolong)",
+      name: "Social",
       questions: [
         "Saya merasa puas membantu orang lain dan memberi dampak positif dalam hidup mereka.",
         "Saya pandai memahami dan berinteraksi dengan berbagai tipe orang.",
@@ -306,7 +240,7 @@ export const riasecQuestions = {
       ]
     },
     enterprising: {
-      name: "Wirausaha (Para Pembujuk)",
+      name: "Enterprising",
       questions: [
         "Saya menikmati memimpin dan memengaruhi orang lain untuk mencapai tujuan.",
         "Saya nyaman mengambil risiko demi mencapai hasil.",
@@ -321,7 +255,7 @@ export const riasecQuestions = {
       ]
     },
     conventional: {
-      name: "Konvensional (Para Organisator)",
+      name: "Conventional",
       questions: [
         "Saya menikmati mengelola data, angka, dan informasi secara terperinci.",
         "Saya menyukai aturan dan prosedur kerja yang jelas.",
@@ -353,7 +287,7 @@ export const bigFiveQuestions = {
   ],
   categories: {
     openness: {
-      name: "Keterbukaan terhadap Pengalaman",
+      name: "Openness",
       questions: [
         "Saya seseorang yang orisinal dan mampu menghasilkan ide baru.",
         "Saya memiliki rasa ingin tahu terhadap berbagai hal.",
@@ -370,7 +304,7 @@ export const bigFiveQuestions = {
       ]
     },
     conscientiousness: {
-      name: "Sifat Berhati-hati",
+      name: "Conscientiousness",
       questions: [
         "Saya teliti dan menyelesaikan pekerjaan dengan menyeluruh.",
         "Saya dapat diandalkan dalam menyelesaikan tugas.",
@@ -386,7 +320,7 @@ export const bigFiveQuestions = {
       ]
     },
     extraversion: {
-      name: "Ekstraversi",
+      name: "Extraversion",
       questions: [
         "Saya suka berbicara dan mudah bergaul.",
         "Saya ramah terhadap orang lain.",
@@ -401,7 +335,7 @@ export const bigFiveQuestions = {
       ]
     },
     agreeableness: {
-      name: "Sifat Mudah Bersepakat",
+      name: "Agreeableness",
       questions: [
         "Saya bersedia membantu orang lain tanpa pamrih.",
         "Saya mudah memaafkan kesalahan orang lain.",
@@ -417,7 +351,7 @@ export const bigFiveQuestions = {
       ]
     },
     neuroticism: {
-      name: "Neurotisisme",
+      name: "Neuroticism",
       questions: [
         "Saya mudah merasa tegang atau tertekan.",
         "Saya sering merasa khawatir.",

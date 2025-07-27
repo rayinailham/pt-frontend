@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { WebSocketProvider } from './context/WebSocketContext';
 import ProtectedRoute from './components/Layout/ProtectedRoute';
 import NotificationContainer from './components/Layout/NotificationContainer';
+import GlobalNotificationHandler from './components/Layout/GlobalNotificationHandler';
 import AuthPage from './components/Auth/AuthPage';
 import Dashboard from './components/Dashboard/Dashboard';
 import AssessmentFlow from './components/Assessment/AssessmentFlow';
@@ -57,6 +58,7 @@ function App() {
         <Router>
           <div className="App">
             <NotificationContainer />
+            <GlobalNotificationHandler />
             <Routes>
             {/* Public routes */}
             <Route path="/auth" element={<AuthPage />} />

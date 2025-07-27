@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import apiService from '../../services/apiService';
@@ -15,28 +15,46 @@ const ResultsPage = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
+  const fetchInProgressRef = useRef(false);
+  const abortControllerRef = useRef(null);
 
   useEffect(() => {
+    // Prevent duplicate calls
+    if (fetchInProgressRef.current) {
+      return;
+    }
+
     const fetchResult = async (retryCount = 0) => {
       const maxRetries = 5;
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 10000); // Exponential backoff, max 10s
 
+      // Create new AbortController for this fetch sequence
+      abortControllerRef.current = new AbortController();
+
       try {
-        console.log(`🔍 Fetching result for ID: ${resultId} (attempt ${retryCount + 1})`);
+        fetchInProgressRef.current = true;
         const response = await apiService.getResultById(resultId);
 
-        if (response.success) {
-          console.log('✅ Result fetched successfully:', response.data);
-          setResult(response.data);
+        // Check if component is still mounted and request wasn't aborted
+        if (!abortControllerRef.current?.signal.aborted) {
+          if (response.success) {
+            setResult(response.data);
+            fetchInProgressRef.current = false;
+          }
         }
       } catch (err) {
-        console.error(`❌ Fetch attempt ${retryCount + 1} failed:`, err);
+        // Check if the error is due to abort
+        if (abortControllerRef.current?.signal.aborted) {
+          return;
+        }
 
         // If it's a 404 and we haven't exceeded max retries, try again
         if (err.response?.status === 404 && retryCount < maxRetries) {
-          console.log(`⏳ Retrying in ${retryDelay}ms... (${retryCount + 1}/${maxRetries})`);
           setTimeout(() => {
-            fetchResult(retryCount + 1);
+            // Check if component is still mounted before retrying
+            if (!abortControllerRef.current?.signal.aborted) {
+              fetchResult(retryCount + 1);
+            }
           }, retryDelay);
         } else {
           // Final error after all retries or non-404 error
@@ -44,6 +62,7 @@ const ResultsPage = () => {
             ? `Result not found after ${maxRetries + 1} attempts. The analysis may still be processing.`
             : err.response?.data?.message || 'Failed to load results';
           setError(errorMessage);
+          fetchInProgressRef.current = false;
         }
       }
     };
@@ -53,6 +72,14 @@ const ResultsPage = () => {
     } else {
       navigate('/dashboard');
     }
+
+    // Cleanup function
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      fetchInProgressRef.current = false;
+    };
   }, [resultId, navigate]);
 
   const formatDate = (dateString) => {

@@ -9,11 +9,11 @@ import ErrorMessage from '../UI/ErrorMessage';
  * AssessmentStatus Component - Uses Observer Pattern (No Polling)
  *
  * Stage Transitions:
- * Stage 1 (Transforming) → Stage 2 (Analyzing) → Stage 3 (Preparing)
+ * Stage 1 (Processing) → Stage 2 (Analysis) → Stage 3 (Report)
  *
- * Observers:
- * 1. Submit Observer: Detects successful API submission → Transitions to Stage 2 after 3s
- * 2. WebSocket Observer: Listens for analysis-complete notification → Transitions to Stage 3
+ * Triggers:
+ * 1. Processing → Analysis: Automatic after 3 seconds
+ * 2. Analysis → Report: Wait for WebSocket notification from onAnalysisComplete
  *
  * No polling is used - purely event-driven architecture
  */
@@ -24,31 +24,20 @@ const AssessmentStatus = () => {
   const [status, setStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [currentStage, setCurrentStage] = useState('transforming'); // transforming, analyzing, preparing
-  const websocketTimeoutRef = useRef(null);
-  const stageTransitionTimeoutRef = useRef(null);
-  const hasTransitionedToAnalyzing = useRef(false);
+  const [currentStage, setCurrentStage] = useState('processing'); // processing, analyzing, preparing
+  const processingToAnalysisTimeoutRef = useRef(null);
 
   // Observer Pattern: Setup WebSocket notifications as observers
-  const { isConnected, isAuthenticated, notifications, clearNotification } = useNotifications({
+  const { isConnected, isAuthenticated } = useNotifications({
     onAnalysisComplete: (data) => {
       if (data.jobId === jobId) {
-        console.log('🎉 Analysis complete notification received:', data);
+        // Transition to Report stage immediately when notification is received
+        setCurrentStage('preparing');
 
-        // Clear websocket timeout since we got the notification
-        if (websocketTimeoutRef.current) {
-          clearTimeout(websocketTimeoutRef.current);
-          websocketTimeoutRef.current = null;
-        }
-
-        // Observer: Transition to Stage 3 (Preparing) with minimum 3 seconds
-        transitionToStage('preparing', 0);
-
-        // Navigate after minimum 5 seconds to allow archive service to save data
+        // Navigate after minimum 3 seconds to allow UI transition
         setTimeout(() => {
-          console.log(`🔗 Navigating to results page with ID: ${data.resultId}`);
           navigate(`/results/${data.resultId}`);
-        }, 5000); // Increased from 3000 to 5000ms
+        }, 3000);
       }
     },
     onAnalysisFailed: (data) => {
@@ -87,16 +76,7 @@ const AssessmentStatus = () => {
     }
   };
 
-  // Smooth stage transition function
-  const transitionToStage = (newStage, delay = 0) => {
-    if (stageTransitionTimeoutRef.current) {
-      clearTimeout(stageTransitionTimeoutRef.current);
-    }
 
-    stageTransitionTimeoutRef.current = setTimeout(() => {
-      setCurrentStage(newStage);
-    }, delay);
-  };
 
   useEffect(() => {
     if (!jobId) {
@@ -104,19 +84,16 @@ const AssessmentStatus = () => {
       return;
     }
 
-    // Observer Pattern: Check if we just came from assessment submission
+    // Check if we just came from assessment submission
     const isFromSubmission = location.state?.fromSubmission;
     if (isFromSubmission) {
-      setCurrentStage('transforming');
+      setCurrentStage('processing');
 
-      // Observer: Transition to analyzing after minimum 3 seconds
-      transitionToStage('analyzing', 3000);
-      hasTransitionedToAnalyzing.current = true;
-
-      // Set up automatic transition to preparing after another 3 seconds
-      setTimeout(() => {
-        transitionToStage('preparing', 0);
-      }, 6000); // 3s for transforming + 3s for analyzing
+      // Stage 1 → Stage 2: Processing to Analysis after 3 seconds
+      processingToAnalysisTimeoutRef.current = setTimeout(() => {
+        setCurrentStage('analyzing');
+        // Stage 2 (Analysis) will wait for WebSocket notification to proceed to Stage 3
+      }, 3000);
     }
 
     // Only do initial status check (no polling)
@@ -124,20 +101,16 @@ const AssessmentStatus = () => {
 
     // Cleanup
     return () => {
-      if (websocketTimeoutRef.current) {
-        clearTimeout(websocketTimeoutRef.current);
-        websocketTimeoutRef.current = null;
-      }
-      if (stageTransitionTimeoutRef.current) {
-        clearTimeout(stageTransitionTimeoutRef.current);
-        stageTransitionTimeoutRef.current = null;
+      if (processingToAnalysisTimeoutRef.current) {
+        clearTimeout(processingToAnalysisTimeoutRef.current);
+        processingToAnalysisTimeoutRef.current = null;
       }
     };
   }, [jobId, navigate, location.state]);
 
   const getStageInfo = (stage) => {
     switch (stage) {
-      case 'transforming':
+      case 'processing':
         return {
           title: 'Processing Data',
           description: 'Organizing your assessment responses',
@@ -176,7 +149,7 @@ const AssessmentStatus = () => {
     const stageInfo = getStageInfo(stage);
 
     switch (stage) {
-      case 'transforming':
+      case 'processing':
         return (
           <div className={`relative w-16 h-16 ${stageInfo.bgColor} rounded-full flex items-center justify-center shadow-md transition-all duration-300`}>
             {/* Single rotating ring */}
@@ -229,7 +202,7 @@ const AssessmentStatus = () => {
 
   // Show content immediately when coming from submission
   if (isLoading && location.state?.fromSubmission) {
-    setCurrentStage('transforming');
+    setCurrentStage('processing');
     setIsLoading(false);
   }
 
@@ -265,7 +238,7 @@ const AssessmentStatus = () => {
                   {/* Step 1: Processing */}
                   <div className="flex items-center space-x-2">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'transforming' ? 'bg-blue-500 text-white shadow-md' :
+                      currentStage === 'processing' ? 'bg-blue-500 text-white shadow-md' :
                       ['analyzing', 'preparing'].includes(currentStage) ? 'bg-green-500 text-white shadow-md' :
                       'bg-gray-200 text-gray-600'
                     }`}>
@@ -278,7 +251,7 @@ const AssessmentStatus = () => {
                       )}
                     </div>
                     <span className={`text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'transforming' ? 'text-blue-600' :
+                      currentStage === 'processing' ? 'text-blue-600' :
                       ['analyzing', 'preparing'].includes(currentStage) ? 'text-green-600' :
                       'text-gray-500'
                     }`}>
@@ -369,6 +342,23 @@ const AssessmentStatus = () => {
                   </div>
                 </div>
               )}
+
+              {/* Back to Dashboard Button */}
+              <div className="mt-8 text-center">
+                <button
+                  onClick={() => navigate('/dashboard', { state: { fromAssessment: true } })}
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z" />
+                  </svg>
+                  Back to Dashboard
+                </button>
+                <p className="text-sm text-gray-500 mt-2">
+                  You can check your assessment status in the dashboard
+                </p>
+              </div>
             </div>
           ) : (
             <div className="p-8">
