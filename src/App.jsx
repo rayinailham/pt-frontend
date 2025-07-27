@@ -9,6 +9,11 @@ import Dashboard from './components/Dashboard/Dashboard';
 import AssessmentFlow from './components/Assessment/AssessmentFlow';
 import AssessmentStatus from './components/Assessment/AssessmentStatus';
 import ResultsPage from './components/Results/ResultsPage';
+import ResultOverview from './components/Results/ResultOverview';
+import ResultViaIs from './components/Results/ResultViaIs';
+import ResultRiasec from './components/Results/ResultRiasec';
+import ResultOcean from './components/Results/ResultOcean';
+import ResultPersona from './components/Results/ResultPersona';
 import ProfilePage from './components/Profile/ProfilePage';
 import HealthCheck from './components/Admin/HealthCheck';
 import SecretAdminDashboard from './components/Admin/SecretAdminDashboard';
@@ -83,6 +88,36 @@ function App() {
             } />
 
             <Route path="/results/:resultId" element={
+              <ProtectedRoute>
+                <ResultOverview />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/results/:resultId/via-is" element={
+              <ProtectedRoute>
+                <ResultViaIs />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/results/:resultId/riasec" element={
+              <ProtectedRoute>
+                <ResultRiasec />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/results/:resultId/ocean" element={
+              <ProtectedRoute>
+                <ResultOcean />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/results/:resultId/persona" element={
+              <ProtectedRoute>
+                <ResultPersona />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/results/:resultId/legacy" element={
               <ProtectedRoute>
                 <ResultsPage />
               </ProtectedRoute>

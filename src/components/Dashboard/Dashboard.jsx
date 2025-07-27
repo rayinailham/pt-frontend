@@ -13,7 +13,6 @@ import StatsCards from './components/StatsCards';
 import ResultsTable from './components/ResultsTable';
 import ArticlesSection from './components/ArticlesSection';
 
-
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -81,21 +80,23 @@ export default function Dashboard() {
   // Calculate status counts from results data
   const getStatusCounts = () => {
     if (!data.results || data.results.length === 0) {
-      return { completed: 0, processing: 0, failed: 0 };
+      return { completed: 0, failed: 0 };
     }
 
     return data.results.reduce((counts, result) => {
       if (result.status === 'completed') counts.completed++;
-      else if (result.status === 'processing') counts.processing++;
       else if (result.status === 'failed') counts.failed++;
       return counts;
-    }, { completed: 0, processing: 0, failed: 0 });
+    }, { completed: 0, failed: 0 });
   };
 
   const statusCounts = getStatusCounts();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30">
+    <div className="min-h-screen bg-gray-50">
+      {/* Subtle top accent line */}
+      <div className="h-px bg-slate-200/40"></div>
+
       {/* Header */}
       <DashboardHeader
         user={user}
@@ -104,67 +105,121 @@ export default function Dashboard() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl mx-auto px-6 lg:px-8 py-12">
         {/* Loading State */}
         {loading.initial && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <EnhancedLoadingScreen
-              title="Loading Dashboard..."
-              subtitle="Fetching your latest assessment results and statistics"
-              skeletonCount={4}
-              className="min-h-[400px]"
-            />
+            <div className="bg-white border border-slate-200/60 rounded-2xl shadow-sm">
+              <EnhancedLoadingScreen
+                title="Loading Dashboard..."
+                subtitle="Fetching your latest assessment results and statistics"
+                skeletonCount={4}
+                className="min-h-[500px] p-8"
+              />
+            </div>
           </motion.div>
         )}
 
         {/* Error State */}
         {hasError && !loading.initial && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <ErrorMessage
-              title="Failed to Load Dashboard"
-              message={error.general || error.stats || error.results || error.tokenBalance}
-              onRetry={actions.refreshData}
-              retryText="Retry"
-            />
+            <div className="bg-white border border-slate-200/60 rounded-2xl shadow-sm p-8">
+              <ErrorMessage
+                title="Failed to Load Dashboard"
+                message={error.general || error.stats || error.results || error.tokenBalance}
+                onRetry={actions.refreshData}
+                retryText="Retry"
+              />
+            </div>
           </motion.div>
         )}
 
         {/* Dashboard Content */}
         {!loading.initial && !hasError && (
-          <div className="space-y-8">
-            {/* Stats Cards */}
-            <StatsCards
-              data={data}
-              loading={loading}
-              statusCounts={statusCounts}
-            />
-            {/* Results Table */}
-            <ResultsTable
-              data={data}
-              loading={loading}
-              onView={handleView}
-              onDelete={handleDelete}
-              onNewAssessment={() => navigate('/assessment')}
-              onRefresh={() => actions.fetchResults()}
-              deleteLoading={deleteLoading}
-            />
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", staggerChildren: 0.1 }}
+            className="space-y-12"
+          >
 
-            {/* Articles Section */}
-            <ArticlesSection loading={loading} />
+            {/* Performance Overview Section */}
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-slate-900 mb-2">Performance Overview</h2>
+                <p className="text-slate-600">Key metrics and insights from your assessments</p>
+              </div>
+              <StatsCards
+                data={data}
+                loading={loading}
+                statusCounts={statusCounts}
+              />
+            </motion.section>
 
-          </div>
+            {/* Divider */}
+            <div className="border-t border-slate-200/60"></div>
+
+            {/* Assessment Results Section */}
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              <div className="mb-8">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
+                    <p className="text-slate-600">View and manage your assessment history</p>
+                  </div>
+                </div>
+              </div>
+              <ResultsTable
+                data={data}
+                loading={loading}
+                onView={handleView}
+                onDelete={handleDelete}
+                onNewAssessment={() => navigate('/assessment')}
+                onRefresh={() => actions.fetchResults()}
+                deleteLoading={deleteLoading}
+              />
+            </motion.section>
+
+            {/* Divider */}
+            <div className="border-t border-slate-200/60"></div>
+
+            {/* Learning Resources Section */}
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-slate-900 mb-2">Learning Resources</h2>
+                <p className="text-slate-600">Curated articles and insights to enhance your knowledge</p>
+              </div>
+              <ArticlesSection loading={loading} />
+            </motion.section>
+
+            {/* Bottom spacing */}
+            <div className="h-16"></div>
+          </motion.div>
         )}
-
       </main>
 
+      {/* Subtle footer accent */}
+      <div className="h-px bg-slate-200/40"></div>
     </div>
   );
 }
