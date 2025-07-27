@@ -156,7 +156,7 @@ const ResultRiasec = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 max-w-sm"
+          className="bg-white p-4 rounded shadow-lg border border-gray-200 max-w-sm"
         >
           <div className="flex items-center mb-2">
             <span className="text-xl mr-2">{trait?.icon}</span>
@@ -198,22 +198,22 @@ const ResultRiasec = () => {
       subtitle: 'The Doer',
       description: 'Prefer hands-on, practical work with tools, machines, or animals. Value concrete results and physical activities.',
       highTraits: [
-        'Enjoy working with your hands and building things',
-        'Prefer practical, concrete tasks over abstract concepts',
-        'Like working outdoors or with machinery',
-        'Value efficiency and getting tangible results',
-        'Comfortable with physical challenges and manual work'
+        'Memiliki ketertarikan tinggi terhadap pekerjaan yang bersifat praktis dan langsung.',
+        'Lebih menyukai tugas-tugas konkret daripada konsep yang abstrak.',
+        'Merasa nyaman bekerja di luar ruangan atau dengan mesin.',
+        'Mengutamakan efisiensi dan hasil yang nyata.',
+        'Mampu menghadapi tantangan fisik dan pekerjaan manual.'
       ],
       lowTraits: [
-        'Prefer working with ideas rather than physical objects',
-        'More comfortable in office or indoor environments',
-        'Enjoy abstract thinking and conceptual work',
-        'Less interested in hands-on technical tasks',
-        'Prefer collaborative and people-oriented activities'
+        'Lebih memilih bekerja dengan ide atau konsep daripada objek fisik.',
+        'Merasa lebih nyaman di lingkungan kantor atau dalam ruangan.',
+        'Menyukai pemikiran abstrak dan pekerjaan konseptual.',
+        'Kurang berminat pada tugas teknis yang bersifat langsung.',
+        'Lebih menyukai aktivitas kolaboratif dan berorientasi pada manusia.'
       ],
       careerImplications: {
-        high: 'You thrive in hands-on careers involving building, fixing, or creating tangible products. Consider engineering, skilled trades, or technical fields.',
-        low: 'You prefer careers involving ideas, people, or abstract concepts rather than physical manipulation of objects or tools.'
+        high: 'Cocok untuk berkarier di bidang yang melibatkan aktivitas praktis, pembangunan, atau perakitan produk nyata, seperti teknik, pekerjaan terampil, atau bidang teknis.',
+        low: 'Lebih sesuai untuk bidang yang berfokus pada ide, interaksi manusia, atau konsep abstrak daripada manipulasi fisik terhadap objek atau alat.'
       }
     },
     'investigative': {
@@ -222,22 +222,22 @@ const ResultRiasec = () => {
       subtitle: 'The Thinker',
       description: 'Enjoy analyzing, researching, and solving complex problems. Prefer intellectual challenges and scientific thinking.',
       highTraits: [
-        'Love solving complex problems and puzzles',
-        'Enjoy research and analytical thinking',
-        'Prefer working independently on intellectual tasks',
-        'Value accuracy and scientific methods',
-        'Curious about how things work and why'
+        'Memiliki minat besar dalam memecahkan masalah kompleks dan teka-teki.',
+        'Menyukai penelitian serta berpikir secara analitis.',
+        'Lebih memilih bekerja secara mandiri dalam tugas-tugas intelektual.',
+        'Mengutamakan ketelitian dan metode ilmiah.',
+        'Memiliki rasa ingin tahu yang tinggi terhadap cara kerja sesuatu.'
       ],
       lowTraits: [
-        'Prefer practical action over extensive analysis',
-        'More interested in people and relationships',
-        'Like structured, routine tasks with clear guidelines',
-        'Prefer collaborative work over independent research',
-        'Focus on immediate results rather than long-term investigation'
+        'Lebih menyukai tindakan praktis daripada analisis mendalam.',
+        'Lebih tertarik pada hubungan sosial dan interaksi dengan orang lain.',
+        'Menyukai tugas rutin yang terstruktur dengan panduan yang jelas.',
+        'Lebih memilih kerja kolaboratif daripada penelitian mandiri.',
+        'Fokus pada hasil langsung daripada penyelidikan jangka panjang.'
       ],
       careerImplications: {
-        high: 'You excel in research-oriented careers requiring analytical thinking and problem-solving. Consider science, research, or technical analysis roles.',
-        low: 'You prefer careers with clear procedures and immediate applications rather than extensive research or theoretical work.'
+        high: 'Sangat sesuai untuk berkarier di bidang penelitian, analisis, atau sains yang membutuhkan pemikiran analitis dan pemecahan masalah.',
+        low: 'Lebih cocok untuk pekerjaan dengan prosedur yang jelas dan aplikasi langsung daripada penelitian atau pekerjaan teoretis yang mendalam.'
       }
     },
     'artistic': {
@@ -246,22 +246,22 @@ const ResultRiasec = () => {
       subtitle: 'The Creator',
       description: 'Value creativity, self-expression, and aesthetic experiences. Prefer unstructured environments and original work.',
       highTraits: [
-        'Highly creative and value self-expression',
-        'Enjoy working in unstructured, flexible environments',
-        'Appreciate beauty and aesthetic experiences',
-        'Prefer original, innovative approaches to problems',
-        'Value independence and creative freedom'
+        'Memiliki kreativitas tinggi dan menghargai ekspresi diri.',
+        'Menyukai lingkungan kerja yang fleksibel dan tidak terstruktur.',
+        'Mengapresiasi keindahan dan pengalaman estetika.',
+        'Lebih memilih pendekatan orisinal dan inovatif dalam menyelesaikan masalah.',
+        'Mengutamakan kemandirian dan kebebasan berkreasi.'
       ],
       lowTraits: [
-        'Prefer structured, organized work environments',
-        'More comfortable following established procedures',
-        'Value practical results over creative expression',
-        'Like clear guidelines and systematic approaches',
-        'Focus on efficiency rather than innovation'
+        'Lebih menyukai lingkungan kerja yang terstruktur dan terorganisir.',
+        'Merasa lebih nyaman mengikuti prosedur yang telah ditetapkan.',
+        'Mengutamakan hasil yang praktis daripada ekspresi kreatif.',
+        'Menyukai panduan yang jelas dan pendekatan yang sistematis.',
+        'Lebih fokus pada efisiensi daripada inovasi.'
       ],
       careerImplications: {
-        high: 'You thrive in creative fields that allow self-expression and innovation. Consider arts, design, writing, or creative industries.',
-        low: 'You prefer structured careers with clear procedures and practical outcomes rather than highly creative or artistic work.'
+        high: 'Sangat cocok untuk berkarier di bidang kreatif yang memberikan ruang untuk ekspresi diri dan inovasi, seperti seni, desain, penulisan, atau industri kreatif.',
+        low: 'Lebih sesuai untuk pekerjaan yang terstruktur dengan prosedur yang jelas dan hasil yang praktis daripada pekerjaan yang sangat kreatif atau artistik.'
       }
     },
     'social': {
@@ -270,22 +270,22 @@ const ResultRiasec = () => {
       subtitle: 'The Helper',
       description: 'Enjoy helping, teaching, and working with people. Value cooperation, understanding, and making a positive impact.',
       highTraits: [
-        'Genuinely enjoy helping and supporting others',
-        'Excellent interpersonal and communication skills',
-        'Value cooperation and teamwork',
-        'Motivated by making a positive impact on people',
-        'Comfortable in people-centered environments'
+        'Memiliki kepedulian tinggi untuk membantu dan mendukung orang lain.',
+        'Mampu berkomunikasi dan berinteraksi dengan baik.',
+        'Mengutamakan kerja sama dan kolaborasi dalam tim.',
+        'Termotivasi untuk memberikan dampak positif bagi sesama.',
+        'Merasa nyaman di lingkungan yang berfokus pada interaksi manusia.'
       ],
       lowTraits: [
-        'Prefer working with data, objects, or ideas',
-        'More comfortable working independently',
-        'Less interested in counseling or teaching others',
-        'Prefer technical or analytical tasks',
-        'Value efficiency over interpersonal harmony'
+        'Lebih menyukai pekerjaan yang berhubungan dengan data, objek, atau ide.',
+        'Merasa lebih nyaman bekerja secara mandiri.',
+        'Kurang berminat pada aktivitas konseling atau mengajar.',
+        'Lebih memilih tugas teknis atau analitis.',
+        'Mengutamakan efisiensi daripada keharmonisan interpersonal.'
       ],
       careerImplications: {
-        high: 'You excel in people-oriented careers focused on helping, teaching, or supporting others. Consider education, healthcare, or social services.',
-        low: 'You prefer careers involving technical skills, data analysis, or independent work rather than extensive interpersonal interaction.'
+        high: 'Sangat sesuai untuk berkarier di bidang yang berorientasi pada manusia, seperti pendidikan, layanan kesehatan, atau layanan sosial.',
+        low: 'Lebih cocok untuk pekerjaan yang berfokus pada keterampilan teknis, analisis data, atau pekerjaan mandiri daripada interaksi interpersonal yang intensif.'
       }
     },
     'enterprising': {
@@ -294,22 +294,22 @@ const ResultRiasec = () => {
       subtitle: 'The Persuader',
       description: 'Like leading, persuading, and managing others. Value achievement, competition, and business success.',
       highTraits: [
-        'Natural leader who enjoys taking charge',
-        'Comfortable with competition and achievement',
-        'Skilled at persuading and influencing others',
-        'Value business success and financial rewards',
-        'Enjoy taking risks and pursuing opportunities'
+        'Memiliki jiwa kepemimpinan dan senang mengambil inisiatif.',
+        'Merasa nyaman dalam situasi yang kompetitif dan berorientasi pada pencapaian.',
+        'Mampu memengaruhi dan meyakinkan orang lain.',
+        'Mengutamakan keberhasilan bisnis dan penghargaan finansial.',
+        'Menyukai tantangan dan peluang baru.'
       ],
       lowTraits: [
-        'Prefer supportive rather than leadership roles',
-        'More comfortable with cooperation than competition',
-        'Less interested in sales or persuasion activities',
-        'Value stability over risk-taking',
-        'Prefer following established procedures'
+        'Lebih memilih peran yang mendukung daripada memimpin.',
+        'Merasa lebih nyaman dengan kerja sama daripada persaingan.',
+        'Kurang berminat pada aktivitas penjualan atau persuasi.',
+        'Mengutamakan stabilitas daripada pengambilan risiko.',
+        'Lebih suka mengikuti prosedur yang telah ditetapkan.'
       ],
       careerImplications: {
-        high: 'You thrive in leadership and business-oriented careers involving persuasion and achievement. Consider management, sales, or entrepreneurship.',
-        low: 'You prefer supportive roles with clear procedures rather than high-pressure leadership or competitive business environments.'
+        high: 'Sangat cocok untuk berkarier di bidang kepemimpinan dan bisnis yang melibatkan persuasi dan pencapaian, seperti manajemen, penjualan, atau kewirausahaan.',
+        low: 'Lebih sesuai untuk peran pendukung dengan prosedur yang jelas daripada lingkungan bisnis yang kompetitif dan bertekanan tinggi.'
       }
     },
     'conventional': {
@@ -318,22 +318,22 @@ const ResultRiasec = () => {
       subtitle: 'The Organizer',
       description: 'Prefer organized, structured work with clear procedures. Value accuracy, efficiency, and systematic approaches.',
       highTraits: [
-        'Highly organized and detail-oriented',
-        'Prefer clear procedures and systematic approaches',
-        'Value accuracy and precision in work',
-        'Comfortable with routine and structured tasks',
-        'Excellent at managing data and information'
+        'Memiliki kemampuan organisasi yang baik dan perhatian terhadap detail.',
+        'Lebih menyukai prosedur yang jelas dan pendekatan yang sistematis.',
+        'Mengutamakan ketelitian dan presisi dalam pekerjaan.',
+        'Merasa nyaman dengan tugas rutin dan terstruktur.',
+        'Mampu mengelola data dan informasi secara efektif.'
       ],
       lowTraits: [
-        'Prefer flexible, unstructured work environments',
-        'More interested in creative or innovative approaches',
-        'Less comfortable with routine, repetitive tasks',
-        'Value variety and change over consistency',
-        'Prefer big-picture thinking over detailed procedures'
+        'Lebih menyukai lingkungan kerja yang fleksibel dan tidak terstruktur.',
+        'Tertarik pada pendekatan yang kreatif atau inovatif.',
+        'Kurang nyaman dengan tugas yang rutin dan berulang.',
+        'Mengutamakan variasi dan perubahan daripada konsistensi.',
+        'Lebih suka berpikir secara menyeluruh daripada fokus pada detail prosedural.'
       ],
       careerImplications: {
-        high: 'You excel in organized, detail-oriented careers with clear procedures. Consider administration, finance, or data management roles.',
-        low: 'You prefer dynamic, flexible careers that allow creativity and variety rather than highly structured or routine work.'
+        high: 'Sangat sesuai untuk berkarier di bidang yang terorganisir dan berorientasi pada detail dengan prosedur yang jelas, seperti administrasi, keuangan, atau manajemen data.',
+        low: 'Lebih cocok untuk pekerjaan yang dinamis dan fleksibel yang memberikan ruang untuk kreativitas dan variasi daripada pekerjaan yang sangat terstruktur atau rutin.'
       }
     }
   };
@@ -389,7 +389,7 @@ const ResultRiasec = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"
+            className="bg-white border border-gray-200 rounded p-6 shadow-sm"
           >
             <div className="flex items-center">
               <div className="text-gray-400 mr-3">⚠️</div>
@@ -399,13 +399,13 @@ const ResultRiasec = () => {
                 <div className="mt-4 space-x-3">
                   <button
                     onClick={() => window.location.reload()}
-                    className="bg-gray-900 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition-colors"
+                    className="bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-800 transition-colors"
                   >
                     Retry
                   </button>
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-200 transition-colors"
+                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-200 transition-colors"
                   >
                     Back to Overview
                   </button>
@@ -437,26 +437,26 @@ const ResultRiasec = () => {
                 <div className="flex space-x-3">
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
                   >
                     ← Back
                   </button>
                   <button
                     onClick={() => navigate('/dashboard')}
-                    className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
+                    className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
                   >
                     Dashboard
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+              <div className="bg-white rounded p-4 border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between text-sm text-gray-600">
                   <div className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-900 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-gray-900 rounded-sm mr-2"></span>
                     Completed: {formatDate(result.created_at)}
                   </div>
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium">
                     RIASEC Model
                   </span>
                 </div>
@@ -470,7 +470,7 @@ const ResultRiasec = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-6">
                   <div className="flex items-center mb-4">
                     <span className="text-3xl mr-3">🎯</span>
@@ -482,17 +482,17 @@ const ResultRiasec = () => {
                   <p className="text-gray-700 leading-relaxed mb-4">{riasecExplanation.description}</p>
 
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white p-4 rounded-lg border border-blue-100">
+                    <div className="bg-white p-4 rounded border border-blue-100">
                       <h4 className="font-semibold text-gray-900 mb-2">👨‍🔬 Pengembang</h4>
                       <p className="text-sm text-gray-700">{riasecExplanation.developer}</p>
                     </div>
-                    <div className="bg-white p-4 rounded-lg border border-blue-100">
+                    <div className="bg-white p-4 rounded border border-blue-100">
                       <h4 className="font-semibold text-gray-900 mb-2">✅ Validitas Ilmiah</h4>
                       <p className="text-sm text-gray-700">{riasecExplanation.validity}</p>
                     </div>
                   </div>
 
-                  <div className="bg-white p-4 rounded-lg border border-blue-100">
+                  <div className="bg-white p-4 rounded border border-blue-100">
                     <h4 className="font-semibold text-gray-900 mb-2">🎯 Tujuan Assessment</h4>
                     <p className="text-sm text-gray-700">{riasecExplanation.purpose}</p>
                   </div>
@@ -508,7 +508,7 @@ const ResultRiasec = () => {
                 transition={{ duration: 0.5, delay: 0.4 }}
                 className="mb-8"
               >
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+                <div className="bg-white rounded border border-gray-200 shadow-sm p-6">
                   <div className="text-center mb-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Profil Minat Karier Anda</h3>
                     <p className="text-gray-600">Visualisasi enam dimensi minat karier RIASEC</p>
@@ -550,7 +550,7 @@ const ResultRiasec = () => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                          className="text-center p-3 bg-gray-50 rounded-lg"
+                          className="text-center p-3 bg-gray-50 rounded"
                         >
                           <div className="text-lg font-bold text-blue-600 mb-1">
                             {item.fullValue.toFixed(1)}
@@ -575,7 +575,7 @@ const ResultRiasec = () => {
                 transition={{ duration: 0.5, delay: 0.6 }}
                 className="mb-8"
               >
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+                <div className="bg-white rounded border border-gray-200 shadow-sm p-6">
                   <div className="text-center mb-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Your RIASEC Interest Profile</h3>
                     <p className="text-gray-600">Detailed breakdown of your career interest areas</p>
@@ -597,7 +597,7 @@ const ResultRiasec = () => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                          className="bg-white rounded border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                         >
                           {/* Header */}
                           <div className="bg-gray-50 border-b border-gray-200 p-6">
@@ -623,9 +623,9 @@ const ResultRiasec = () => {
 
                             {/* Progress Bar */}
                             <div className="mb-6">
-                              <div className="bg-gray-200 rounded-full h-2">
+                              <div className="bg-gray-200 rounded-sm h-2">
                                 <motion.div
-                                  className="bg-gray-900 h-2 rounded-full"
+                                  className="bg-gray-900 h-2 rounded-sm"
                                   initial={{ width: 0 }}
                                   animate={{ width: `${Math.min(score, 100)}%` }}
                                   transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
@@ -649,7 +649,7 @@ const ResultRiasec = () => {
                             </div>
 
                             {/* Career Implications */}
-                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                            <div className="bg-gray-50 rounded p-4 border border-gray-100">
                               <h4 className="font-semibold text-gray-900 mb-2">Career Implications</h4>
                               <p className="text-sm text-gray-700">
                                 {isHigh ? trait.careerImplications.high : trait.careerImplications.low}
@@ -671,9 +671,9 @@ const ResultRiasec = () => {
               transition={{ duration: 0.5, delay: 1.0 }}
               className="mb-12"
             >
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-8 mb-8">
+              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-md p-8 mb-8">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-md mb-4">
                     <span className="text-2xl">🎯</span>
                   </div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-3">
@@ -700,7 +700,7 @@ const ResultRiasec = () => {
                     className="group cursor-pointer"
                     onClick={() => navigate(card.path)}
                   >
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
+                    <div className="bg-white rounded-md p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
                       <div className="flex flex-col h-full">
                         <div className="flex items-start justify-end mb-4">
                           <motion.svg

@@ -22,7 +22,7 @@ const DashboardHeader = ({ user, onProfile, onLogout }) => {
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="p-3 bg-slate-900 rounded-xl shadow-sm"
+              className="p-3 bg-slate-900 rounded-md shadow-sm"
             >
               <BarChart3 className="h-6 w-6 text-white" />
             </motion.div>
@@ -61,7 +61,7 @@ const DashboardHeader = ({ user, onProfile, onLogout }) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onProfile}
-              className="flex items-center space-x-2 px-4 py-2.5 text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all duration-200 border border-slate-200 hover:border-slate-300"
+              className="flex items-center space-x-2 px-4 py-2.5 text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-md transition-all duration-200 border border-slate-200 hover:border-slate-300"
             >
               <User className="h-4 w-4" />
               <span className="hidden sm:inline font-medium">Profile</span>
@@ -72,7 +72,7 @@ const DashboardHeader = ({ user, onProfile, onLogout }) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onLogout}
-              className="flex items-center space-x-2 px-4 py-2.5 text-slate-700 bg-slate-50 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 border border-slate-200 hover:border-red-200"
+              className="flex items-center space-x-2 px-4 py-2.5 text-slate-700 bg-slate-50 hover:bg-red-50 hover:text-red-700 rounded-md transition-all duration-200 border border-slate-200 hover:border-red-200"
             >
               <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline font-medium">Logout</span>

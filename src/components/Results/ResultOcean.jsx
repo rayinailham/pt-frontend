@@ -75,60 +75,110 @@ const ResultOcean = () => {
       name: 'Openness',
       subtitle: 'Creativity & Curiosity',
       icon: '🎨',
-      description: 'Openness to experience emphasizes imagination and insight. It reflects your willingness to try new things, think creatively, and embrace novel ideas and experiences.',
-      highTraits: ['Very creative', 'Open to trying new things', 'Focused on tackling new challenges', 'Happy to think about abstract concepts', 'Enjoys artistic experiences'],
-      lowTraits: ['Dislikes change', 'Does not enjoy new things', 'Resists new ideas', 'Not very imaginative', 'Prefers routine and structure'],
+      description: 'Openness to experience mencerminkan keterbukaan terhadap pengalaman baru, kreativitas, dan kemauan untuk mencoba serta menerima ide-ide inovatif.',
+      highTraits: [
+        'Memiliki kreativitas tinggi dan terbuka terhadap pengalaman baru.',
+        'Menyukai tantangan serta ide-ide inovatif.',
+        'Berorientasi pada pemecahan masalah yang kompleks.',
+        'Mengapresiasi konsep abstrak dan pengalaman artistik.'
+      ],
+      lowTraits: [
+        'Kurang menyukai perubahan dan hal-hal baru.',
+        'Cenderung menolak ide-ide yang tidak familiar.',
+        'Kurang imajinatif dan lebih memilih rutinitas.',
+        'Lebih nyaman dengan struktur dan prosedur yang jelas.'
+      ],
       careerImplications: {
-        high: 'Thrives in creative roles, research, innovation, and dynamic environments',
-        low: 'Excels in structured roles, traditional industries, and routine-based work'
+        high: 'Sangat sesuai untuk peran yang menuntut kreativitas, penelitian, inovasi, dan lingkungan kerja yang dinamis.',
+        low: 'Lebih cocok untuk pekerjaan yang terstruktur, industri tradisional, dan tugas yang bersifat rutin.'
       }
     },
     conscientiousness: {
       name: 'Conscientiousness',
       subtitle: 'Organization & Discipline',
       icon: '📋',
-      description: 'Conscientiousness is defined by high levels of thoughtfulness, good impulse control, and goal-directed behaviors. It reflects your tendency to be organized, responsible, and dependable.',
-      highTraits: ['Spends time preparing', 'Finishes important tasks right away', 'Pays attention to detail', 'Enjoys having a set schedule', 'Strong work ethic'],
-      lowTraits: ['Dislikes structure and schedules', 'Makes messes and doesn\'t take care of things', 'Procrastinates important tasks', 'Flexible and spontaneous', 'Comfortable with ambiguity'],
+      description: 'Conscientiousness ditandai dengan tingkat kehati-hatian yang tinggi, pengendalian diri yang baik, dan perilaku yang terarah pada tujuan. Karakteristik ini mencerminkan kecenderungan untuk terorganisir, bertanggung jawab, dan dapat diandalkan.',
+      highTraits: [
+        'Selalu mempersiapkan segala sesuatu dengan baik.',
+        'Menyelesaikan tugas penting secara tepat waktu.',
+        'Memiliki perhatian tinggi terhadap detail.',
+        'Menyukai jadwal yang teratur dan konsisten.'
+      ],
+      lowTraits: [
+        'Kurang menyukai struktur dan jadwal yang ketat.',
+        'Cenderung menunda tugas-tugas penting.',
+        'Lebih fleksibel dan spontan dalam bekerja.',
+        'Merasa nyaman dalam situasi yang ambigu.'
+      ],
       careerImplications: {
-        high: 'Suited for management, project coordination, and detail-oriented professions',
-        low: 'Thrives in flexible, creative, and adaptive work environments'
+        high: 'Sangat sesuai untuk peran manajemen, koordinasi proyek, dan profesi yang membutuhkan ketelitian.',
+        low: 'Lebih cocok untuk lingkungan kerja yang fleksibel, kreatif, dan adaptif.'
       }
     },
     extraversion: {
       name: 'Extraversion',
       subtitle: 'Social Energy & Assertiveness',
       icon: '🗣️',
-      description: 'Extraversion is characterized by excitability, sociability, talkativeness, and assertiveness. It indicates your preference for social interaction and drawing energy from external stimulation.',
-      highTraits: ['Enjoys being the center of attention', 'Likes to start conversations', 'Enjoys meeting new people', 'Has a wide social circle', 'Feels energized when around other people'],
-      lowTraits: ['Prefers solitude', 'Feels exhausted when having to socialize a lot', 'Finds it difficult to start conversations', 'Carefully thinks things through before speaking', 'Works well independently'],
+      description: 'Extraversion ditandai dengan sifat mudah bersemangat, suka bersosialisasi, komunikatif, dan asertif. Karakteristik ini menunjukkan preferensi terhadap interaksi sosial dan memperoleh energi dari stimulasi eksternal.',
+      highTraits: [
+        'Menyukai perhatian dan interaksi sosial.',
+        'Aktif memulai percakapan dan membangun relasi baru.',
+        'Memiliki jejaring sosial yang luas.',
+        'Merasa berenergi saat berada di lingkungan sosial.'
+      ],
+      lowTraits: [
+        'Lebih menyukai kesendirian dan waktu pribadi.',
+        'Mudah merasa lelah jika harus banyak bersosialisasi.',
+        'Cenderung berpikir matang sebelum berbicara.',
+        'Mampu bekerja secara mandiri dengan baik.'
+      ],
       careerImplications: {
-        high: 'Excels in sales, leadership, public speaking, and team-oriented roles',
-        low: 'Thrives in research, writing, technical work, and independent roles'
+        high: 'Sangat sesuai untuk bidang penjualan, kepemimpinan, public speaking, dan peran yang berorientasi pada tim.',
+        low: 'Lebih cocok untuk penelitian, penulisan, pekerjaan teknis, dan peran yang bersifat independen.'
       }
     },
     agreeableness: {
       name: 'Agreeableness',
       subtitle: 'Cooperation & Empathy',
       icon: '🤝',
-      description: 'Agreeableness includes attributes such as trust, altruism, kindness, and affection. It reflects your tendency to be cooperative, trusting, and helpful in interactions with others.',
-      highTraits: ['Has a great deal of interest in other people', 'Cares about others', 'Feels empathy and concern for other people', 'Enjoys helping others', 'Cooperative team player'],
-      lowTraits: ['Takes little interest in others', 'Direct and honest communicator', 'Has little interest in other people\'s problems', 'Competitive nature', 'Independent thinker'],
+      description: 'Agreeableness mencakup sifat dapat dipercaya, altruisme, kebaikan hati, dan kasih sayang. Karakteristik ini mencerminkan kecenderungan untuk kooperatif, mudah percaya, dan membantu dalam berinteraksi dengan orang lain.',
+      highTraits: [
+        'Memiliki ketertarikan tinggi terhadap orang lain.',
+        'Peduli dan empati terhadap sesama.',
+        'Senang membantu dan bekerja sama dalam tim.',
+        'Mampu membangun hubungan yang harmonis.'
+      ],
+      lowTraits: [
+        'Kurang tertarik pada permasalahan orang lain.',
+        'Berkomunikasi secara langsung dan jujur.',
+        'Memiliki sifat kompetitif dan mandiri.',
+        'Lebih mengutamakan pemikiran independen.'
+      ],
       careerImplications: {
-        high: 'Suited for counseling, healthcare, education, and service-oriented roles',
-        low: 'Excels in competitive fields, negotiations, and leadership positions'
+        high: 'Sangat sesuai untuk bidang konseling, layanan kesehatan, pendidikan, dan peran yang berorientasi pada pelayanan.',
+        low: 'Lebih cocok untuk bidang yang kompetitif, negosiasi, dan posisi kepemimpinan.'
       }
     },
     neuroticism: {
       name: 'Neuroticism',
       subtitle: 'Emotional Sensitivity',
       icon: '🌊',
-      description: 'Neuroticism is characterized by emotional instability and tendency to experience negative emotions. It measures your emotional stability and resilience to stress.',
-      highTraits: ['Experiences a lot of stress', 'Worries about many different things', 'Gets upset easily', 'Experiences dramatic shifts in mood', 'Sensitive to criticism'],
-      lowTraits: ['Emotionally stable', 'Deals well with stress', 'Rarely feels sad or depressed', 'Doesn\'t worry much', 'Resilient to setbacks'],
+      description: 'Neuroticism ditandai dengan ketidakstabilan emosi dan kecenderungan untuk mengalami emosi negatif. Karakteristik ini mengukur stabilitas emosional dan ketahanan terhadap stres.',
+      highTraits: [
+        'Sering mengalami stres dan kekhawatiran.',
+        'Mudah merasa cemas atau tertekan.',
+        'Perubahan suasana hati yang cukup signifikan.',
+        'Sensitif terhadap kritik dan tekanan.'
+      ],
+      lowTraits: [
+        'Stabil secara emosional dan jarang merasa cemas.',
+        'Mampu mengelola stres dengan baik.',
+        'Jarang merasa sedih atau tertekan.',
+        'Tangguh dalam menghadapi tantangan.'
+      ],
       careerImplications: {
-        high: 'Benefits from supportive environments and stress management resources',
-        low: 'Thrives in high-pressure, demanding, and unpredictable work environments'
+        high: 'Sebaiknya bekerja di lingkungan yang suportif dan memiliki sumber daya manajemen stres.',
+        low: 'Sangat sesuai untuk lingkungan kerja yang penuh tekanan, menuntut, dan tidak terduga.'
       }
     }
   };
@@ -227,7 +277,7 @@ const ResultOcean = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 max-w-sm"
+          className="bg-white p-4 rounded shadow-lg border border-gray-200 max-w-sm"
         >
           <div className="flex items-center mb-2">
             <span className="text-xl mr-2">{trait?.icon}</span>
@@ -277,7 +327,7 @@ const ResultOcean = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"
+            className="bg-white border border-gray-200 rounded p-6 shadow-sm"
           >
             <div className="flex items-center">
               <div className="text-gray-400 mr-3">⚠️</div>
@@ -287,13 +337,13 @@ const ResultOcean = () => {
                 <div className="mt-4 space-x-3">
                   <button
                     onClick={() => window.location.reload()}
-                    className="bg-gray-900 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition-colors"
+                    className="bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-800 transition-colors"
                   >
                     Retry
                   </button>
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-200 transition-colors"
+                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-200 transition-colors"
                   >
                     Back to Overview
                   </button>
@@ -324,26 +374,26 @@ const ResultOcean = () => {
                 <div className="flex space-x-3">
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
                   >
                     ← Back
                   </button>
                   <button
                     onClick={() => navigate('/dashboard')}
-                    className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
+                    className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
                   >
                     Dashboard
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+              <div className="bg-white rounded p-4 border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between text-sm text-gray-600">
                   <div className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-900 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-gray-900 rounded-sm mr-2"></span>
                     Completed: {formatDate(result.created_at)}
                   </div>
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium">
                     Big Five Model
                   </span>
                 </div>
@@ -357,7 +407,7 @@ const ResultOcean = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-8"
             >
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-6">
                   <div className="flex items-center mb-4">
                     <span className="text-3xl mr-3">🧭</span>
@@ -369,17 +419,17 @@ const ResultOcean = () => {
                   <p className="text-gray-700 leading-relaxed mb-4">{oceanExplanation.description}</p>
 
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white p-4 rounded-lg border border-blue-100">
+                    <div className="bg-white p-4 rounded border border-blue-100">
                       <h4 className="font-semibold text-gray-900 mb-2">👨‍🔬 Pengembang</h4>
                       <p className="text-sm text-gray-700">{oceanExplanation.developer}</p>
                     </div>
-                    <div className="bg-white p-4 rounded-lg border border-blue-100">
+                    <div className="bg-white p-4 rounded border border-blue-100">
                       <h4 className="font-semibold text-gray-900 mb-2">✅ Validitas Ilmiah</h4>
                       <p className="text-sm text-gray-700">{oceanExplanation.validity}</p>
                     </div>
                   </div>
 
-                  <div className="bg-white p-4 rounded-lg border border-blue-100">
+                  <div className="bg-white p-4 rounded border border-blue-100">
                     <h4 className="font-semibold text-gray-900 mb-2">🎯 Tujuan Assessment</h4>
                     <p className="text-sm text-gray-700">{oceanExplanation.purpose}</p>
                   </div>
@@ -395,7 +445,7 @@ const ResultOcean = () => {
                 transition={{ duration: 0.5, delay: 0.4 }}
                 className="mb-8"
               >
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+                <div className="bg-white rounded border border-gray-200 shadow-sm p-6">
                   <div className="text-center mb-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Profil Kepribadian Anda</h3>
                     <p className="text-gray-600">Visualisasi lima dimensi kepribadian OCEAN</p>
@@ -437,7 +487,7 @@ const ResultOcean = () => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                          className="text-center p-3 bg-gray-50 rounded-lg"
+                          className="text-center p-3 bg-gray-50 rounded"
                         >
                           <div className="text-lg font-bold text-blue-600 mb-1">
                             {item.fullValue.toFixed(1)}
@@ -473,7 +523,7 @@ const ResultOcean = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                        className="bg-white rounded border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                       >
                       {/* Header */}
                       <div className="bg-gray-50 border-b border-gray-200 p-6">
@@ -499,9 +549,9 @@ const ResultOcean = () => {
 
                         {/* Progress Bar */}
                         <div className="mb-6">
-                          <div className="bg-gray-200 rounded-full h-2">
+                          <div className="bg-gray-200 rounded-sm h-2">
                             <motion.div
-                              className="bg-gray-900 h-2 rounded-full"
+                              className="bg-gray-900 h-2 rounded-sm"
                               initial={{ width: 0 }}
                               animate={{ width: `${Math.min(score, 100)}%` }}
                               transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
@@ -525,7 +575,7 @@ const ResultOcean = () => {
                         </div>
 
                         {/* Career Implications */}
-                        <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                        <div className="bg-gray-50 rounded p-4 border border-gray-100">
                           <h4 className="font-semibold text-gray-900 mb-2">Career Implications</h4>
                           <p className="text-sm text-gray-700">
                             {isHigh ? trait.careerImplications.high : trait.careerImplications.low}
@@ -553,7 +603,7 @@ const ResultOcean = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: (index + 3) * 0.1 }}
-                        className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                        className="bg-white rounded border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                       >
                         {/* Header */}
                         <div className="bg-gray-50 border-b border-gray-200 p-6">
@@ -579,9 +629,9 @@ const ResultOcean = () => {
 
                           {/* Progress Bar */}
                           <div className="mb-6">
-                            <div className="bg-gray-200 rounded-full h-2">
+                            <div className="bg-gray-200 rounded-sm h-2">
                               <motion.div
-                                className="bg-gray-900 h-2 rounded-full"
+                                className="bg-gray-900 h-2 rounded-sm"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${Math.min(score, 100)}%` }}
                                 transition={{ duration: 1, delay: 0.5 + (index + 3) * 0.1 }}
@@ -605,7 +655,7 @@ const ResultOcean = () => {
                           </div>
 
                           {/* Career Implications */}
-                          <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                          <div className="bg-gray-50 rounded p-4 border border-gray-100">
                             <h4 className="font-semibold text-gray-900 mb-2">Career Implications</h4>
                             <p className="text-sm text-gray-700">
                               {isHigh ? trait.careerImplications.high : trait.careerImplications.low}
@@ -626,9 +676,9 @@ const ResultOcean = () => {
               transition={{ duration: 0.5, delay: 1.0 }}
               className="mb-12"
             >
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-8 mb-8">
+              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-md p-8 mb-8">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-md mb-4">
                     <span className="text-2xl">🧭</span>
                   </div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-3">
@@ -655,7 +705,7 @@ const ResultOcean = () => {
                     className="group cursor-pointer"
                     onClick={() => navigate(card.path)}
                   >
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
+                    <div className="bg-white rounded-md p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
                       <div className="flex flex-col h-full">
                         <div className="flex items-start justify-end mb-4">
                           <motion.svg

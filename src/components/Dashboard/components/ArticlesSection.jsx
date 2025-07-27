@@ -81,11 +81,11 @@ const ArticlesSection = ({ loading }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="bg-white hover:bg-slate-50 rounded-xl p-6 cursor-pointer transition-all duration-200 border border-slate-200/60 hover:border-slate-300 hover:shadow-md shadow-sm group"
+            className="bg-white hover:bg-slate-50 rounded-md p-6 cursor-pointer transition-all duration-200 border border-slate-200/60 hover:border-slate-300 hover:shadow-md shadow-sm group"
           >
             {/* Icon & Header */}
             <div className="flex items-center mb-4">
-              <div className={`w-12 h-12 ${article.iconBg} rounded-xl flex items-center justify-center`}>
+              <div className={`w-12 h-12 ${article.iconBg} rounded-md flex items-center justify-center`}>
                 <article.icon className={`h-6 w-6 ${article.iconColor}`} />
               </div>
               <div className="ml-4">
@@ -115,7 +115,7 @@ const ArticlesSection = ({ loading }) => {
 
       {/* View All Button */}
       <div className="mt-8 text-center">
-        <button className="inline-flex items-center px-6 py-3 border border-slate-200 text-sm font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 transition-all duration-200 shadow-sm hover:border-slate-300">
+        <button className="inline-flex items-center px-6 py-3 border border-slate-200 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 transition-all duration-200 shadow-sm hover:border-slate-300">
           Lihat Semua Artikel
           <BookOpen className="ml-2 h-4 w-4" />
         </button>

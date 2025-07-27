@@ -57,7 +57,7 @@ const ResultsTable = ({
             whileTap={{ scale: 0.98 }}
             onClick={onRefresh}
             disabled={loading.results}
-            className="flex items-center space-x-2 px-3 py-2.5 text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center space-x-2 px-3 py-2.5 text-slate-600 bg-slate-100 rounded-md hover:bg-slate-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Refresh results table"
           >
             <RefreshCw className={`h-4 w-4 ${loading.results ? 'animate-spin' : ''}`} />
@@ -69,7 +69,7 @@ const ResultsTable = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onNewAssessment}
-          className="flex items-center space-x-2 px-4 py-2.5 text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition-all duration-200"
+          className="flex items-center space-x-2 px-4 py-2.5 text-white bg-slate-900 rounded-md hover:bg-slate-800 transition-all duration-200"
         >
           <Plus className="h-4 w-4" />
           <span className="hidden sm:inline font-medium">New Assessment</span>
@@ -77,16 +77,16 @@ const ResultsTable = ({
       </div>
 
       {/* Content */}
-      <div className="bg-white rounded-xl border border-slate-200/60 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-lg border border-slate-200/60 shadow-sm overflow-hidden">
         {loading.results ? (
           <div className="p-6">
             <div className="space-y-4">
               {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="animate-pulse flex items-center space-x-4">
-                  <div className="h-4 bg-slate-200/60 rounded-lg w-1/4"></div>
-                  <div className="h-4 bg-slate-200/60 rounded-lg w-1/4"></div>
-                  <div className="h-4 bg-slate-200/60 rounded-lg w-1/6"></div>
-                  <div className="h-4 bg-slate-200/60 rounded-lg w-1/4"></div>
+                  <div className="h-4 bg-slate-200/60 rounded w-1/4"></div>
+                  <div className="h-4 bg-slate-200/60 rounded w-1/4"></div>
+                  <div className="h-4 bg-slate-200/60 rounded w-1/6"></div>
+                  <div className="h-4 bg-slate-200/60 rounded w-1/4"></div>
                 </div>
               ))}
             </div>
@@ -166,7 +166,7 @@ const ResultsTable = ({
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => onView(result.id)}
-                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors duration-200"
+                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors duration-200"
                         >
                           <Eye className="h-3 w-3 mr-1" />
                           View
@@ -176,7 +176,7 @@ const ResultsTable = ({
                           whileTap={{ scale: 0.95 }}
                           onClick={() => onDelete(result.id)}
                           disabled={deleteLoading[result.id]}
-                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-red-700 bg-red-100 hover:bg-red-200 disabled:opacity-50 transition-colors duration-200"
+                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 disabled:opacity-50 transition-colors duration-200"
                         >
                           {deleteLoading[result.id] ? (
                             <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
@@ -199,7 +199,7 @@ const ResultsTable = ({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="mx-auto h-16 w-16 bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
+              <div className="mx-auto h-16 w-16 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
                 <Activity className="h-8 w-8 text-slate-400" />
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">No results yet</h3>
@@ -208,7 +208,7 @@ const ResultsTable = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onNewAssessment}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-slate-900 hover:bg-slate-800 transition-all duration-200"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-slate-900 hover:bg-slate-800 transition-all duration-200"
               >
                 Start Assessment
               </motion.button>

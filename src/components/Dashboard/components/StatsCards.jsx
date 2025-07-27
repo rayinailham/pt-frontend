@@ -43,7 +43,7 @@ const StatsCards = ({ data, loading, statusCounts }) => {
           whileHover={{ y: -2, transition: { duration: 0.2 } }}
           className="relative overflow-hidden"
         >
-          <div className="bg-white rounded-xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300">
+          <div className="bg-white rounded-md p-6 border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <p className="text-sm font-medium text-slate-600 mb-3">
@@ -51,7 +51,7 @@ const StatsCards = ({ data, loading, statusCounts }) => {
                 </p>
                 {card.loading ? (
                   <div className="flex items-center space-x-2">
-                    <div className="animate-pulse h-8 bg-slate-200/60 rounded-lg w-16"></div>
+                    <div className="animate-pulse h-8 bg-slate-200/60 rounded w-16"></div>
                     <div className="animate-spin rounded-full h-4 w-4 border-2 border-slate-300 border-t-transparent"></div>
                   </div>
                 ) : (
@@ -65,7 +65,7 @@ const StatsCards = ({ data, loading, statusCounts }) => {
                 )}
               </div>
 
-              <div className={`p-3 ${card.iconBg} rounded-xl`}>
+              <div className={`p-3 ${card.iconBg} rounded-md`}>
                 <card.icon className={`h-6 w-6 ${card.iconColor}`} />
               </div>
             </div>

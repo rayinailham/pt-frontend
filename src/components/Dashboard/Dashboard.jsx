@@ -113,7 +113,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <div className="bg-white border border-slate-200/60 rounded-2xl shadow-sm">
+            <div className="bg-white border border-slate-200/60 rounded-lg shadow-sm">
               <EnhancedLoadingScreen
                 title="Loading Dashboard..."
                 subtitle="Fetching your latest assessment results and statistics"
@@ -131,7 +131,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <div className="bg-white border border-slate-200/60 rounded-2xl shadow-sm p-8">
+            <div className="bg-white border border-slate-200/60 rounded-lg shadow-sm p-8">
               <ErrorMessage
                 title="Failed to Load Dashboard"
                 message={error.general || error.stats || error.results || error.tokenBalance}
@@ -148,69 +148,72 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", staggerChildren: 0.1 }}
-            className="space-y-12"
           >
-
-            {/* Performance Overview Section */}
-            <motion.section
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <div className="mb-8">
-                <h2 className="text-2xl font-semibold text-slate-900 mb-2">Performance Overview</h2>
-                <p className="text-slate-600">Key metrics and insights from your assessments</p>
-              </div>
-              <StatsCards
-                data={data}
-                loading={loading}
-                statusCounts={statusCounts}
-              />
-            </motion.section>
-
-            {/* Divider */}
-            <div className="border-t border-slate-200/60"></div>
-
-            {/* Assessment Results Section */}
-            <motion.section
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-            >
-              <div className="mb-8">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
-                    <p className="text-slate-600">View and manage your assessment history</p>
+            {/* Main Content Container */}
+            <div className="bg-white border border-slate-200/60 shadow-sm">
+              <div className="p-8 space-y-12">
+                {/* Performance Overview Section */}
+                <motion.section
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                >
+                  <div className="mb-8">
+                    <h2 className="text-2xl font-semibold text-slate-900 mb-2">Performance Overview</h2>
+                    <p className="text-slate-600">Key metrics and insights from your assessments</p>
                   </div>
-                </div>
-              </div>
-              <ResultsTable
-                data={data}
-                loading={loading}
-                onView={handleView}
-                onDelete={handleDelete}
-                onNewAssessment={() => navigate('/assessment')}
-                onRefresh={() => actions.fetchResults()}
-                deleteLoading={deleteLoading}
-              />
-            </motion.section>
+                  <StatsCards
+                    data={data}
+                    loading={loading}
+                    statusCounts={statusCounts}
+                  />
+                </motion.section>
 
-            {/* Divider */}
-            <div className="border-t border-slate-200/60"></div>
+                {/* Divider */}
+                <div className="border-t-2 border-slate-200"></div>
 
-            {/* Learning Resources Section */}
-            <motion.section
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <div className="mb-8">
-                <h2 className="text-2xl font-semibold text-slate-900 mb-2">Learning Resources</h2>
-                <p className="text-slate-600">Curated articles and insights to enhance your knowledge</p>
+                {/* Assessment Results Section */}
+                <motion.section
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                >
+                  <div className="mb-8">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
+                        <p className="text-slate-600">View and manage your assessment history</p>
+                      </div>
+                    </div>
+                  </div>
+                  <ResultsTable
+                    data={data}
+                    loading={loading}
+                    onView={handleView}
+                    onDelete={handleDelete}
+                    onNewAssessment={() => navigate('/assessment')}
+                    onRefresh={() => actions.fetchResults()}
+                    deleteLoading={deleteLoading}
+                  />
+                </motion.section>
+
+                {/* Divider */}
+                <div className="border-t border-slate-200/60"></div>
+
+                {/* Learning Resources Section */}
+                <motion.section
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                >
+                  <div className="mb-8">
+                    <h2 className="text-2xl font-semibold text-slate-900 mb-2">Learning Resources</h2>
+                    <p className="text-slate-600">Curated articles and insights to enhance your knowledge</p>
+                  </div>
+                  <ArticlesSection loading={loading} />
+                </motion.section>
               </div>
-              <ArticlesSection loading={loading} />
-            </motion.section>
+            </div>
 
             {/* Bottom spacing */}
             <div className="h-16"></div>
