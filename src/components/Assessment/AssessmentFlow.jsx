@@ -4,7 +4,6 @@ import AssessmentForm from './AssessmentForm';
 import AutoFillNotification from './AutoFillNotification';
 import { viaQuestions, riasecQuestions, bigFiveQuestions } from '../../data/assessmentQuestions';
 import apiService from '../../services/apiService';
-import LoadingSpinner from '../UI/LoadingSpinner';
 import ErrorMessage from '../UI/ErrorMessage';
 import { transformAssessmentScores, validateAssessmentData } from '../../utils/assessmentTransformers';
 
@@ -25,7 +24,6 @@ const AssessmentFlow = () => {
     riasec: null,
     bigFive: null
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false); // Flag to prevent double submission
   const [isProcessingSubmit, setIsProcessingSubmit] = useState(false); // Flag to prevent rapid clicks
   const [error, setError] = useState('');
@@ -240,15 +238,12 @@ const AssessmentFlow = () => {
    * Submit all assessments to API
    */
   const submitToApi = async () => {
-    setIsSubmitting(true);
-    setError('');
-
     try {
       const apiData = transformScoresToApiFormat();
       const response = await apiService.submitAssessment(apiData);
 
       if (response.success && response.data?.jobId) {
-        // Navigate to status page with job ID
+        // Navigate directly to status page with job ID without showing loading
         navigate(`/assessment/status/${response.data.jobId}`, {
           state: { fromSubmission: true }
         });
@@ -260,8 +255,6 @@ const AssessmentFlow = () => {
       setError(err.response?.data?.message || err.message || 'Failed to submit assessment');
       setHasSubmitted(false); // Reset flag on error to allow retry
       setIsProcessingSubmit(false); // Reset processing flag on error
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -278,23 +271,11 @@ const AssessmentFlow = () => {
   useEffect(() => {
     const { via, riasec, bigFive } = assessmentScores;
 
-    if (via && riasec && bigFive && !isSubmitting && !hasSubmitted && !isProcessingSubmit && !isAutoFillMode) {
+    if (via && riasec && bigFive && !hasSubmitted && !isProcessingSubmit && !isAutoFillMode) {
       setHasSubmitted(true); // Set flag to prevent double submission
       submitToApi();
     }
-  }, [assessmentScores, isSubmitting, hasSubmitted, isProcessingSubmit, isAutoFillMode]);
-
-  // Show loading screen during submission
-  if (isSubmitting) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner text="Submitting your assessment..." />
-          <p className="mt-4 text-gray-700">Please wait while we process your responses</p>
-        </div>
-      </div>
-    );
-  }
+  }, [assessmentScores, hasSubmitted, isProcessingSubmit, isAutoFillMode]);
 
   // Show error screen if submission failed
   if (error) {

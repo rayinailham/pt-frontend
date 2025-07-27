@@ -285,12 +285,12 @@ const AssessmentForm = ({
                     {assessmentData.title}
                   </h1>
                   <p className="text-gray-600 text-sm mt-1 font-medium">
-                    Penilaian {currentStep} dari {totalSteps} - {assessmentData.description}
+                    Assessment {currentStep} of {totalSteps} - {assessmentData.description}
                   </p>
                   {isAutoFillMode && (
                     <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-300">
                       <Check className="h-3 w-3 mr-1" />
-                      Terisi otomatis - Anda dapat mengubah jawaban secara manual
+                      Auto-filled - You can edit answers manually
                     </div>
                   )}
                 </div>
@@ -340,7 +340,7 @@ const AssessmentForm = ({
               className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="h-5 w-5" />
-              <span>Kategori Sebelumnya</span>
+              <span>Previous Category</span>
             </button>
 
             <div className="flex items-center space-x-4">

@@ -115,7 +115,7 @@ const AssessmentSidebar = ({
             <div className="p-2 bg-gray-100 border border-gray-200">
               <Clock className="h-4 w-4 text-gray-700" />
             </div>
-            <span>Progres Penilaian</span>
+            <span>Assessment Progress</span>
           </h3>
 
           <div className="grid grid-cols-2 gap-3 mb-4">
@@ -123,13 +123,13 @@ const AssessmentSidebar = ({
               <div className="text-2xl font-bold text-gray-900">
                 {totalProgress.answered}
               </div>
-              <div className="text-xs text-gray-600 font-medium">Selesai</div>
+              <div className="text-xs text-gray-600 font-medium">Completed</div>
             </div>
             <div className="text-center p-4 bg-gray-50 border border-gray-200">
               <div className="text-2xl font-bold text-gray-600">
                 {totalProgress.total - totalProgress.answered}
               </div>
-              <div className="text-xs text-gray-600 font-medium">Tersisa</div>
+              <div className="text-xs text-gray-600 font-medium">Remaining</div>
             </div>
           </div>
 
@@ -139,7 +139,7 @@ const AssessmentSidebar = ({
         {/* Phase Structure */}
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Struktur Penilaian
+            Assessment Structure
           </h3>
 
           <div className="space-y-3">
@@ -221,7 +221,7 @@ const AssessmentSidebar = ({
           <div className="mt-6 p-4 bg-gray-50 border border-gray-200">
             <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center space-x-2">
               <Zap className="h-4 w-4" />
-              <span>Opsi Pengisian Cepat</span>
+              <span>Quick Fill Options</span>
             </h4>
             <div className="space-y-2">
               {/* Fill Current Assessment */}
@@ -230,7 +230,7 @@ const AssessmentSidebar = ({
                 className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 text-sm font-medium"
               >
                 <Shuffle className="h-4 w-4" />
-                <span>Isi Fase Saat Ini</span>
+                <span>Fill Current Phase</span>
               </button>
 
               {/* Fill All Assessments */}
@@ -239,11 +239,11 @@ const AssessmentSidebar = ({
                 className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 text-sm font-medium"
               >
                 <Zap className="h-4 w-4" />
-                <span>Isi Semua 200 Pertanyaan</span>
+                <span>Fill All 200 Questions</span>
               </button>
             </div>
             <p className="text-xs text-gray-600 mt-2 text-center">
-            Jawaban yang terisi otomatis dapat diedit secara manual
+              Auto-filled answers can be edited manually
             </p>
           </div>
         )}
@@ -251,7 +251,7 @@ const AssessmentSidebar = ({
         {/* Total Progress - Bottom Section */}
         <div className="mt-auto pt-6 border-t border-gray-200">
           <div className="text-center mb-4">
-            <h4 className="text-base font-medium text-gray-900 mb-3">Progres Fase Saat Ini</h4>
+            <h4 className="text-base font-medium text-gray-900 mb-3">Current Phase Progress</h4>
             <div className="w-full bg-gray-200 h-3">
               <div
                 className="bg-gray-900 h-3 transition-all duration-500 ease-out"
@@ -259,7 +259,7 @@ const AssessmentSidebar = ({
               ></div>
             </div>
             <div className="text-sm text-gray-600 mt-2 font-medium">
-              {totalProgress.total > 0 ? Math.round((totalProgress.answered / totalProgress.total) * 100) : 0}% Selesai
+              {totalProgress.total > 0 ? Math.round((totalProgress.answered / totalProgress.total) * 100) : 0}% Complete
             </div>
           </div>
         </div>

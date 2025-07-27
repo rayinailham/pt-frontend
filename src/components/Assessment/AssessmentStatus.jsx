@@ -151,12 +151,14 @@ const AssessmentStatus = () => {
     switch (stage) {
       case 'processing':
         return (
-          <div className={`relative w-16 h-16 ${stageInfo.bgColor} border border-gray-200 flex items-center justify-center transition-all duration-300`}>
-            {/* Single rotating ring */}
-            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 animate-spin" style={{animationDuration: '1.5s'}}></div>
+          <div className={`relative w-20 h-20 ${stageInfo.bgColor} rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+            {/* Outer rotating ring */}
+            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '1.5s'}}></div>
+            {/* Inner pulsing ring */}
+            <div className="absolute inset-4 border border-gray-300 border-t-gray-600 rounded-full animate-spin opacity-60" style={{animationDuration: '2.5s', animationDirection: 'reverse'}}></div>
             {/* Processing icon */}
-            <div className="relative z-10">
-              <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-colors duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="relative z-10 animate-pulse" style={{animationDuration: '2s'}}>
+              <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-all duration-500`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
             </div>
@@ -164,26 +166,29 @@ const AssessmentStatus = () => {
         );
       case 'analyzing':
         return (
-          <div className={`relative w-16 h-16 ${stageInfo.bgColor} border border-gray-200 flex items-center justify-center transition-all duration-300`}>
+          <div className={`relative w-20 h-20 ${stageInfo.bgColor} rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
             {/* Subtle pulsing background */}
-            <div className="absolute inset-1 bg-gray-100 animate-pulse" style={{animationDuration: '2s'}}></div>
-            {/* Rotating ring */}
-            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 animate-spin" style={{animationDuration: '2s'}}></div>
-            <svg className={`w-8 h-8 ${stageInfo.iconColor} relative z-10 transition-colors duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="absolute inset-2 bg-gray-100 rounded-lg animate-pulse" style={{animationDuration: '2s'}}></div>
+            {/* Multiple rotating rings for complex analysis effect */}
+            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '2s'}}></div>
+            <div className="absolute inset-3 border border-gray-300 border-r-gray-600 rounded-full animate-spin opacity-70" style={{animationDuration: '3s', animationDirection: 'reverse'}}></div>
+            <svg className={`w-8 h-8 ${stageInfo.iconColor} relative z-10 transition-all duration-500 animate-pulse`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{animationDuration: '1.8s'}}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </div>
         );
       case 'preparing':
         return (
-          <div className={`relative w-16 h-16 ${stageInfo.bgColor} border border-gray-200 flex items-center justify-center transition-all duration-300`}>
+          <div className={`relative w-20 h-20 ${stageInfo.bgColor} rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
             {/* Subtle pulsing background */}
-            <div className="absolute inset-1 bg-gray-100 animate-pulse" style={{animationDuration: '1.5s'}}></div>
+            <div className="absolute inset-2 bg-gray-100 rounded-lg animate-pulse" style={{animationDuration: '1.5s'}}></div>
             {/* Slow rotating progress indicator */}
-            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 animate-spin" style={{animationDuration: '2.5s'}}></div>
+            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '2.5s'}}></div>
+            {/* Success pulse effect */}
+            <div className="absolute inset-1 border border-gray-300 rounded-xl animate-ping opacity-30" style={{animationDuration: '3s'}}></div>
             {/* Check icon with subtle scale animation */}
-            <div className="relative z-10 animate-pulse" style={{animationDuration: '2s'}}>
-              <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-colors duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="relative z-10 animate-bounce" style={{animationDuration: '2s'}}>
+              <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-all duration-500`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -191,7 +196,7 @@ const AssessmentStatus = () => {
         );
       default:
         return (
-          <div className="w-16 h-16 bg-gray-100 border border-gray-200 flex items-center justify-center transition-all duration-300">
+          <div className="w-20 h-20 bg-gray-100 rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out">
             <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -220,7 +225,7 @@ const AssessmentStatus = () => {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white border border-gray-200 overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
           {error ? (
             <div className="p-8">
               <ErrorMessage
@@ -237,13 +242,13 @@ const AssessmentStatus = () => {
                 <div className="flex justify-center items-center space-x-6 mb-8">
                   {/* Step 1: Processing */}
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'processing' ? 'bg-gray-900 text-white' :
-                      ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700 text-white' :
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out transform ${
+                      currentStage === 'processing' ? 'bg-gray-900 text-white scale-110 shadow-lg' :
+                      ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700 text-white shadow-md' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       {['analyzing', 'preparing'].includes(currentStage) ? (
-                        <svg className="w-4 h-4 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="w-5 h-5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       ) : (
@@ -260,19 +265,19 @@ const AssessmentStatus = () => {
                   </div>
 
                   {/* Connector */}
-                  <div className={`h-px w-8 transition-all duration-700 ${
+                  <div className={`h-1 w-12 rounded-full transition-all duration-700 ease-in-out ${
                     ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700' : 'bg-gray-300'
                   }`}></div>
 
                   {/* Step 2: Analysis */}
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'analyzing' ? 'bg-gray-900 text-white' :
-                      currentStage === 'preparing' ? 'bg-gray-700 text-white' :
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out transform ${
+                      currentStage === 'analyzing' ? 'bg-gray-900 text-white scale-110 shadow-lg' :
+                      currentStage === 'preparing' ? 'bg-gray-700 text-white shadow-md' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       {currentStage === 'preparing' ? (
-                        <svg className="w-4 h-4 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="w-5 h-5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       ) : (
@@ -289,14 +294,14 @@ const AssessmentStatus = () => {
                   </div>
 
                   {/* Connector */}
-                  <div className={`h-px w-8 transition-all duration-700 ${
+                  <div className={`h-1 w-12 rounded-full transition-all duration-700 ease-in-out ${
                     currentStage === 'preparing' ? 'bg-gray-700' : 'bg-gray-300'
                   }`}></div>
 
                   {/* Step 3: Report */}
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'preparing' ? 'bg-gray-900 text-white' :
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out transform ${
+                      currentStage === 'preparing' ? 'bg-gray-900 text-white scale-110 shadow-lg' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       3
@@ -328,15 +333,15 @@ const AssessmentStatus = () => {
 
               {/* Time Estimation */}
               {status?.estimatedTimeRemaining && (
-                <div className="bg-gray-50 p-4 border border-gray-200 transition-all duration-300">
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 transition-all duration-300">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-white flex items-center justify-center border border-gray-200 transition-all duration-300">
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-gray-200 transition-all duration-300">
                       <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Perkiraan Waktu Tersisa</p>
+                      <p className="text-sm font-medium text-gray-900">Estimated Time Remaining</p>
                       <p className="text-sm text-gray-700">{status.estimatedTimeRemaining}</p>
                     </div>
                   </div>
@@ -347,7 +352,7 @@ const AssessmentStatus = () => {
               <div className="mt-8 text-center">
                 <button
                   onClick={() => navigate('/dashboard', { state: { fromAssessment: true } })}
-                  className="inline-flex items-center px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200"
+                  className="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
