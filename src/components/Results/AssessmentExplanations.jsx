@@ -1,196 +1,108 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const AssessmentExplanations = ({ showOnly = null }) => {
-  const [activeTab, setActiveTab] = useState(showOnly || 'overview');
-
-  const assessmentInfo = {
-    overview: {
-      title: "Memahami Hasil Assessment Anda",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700 leading-relaxed">
-            Pemetaan talenta ini menggabungkan tiga kerangka kerja yang telah tervalidasi secara ilmiah dan digunakan oleh profesesional
-            untuk memberikan gambaran komprehensif tentang kepribadian, minat, dan kekuatan karakter Anda.
-          </p>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-indigo-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-indigo-900 mb-2">RIASEC</h4>
-              <p className="text-sm text-indigo-800">Minat karier dan preferensi lingkungan kerja</p>
-            </div>
-            <div className="bg-purple-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-purple-900 mb-2">Big Five (OCEAN)</h4>
-              <p className="text-sm text-purple-800">Trait kepribadian inti dan kecenderungan perilaku</p>
-            </div>
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-blue-900 mb-2">VIA Strengths</h4>
-              <p className="text-sm text-blue-800">Kekuatan karakter dan kualitas positif</p>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    riasec: {
-      title: "RIASEC Holland Codes",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700 leading-relaxed">
-            Dikembangkan oleh psikolog John Holland, model RIASEC mengidentifikasi enam tipe kepribadian
-            yang berkorespondensi dengan lingkungan kerja dan jalur karier yang berbeda.
-          </p>
-          <div className="space-y-3">
-            <div className="border-l-4 border-indigo-500 pl-4">
-              <h4 className="font-semibold text-gray-900">Cara menginterpretasi skor Anda:</h4>
-              <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                <li>• <strong>High scores (70-100):</strong> Preferensi kuat dan kesesuaian alami</li>
-                <li>• <strong>Medium scores (30-69):</strong> Minat dan kemampuan moderat</li>
-                <li>• <strong>Low scores (0-29):</strong> Minat atau preferensi terbatas</li>
-              </ul>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-2">Holland Code Anda</h4>
-              <p className="text-sm text-gray-700">
-                3 skor tertinggi Anda membentuk "Holland Code" - kombinasi tiga huruf yang merepresentasikan
-                minat karier utama Anda. Kode ini dapat membantu memandu eksplorasi dan pengambilan keputusan karier.
-              </p>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    ocean: {
-      title: "Big Five (OCEAN) Personality",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700 leading-relaxed">
-            Model Big Five adalah kerangka kepribadian yang paling diterima secara luas dalam psikologi,
-            mengukur lima dimensi luas yang relatif stabil sepanjang hidup.
-          </p>
-          <div className="space-y-3">
-            <div className="border-l-4 border-purple-500 pl-4">
-              <h4 className="font-semibold text-gray-900">Memahami skor Anda:</h4>
-              <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                <li>• <strong>High scores (70-100):</strong> Ekspresi kuat dari trait ini</li>
-                <li>• <strong>Medium scores (30-69):</strong> Ekspresi seimbang atau situasional</li>
-                <li>• <strong>Low scores (0-29):</strong> Ekspresi trait yang kurang menonjol</li>
-              </ul>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-2">Tidak Ada Skor "Baik" atau "Buruk"</h4>
-              <p className="text-sm text-gray-700">
-                Setiap trait memiliki keunggulan dalam situasi yang berbeda. High dan low scores sama-sama
-                memiliki kekuatan dan tantangan potensial. Kuncinya adalah memahami cara memanfaatkan
-                kecenderungan alami Anda secara efektif.
-              </p>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    via: {
-      title: "VIA Character Strengths",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700 leading-relaxed">
-            Survey VIA (Values in Action) mengidentifikasi kekuatan karakter khas Anda -
-            trait positif yang memberi energi dan merepresentasikan diri autentik Anda.
-          </p>
-          <div className="space-y-3">
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-900">Signature Strengths Anda:</h4>
-              <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                <li>• <strong>Top 5 strengths (80-100):</strong> Kekuatan inti untuk dimanfaatkan dan dikembangkan</li>
-                <li>• <strong>Middle strengths (50-79):</strong> Kekuatan yang dapat Anda andalkan saat dibutuhkan</li>
-                <li>• <strong>Lesser strengths (0-49):</strong> Area untuk pertumbuhan potensial atau dukungan dari orang lain</li>
-              </ul>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-2">Menggunakan Kekuatan Anda</h4>
-              <p className="text-sm text-gray-700">
-                Penelitian menunjukkan bahwa orang yang secara rutin menggunakan signature strengths mereka
-                lebih terlibat, berkinerja lebih baik, dan mengalami kesejahteraan yang lebih besar. Fokuslah
-                untuk menemukan cara menerapkan top strengths Anda dalam pekerjaan dan kehidupan pribadi.
-              </p>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  };
-
-  const tabs = [
-    { id: 'overview', label: 'Ringkasan', icon: '📊' },
-    { id: 'riasec', label: 'RIASEC', icon: '🎯' },
-    { id: 'ocean', label: 'Big Five', icon: '🌊' },
-    { id: 'via', label: 'VIA Strengths', icon: '💪' }
-  ];
-
-  // Filter tabs if showOnly is specified
-  const filteredTabs = showOnly ? tabs.filter(tab => tab.id === showOnly) : tabs;
-
+const AssessmentRelation = ({ delay = 0 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.6 }}
-      className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+      transition={{ duration: 0.6, delay }}
+      className="mb-12"
     >
-      {/* Tab Navigation - Only show if not filtering to a single tab */}
-      {!showOnly && (
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-8 px-6" aria-label="Tabs">
-            {filteredTabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <span className="mr-2">{tab.icon}</span>
-                {tab.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-      )}
-
-      {/* Tab Content */}
-      <div className="p-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">
-              {assessmentInfo[activeTab].title}
-            </h3>
-            {assessmentInfo[activeTab].content}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Quick Tips */}
-      <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="border-b border-gray-50 p-8">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-50 rounded-full mb-4">
+              <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-2">Integrasi Tiga Dimensi Assessment</h2>
+            <p className="text-gray-500 font-medium">Pendekatan Holistik untuk Talent Mapping</p>
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-gray-900">💡 Tips Cepat</h4>
-            <p className="text-sm text-gray-600 mt-1">
-              {activeTab === 'overview' && "Arahkan kursor ke elemen chart untuk melihat penjelasan detail dan saran karier."}
-              {activeTab === 'riasec' && "Cari karier yang sesuai dengan 2-3 kode RIASEC teratas Anda untuk kesesuaian terbaik."}
-              {activeTab === 'ocean' && "Pertimbangkan bagaimana trait kepribadian Anda selaras dengan lingkungan kerja dan dinamika tim yang berbeda."}
-              {activeTab === 'via' && "Cobalah gunakan top 5 character strengths Anda setiap hari untuk meningkatkan kepuasan dan performa."}
-            </p>
+
+          <p className="text-gray-600 leading-relaxed text-center max-w-4xl mx-auto mb-10">
+            Sistem assessment kami mengintegrasikan tiga dimensi fundamental kepribadian manusia untuk memberikan
+            analisis yang komprehensif dan akurat. Setiap assessment saling melengkapi dan memperkuat validitas
+            hasil analisis secara keseluruhan.
+          </p>
+
+          {/* Three Pillars Visualization */}
+          <div className="grid md:grid-cols-3 gap-8 mb-10">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center group hover:bg-white hover:shadow-sm transition-all duration-300">
+              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:border-gray-300 transition-colors">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">VIA Character Strengths</h3>
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">Mengidentifikasi kekuatan karakter dan nilai-nilai inti</p>
+              <div className="text-xs text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-full inline-block">
+                Dimensi: Karakter & Nilai
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center group hover:bg-white hover:shadow-sm transition-all duration-300">
+              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:border-gray-300 transition-colors">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">RIASEC Interests</h3>
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">Menganalisis minat karier dan preferensi lingkungan kerja</p>
+              <div className="text-xs text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-full inline-block">
+                Dimensi: Minat & Motivasi
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center group hover:bg-white hover:shadow-sm transition-all duration-300">
+              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:border-gray-300 transition-colors">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">OCEAN Personality</h3>
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">Mengukur trait kepribadian fundamental</p>
+              <div className="text-xs text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-full inline-block">
+                Dimensi: Kepribadian & Perilaku
+              </div>
+            </div>
+          </div>
+
+          {/* Integration Flow */}
+          <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+            <h4 className="font-semibold text-gray-900 mb-6 text-center">Bagaimana Ketiga Assessment Bekerja Sama</h4>
+            <div className="space-y-6">
+              <div className="flex items-start">
+                <div className="w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-semibold text-gray-700">1</span>
+                </div>
+                <div>
+                  <h5 className="font-medium text-gray-900 mb-1">Triangulasi Data</h5>
+                  <p className="text-sm text-gray-600 leading-relaxed">Setiap assessment memberikan perspektif unik yang saling memvalidasi dan memperkuat akurasi hasil analisis.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-semibold text-gray-700">2</span>
+                </div>
+                <div>
+                  <h5 className="font-medium text-gray-900 mb-1">Analisis Holistik</h5>
+                  <p className="text-sm text-gray-600 leading-relaxed">Kombinasi karakter, minat, dan kepribadian memberikan gambaran lengkap tentang potensi dan preferensi karier Anda.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-semibold text-gray-700">3</span>
+                </div>
+                <div>
+                  <h5 className="font-medium text-gray-900 mb-1">Rekomendasi Terintegrasi</h5>
+                  <p className="text-sm text-gray-600 leading-relaxed">Hasil akhir berupa persona karier yang menggabungkan insights dari ketiga dimensi untuk memberikan panduan yang akurat dan actionable.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -198,4 +110,4 @@ const AssessmentExplanations = ({ showOnly = null }) => {
   );
 };
 
-export default AssessmentExplanations;
+export default AssessmentRelation;

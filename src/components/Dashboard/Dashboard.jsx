@@ -115,8 +115,8 @@ export default function Dashboard() {
           >
             <div className="bg-white border border-slate-200/60 rounded-lg shadow-sm">
               <EnhancedLoadingScreen
-                title="Loading Dashboard..."
-                subtitle="Fetching your latest assessment results and statistics"
+                title="Memuat Dashboard..."
+                subtitle="Mengambil data hasil asesmen dan statistik terbaru Anda."
                 skeletonCount={4}
                 className="min-h-[500px] p-8"
               />
@@ -160,7 +160,7 @@ export default function Dashboard() {
                 >
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-slate-900 mb-2">Performance Overview</h2>
-                    <p className="text-slate-600">Key metrics and insights from your assessments</p>
+                    <p className="text-slate-600">Indikator utama dan wawasan hasil asesmen Anda secara menyeluruh.</p>
                   </div>
                   <StatsCards
                     data={data}
@@ -182,7 +182,7 @@ export default function Dashboard() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
-                        <p className="text-slate-600">View and manage your assessment history</p>
+                        <p className="text-slate-600">Lihat dan kelola riwayat asesmen Anda secara terstruktur dan profesional.</p>
                       </div>
                     </div>
                   </div>
@@ -208,7 +208,7 @@ export default function Dashboard() {
                 >
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-slate-900 mb-2">Learning Resources</h2>
-                    <p className="text-slate-600">Curated articles and insights to enhance your knowledge</p>
+                    <p className="text-slate-600">Artikel dan wawasan pilihan untuk meningkatkan pengetahuan serta pengembangan diri Anda.</p>
                   </div>
                   <ArticlesSection loading={loading} />
                 </motion.section>

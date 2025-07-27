@@ -113,34 +113,34 @@ const AssessmentStatus = () => {
       case 'processing':
         return {
           title: 'Processing Data',
-          description: 'Organizing your assessment responses',
-          color: 'text-blue-600',
-          bgColor: 'bg-blue-50',
-          iconColor: 'text-blue-500'
+          description: 'Mengorganisasi respons penilaian Anda',
+          color: 'text-gray-900',
+          bgColor: 'bg-gray-50',
+          iconColor: 'text-gray-700'
         };
       case 'analyzing':
         return {
           title: 'Analyzing with AI',
-          description: 'Analyzing patterns and generating insights',
-          color: 'text-purple-600',
-          bgColor: 'bg-purple-50',
-          iconColor: 'text-purple-500'
+          description: 'Menganalisis pola dan menghasilkan wawasan',
+          color: 'text-gray-900',
+          bgColor: 'bg-gray-50',
+          iconColor: 'text-gray-700'
         };
       case 'preparing':
         return {
           title: 'Finalizing Report',
-          description: 'Preparing your personalized results',
-          color: 'text-green-600',
-          bgColor: 'bg-green-50',
-          iconColor: 'text-green-500'
+          description: 'Menyiapkan hasil yang dipersonalisasi untuk Anda',
+          color: 'text-gray-900',
+          bgColor: 'bg-gray-50',
+          iconColor: 'text-gray-700'
         };
       default:
         return {
           title: 'Processing',
-          description: 'Your assessment is being processed',
-          color: 'text-gray-600',
+          description: 'Penilaian Anda sedang diproses',
+          color: 'text-gray-900',
           bgColor: 'bg-gray-50',
-          iconColor: 'text-gray-500'
+          iconColor: 'text-gray-700'
         };
     }
   };
@@ -151,9 +151,9 @@ const AssessmentStatus = () => {
     switch (stage) {
       case 'processing':
         return (
-          <div className={`relative w-16 h-16 ${stageInfo.bgColor} rounded-full flex items-center justify-center shadow-md transition-all duration-300`}>
+          <div className={`relative w-16 h-16 ${stageInfo.bgColor} border border-gray-200 flex items-center justify-center transition-all duration-300`}>
             {/* Single rotating ring */}
-            <div className="absolute inset-2 rounded-full border-2 border-blue-200 border-t-blue-500 animate-spin" style={{animationDuration: '1.5s'}}></div>
+            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 animate-spin" style={{animationDuration: '1.5s'}}></div>
             {/* Processing icon */}
             <div className="relative z-10">
               <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-colors duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -164,11 +164,11 @@ const AssessmentStatus = () => {
         );
       case 'analyzing':
         return (
-          <div className={`relative w-16 h-16 ${stageInfo.bgColor} rounded-full flex items-center justify-center shadow-md transition-all duration-300`}>
+          <div className={`relative w-16 h-16 ${stageInfo.bgColor} border border-gray-200 flex items-center justify-center transition-all duration-300`}>
             {/* Subtle pulsing background */}
-            <div className="absolute inset-1 rounded-full bg-gradient-to-r from-purple-200/50 to-purple-300/50 animate-pulse" style={{animationDuration: '2s'}}></div>
+            <div className="absolute inset-1 bg-gray-100 animate-pulse" style={{animationDuration: '2s'}}></div>
             {/* Rotating ring */}
-            <div className="absolute inset-2 border-2 border-purple-200 border-t-purple-500 rounded-full animate-spin" style={{animationDuration: '2s'}}></div>
+            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 animate-spin" style={{animationDuration: '2s'}}></div>
             <svg className={`w-8 h-8 ${stageInfo.iconColor} relative z-10 transition-colors duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
@@ -176,11 +176,11 @@ const AssessmentStatus = () => {
         );
       case 'preparing':
         return (
-          <div className={`relative w-16 h-16 ${stageInfo.bgColor} rounded-full flex items-center justify-center shadow-md transition-all duration-300`}>
+          <div className={`relative w-16 h-16 ${stageInfo.bgColor} border border-gray-200 flex items-center justify-center transition-all duration-300`}>
             {/* Subtle pulsing background */}
-            <div className="absolute inset-1 rounded-full bg-gradient-to-r from-green-200/50 to-green-300/50 animate-pulse" style={{animationDuration: '1.5s'}}></div>
+            <div className="absolute inset-1 bg-gray-100 animate-pulse" style={{animationDuration: '1.5s'}}></div>
             {/* Slow rotating progress indicator */}
-            <div className="absolute inset-2 rounded-full border-2 border-green-200 border-t-green-500 animate-spin" style={{animationDuration: '2.5s'}}></div>
+            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 animate-spin" style={{animationDuration: '2.5s'}}></div>
             {/* Check icon with subtle scale animation */}
             <div className="relative z-10 animate-pulse" style={{animationDuration: '2s'}}>
               <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-colors duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -191,8 +191,8 @@ const AssessmentStatus = () => {
         );
       default:
         return (
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center shadow-md transition-all duration-300">
-            <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-16 h-16 bg-gray-100 border border-gray-200 flex items-center justify-center transition-all duration-300">
+            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           </div>
@@ -207,20 +207,20 @@ const AssessmentStatus = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4">
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-3xl font-semibold text-gray-800 mb-3">
+          <h1 className="text-3xl font-semibold text-gray-900 mb-3 tracking-tight">
             Assessment Processing
           </h1>
-          <p className="text-gray-600 max-w-lg mx-auto">
+          <p className="text-gray-700 max-w-lg mx-auto font-medium">
             Your assessment is being processed using AI technology
           </p>
         </div>
 
         {/* Main Content */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-gray-200 overflow-hidden">
           {error ? (
             <div className="p-8">
               <ErrorMessage
@@ -237,9 +237,9 @@ const AssessmentStatus = () => {
                 <div className="flex justify-center items-center space-x-6 mb-8">
                   {/* Step 1: Processing */}
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'processing' ? 'bg-blue-500 text-white shadow-md' :
-                      ['analyzing', 'preparing'].includes(currentStage) ? 'bg-green-500 text-white shadow-md' :
+                    <div className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-500 ${
+                      currentStage === 'processing' ? 'bg-gray-900 text-white' :
+                      ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700 text-white' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       {['analyzing', 'preparing'].includes(currentStage) ? (
@@ -251,8 +251,8 @@ const AssessmentStatus = () => {
                       )}
                     </div>
                     <span className={`text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'processing' ? 'text-blue-600' :
-                      ['analyzing', 'preparing'].includes(currentStage) ? 'text-green-600' :
+                      currentStage === 'processing' ? 'text-gray-900' :
+                      ['analyzing', 'preparing'].includes(currentStage) ? 'text-gray-700' :
                       'text-gray-500'
                     }`}>
                       Processing
@@ -261,14 +261,14 @@ const AssessmentStatus = () => {
 
                   {/* Connector */}
                   <div className={`h-px w-8 transition-all duration-700 ${
-                    ['analyzing', 'preparing'].includes(currentStage) ? 'bg-green-400' : 'bg-gray-300'
+                    ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700' : 'bg-gray-300'
                   }`}></div>
 
                   {/* Step 2: Analysis */}
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'analyzing' ? 'bg-purple-500 text-white shadow-md' :
-                      currentStage === 'preparing' ? 'bg-green-500 text-white shadow-md' :
+                    <div className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-500 ${
+                      currentStage === 'analyzing' ? 'bg-gray-900 text-white' :
+                      currentStage === 'preparing' ? 'bg-gray-700 text-white' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       {currentStage === 'preparing' ? (
@@ -280,8 +280,8 @@ const AssessmentStatus = () => {
                       )}
                     </div>
                     <span className={`text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'analyzing' ? 'text-purple-600' :
-                      currentStage === 'preparing' ? 'text-green-600' :
+                      currentStage === 'analyzing' ? 'text-gray-900' :
+                      currentStage === 'preparing' ? 'text-gray-700' :
                       'text-gray-500'
                     }`}>
                       Analysis
@@ -290,19 +290,19 @@ const AssessmentStatus = () => {
 
                   {/* Connector */}
                   <div className={`h-px w-8 transition-all duration-700 ${
-                    currentStage === 'preparing' ? 'bg-green-400' : 'bg-gray-300'
+                    currentStage === 'preparing' ? 'bg-gray-700' : 'bg-gray-300'
                   }`}></div>
 
                   {/* Step 3: Report */}
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ${
-                      currentStage === 'preparing' ? 'bg-green-500 text-white shadow-md' :
+                    <div className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-500 ${
+                      currentStage === 'preparing' ? 'bg-gray-900 text-white' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       3
                     </div>
                     <span className={`text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'preparing' ? 'text-green-600' : 'text-gray-500'
+                      currentStage === 'preparing' ? 'text-gray-900' : 'text-gray-500'
                     }`}>
                       Report
                     </span>
@@ -317,10 +317,10 @@ const AssessmentStatus = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <h2 className={`text-2xl font-semibold transition-colors duration-500 ${getStageInfo(currentStage).color}`}>
+                  <h2 className={`text-2xl font-semibold transition-colors duration-500 text-gray-900`}>
                     {getStageInfo(currentStage).title}
                   </h2>
-                  <p className="text-gray-600 max-w-md mx-auto transition-opacity duration-300">
+                  <p className="text-gray-700 max-w-md mx-auto transition-opacity duration-300 font-medium">
                     {getStageInfo(currentStage).description}
                   </p>
                 </div>
@@ -328,16 +328,16 @@ const AssessmentStatus = () => {
 
               {/* Time Estimation */}
               {status?.estimatedTimeRemaining && (
-                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 transition-all duration-300">
+                <div className="bg-gray-50 p-4 border border-gray-200 transition-all duration-300">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-gray-200 transition-all duration-300">
-                      <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="w-10 h-10 bg-white flex items-center justify-center border border-gray-200 transition-all duration-300">
+                      <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-700">Estimated Time Remaining</p>
-                      <p className="text-sm text-gray-600">{status.estimatedTimeRemaining}</p>
+                      <p className="text-sm font-medium text-gray-900">Perkiraan Waktu Tersisa</p>
+                      <p className="text-sm text-gray-700">{status.estimatedTimeRemaining}</p>
                     </div>
                   </div>
                 </div>
@@ -347,7 +347,7 @@ const AssessmentStatus = () => {
               <div className="mt-8 text-center">
                 <button
                   onClick={() => navigate('/dashboard', { state: { fromAssessment: true } })}
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
@@ -355,7 +355,7 @@ const AssessmentStatus = () => {
                   </svg>
                   Back to Dashboard
                 </button>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-gray-600 mt-2 font-medium">
                   You can check your assessment status in the dashboard
                 </p>
               </div>

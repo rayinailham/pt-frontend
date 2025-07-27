@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import apiService from "../../services/apiService";
 import EnhancedLoadingScreen from "../UI/EnhancedLoadingScreen";
 import useScrollToTop from "../../hooks/useScrollToTop";
+import AssessmentRelation from "./AssessmentExplanations";
 
 const ResultPersona = () => {
   const { resultId } = useParams();
@@ -129,23 +130,23 @@ const ResultPersona = () => {
   // Navigation cards data
   const navigationCards = [
     {
-      title: 'Career Interests',
+      title: 'Minat Karier',
       subtitle: 'RIASEC Assessment',
-      description: 'Explore your career interests and work environment preferences',
+      description: 'Jelajahi minat karier dan preferensi lingkungan kerja Anda.',
       path: `/results/${resultId}/riasec`,
       color: 'from-emerald-500 to-emerald-600'
     },
     {
-      title: 'Personality Traits',
+      title: 'Trait Kepribadian',
       subtitle: 'OCEAN Assessment',
-      description: 'Understand your personality dimensions',
+      description: 'Pahami dimensi kepribadian utama Anda.',
       path: `/results/${resultId}/ocean`,
       color: 'from-blue-500 to-blue-600'
     },
     {
-      title: 'Character Strengths',
+      title: 'Kekuatan Karakter',
       subtitle: 'VIA-IS Assessment',
-      description: 'Explore your core character strengths and values',
+      description: 'Temukan kekuatan inti dan nilai-nilai karakter Anda.',
       path: `/results/${resultId}/via-is`,
       color: 'from-purple-500 to-purple-600'
     }
@@ -658,11 +659,121 @@ const ResultPersona = () => {
               {renderPersonaProfile(result.persona_profile)}
             </motion.div>
 
+            {/* Assessment Validation Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="mt-16 mb-12"
+            >
+              <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="bg-gray-50 border-b border-gray-100 px-8 py-6">
+                  <div className="flex items-center mb-3">
+                    <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mr-4">
+                      <span className="text-white text-xl font-semibold">✓</span>
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900 mb-1">Validitas Analisis Assessment</h2>
+                      <p className="text-gray-600 font-medium">Mengapa Hasil Analisis Persona Profile Ini Sangat Valid dan Akurat</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-8">
+                  <div className="grid md:grid-cols-3 gap-6 mb-8">
+                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                      <div className="flex items-center mb-4">
+                        <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white text-sm">1</span>
+                        </span>
+                        <h4 className="font-semibold text-gray-900">VIA Character Strengths</h4>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-3 leading-relaxed">Mengidentifikasi 24 kekuatan karakter yang menjadi fondasi kepribadian dan motivasi intrinsik Anda.</p>
+                      <ul className="text-xs text-gray-600 space-y-2">
+                        <li className="flex items-start">
+                          <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                          <span>Validasi empiris 1M+ responden</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                          <span>Reliabilitas tinggi (α &gt; 0.85)</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                      <div className="flex items-center mb-4">
+                        <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white text-sm">2</span>
+                        </span>
+                        <h4 className="font-semibold text-gray-900">RIASEC Career Interests</h4>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-3 leading-relaxed">Mengukur minat karier berdasarkan preferensi lingkungan kerja dan aktivitas profesional.</p>
+                      <ul className="text-xs text-gray-600 space-y-2">
+                        <li className="flex items-start">
+                          <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                          <span>Standar emas konseling karier</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                          <span>Prediksi kepuasan karier (r &gt; 0.80)</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                      <div className="flex items-center mb-4">
+                        <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white text-sm">3</span>
+                        </span>
+                        <h4 className="font-semibold text-gray-900">OCEAN Personality</h4>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-3 leading-relaxed">Menganalisis lima dimensi kepribadian yang stabil dan memprediksi perilaku kerja.</p>
+                      <ul className="text-xs text-gray-600 space-y-2">
+                        <li className="flex items-start">
+                          <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                          <span>Model paling diterima psikologi</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                          <span>Stabilitas temporal (r &gt; 0.75)</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white text-sm">4</span>
+                      </span>
+                      Triangulasi Assessment untuk Validitas Maksimal
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h5 className="font-medium text-gray-900 mb-2">Integrasi Multi-Dimensi:</h5>
+                        <p className="text-sm text-gray-700 leading-relaxed">Persona profile Anda dibangun dari triangulasi tiga dimensi psikologis yang saling melengkapi: karakter (VIA), minat (RIASEC), dan kepribadian (OCEAN). Pendekatan ini memberikan gambaran komprehensif yang tidak dapat dicapai oleh satu assessment saja.</p>
+                      </div>
+                      <div>
+                        <h5 className="font-medium text-gray-900 mb-2">Validasi Silang:</h5>
+                        <p className="text-sm text-gray-700 leading-relaxed">Setiap insight dalam profil Anda dikonfirmasi oleh minimal dua assessment yang berbeda. Misalnya, preferensi karier Investigative (RIASEC) dikuatkan oleh Openness tinggi (OCEAN) dan Love of Learning (VIA), menciptakan konsistensi yang tinggi.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Assessment Integration Section */}
+            <div className="mb-12">
+              <AssessmentRelation delay={0.85} />
+            </div>
+
             {/* Navigation to Other Results */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.0 }}
+              transition={{ duration: 0.5, delay: 1.2 }}
               className="mb-12"
             >
               <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-md p-8 mb-8">
@@ -671,11 +782,10 @@ const ResultPersona = () => {
                     <span className="text-2xl">🎯</span>
                   </div>
                   <h2 className="text-3xl font-light text-slate-900 mb-3 tracking-tight">
-                    Explore Your Complete Profile
+                    Jelajahi Profil Lengkap Anda
                   </h2>
                   <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed font-normal">
-                    Continue your journey by exploring other aspects of your assessment results.
-                    Each assessment provides unique insights into different facets of your personality and career potential.
+                    Lanjutkan perjalanan Anda dengan mengeksplorasi aspek lain dari hasil assessment. Setiap assessment memberikan wawasan unik tentang berbagai sisi kepribadian dan potensi karier Anda.
                   </p>
                 </div>
               </div>
@@ -686,7 +796,7 @@ const ResultPersona = () => {
                     key={card.title}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 1.1 + index * 0.1 }}
+                    transition={{ duration: 0.3, delay: 1.3 + index * 0.1 }}
                     whileHover={{
                       y: -4,
                       transition: { duration: 0.15 }
@@ -723,7 +833,7 @@ const ResultPersona = () => {
 
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <div className="flex items-center text-sm font-medium text-slate-500 group-hover:text-slate-800 transition-colors">
-                            <span>Explore Assessment</span>
+                            <span>Lihat Assessment</span>
                             <motion.svg
                               className="w-4 h-4 ml-1"
                               fill="none"

@@ -1,44 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { viaCategories, strengthLabels } from '../../data/via';
 
 const ViaisChart = ({ data }) => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // VIA Character Strengths organized by virtue categories
-  const viaCategories = {
-    wisdom: {
-      name: 'Wisdom & Knowledge',
-      color: '#3b82f6',
-      strengths: ['creativity', 'curiosity', 'judgment', 'loveOfLearning', 'perspective']
-    },
-    courage: {
-      name: 'Courage',
-      color: '#ef4444',
-      strengths: ['bravery', 'perseverance', 'honesty', 'zest']
-    },
-    humanity: {
-      name: 'Humanity',
-      color: '#10b981',
-      strengths: ['love', 'kindness', 'socialIntelligence']
-    },
-    justice: {
-      name: 'Justice',
-      color: '#f59e0b',
-      strengths: ['teamwork', 'fairness', 'leadership']
-    },
-    temperance: {
-      name: 'Temperance',
-      color: '#8b5cf6',
-      strengths: ['forgiveness', 'humility', 'prudence', 'selfRegulation']
-    },
-    transcendence: {
-      name: 'Transcendence',
-      color: '#06b6d4',
-      strengths: ['appreciation', 'gratitude', 'hope', 'humor', 'spirituality']
-    }
-  };
+
 
   const getScoreLevel = (score) => {
     if (score >= 80) return { level: 'Top Strength', color: 'text-green-600' };
@@ -46,32 +15,7 @@ const ViaisChart = ({ data }) => {
     return { level: 'Lesser Strength', color: 'text-red-600' };
   };
 
-  const strengthLabels = {
-    creativity: 'Creativity',
-    curiosity: 'Curiosity',
-    judgment: 'Critical Thinking',
-    loveOfLearning: 'Love of Learning',
-    perspective: 'Perspective',
-    bravery: 'Bravery',
-    perseverance: 'Perseverance',
-    honesty: 'Honesty',
-    zest: 'Zest',
-    love: 'Love',
-    kindness: 'Kindness',
-    socialIntelligence: 'Social Intelligence',
-    teamwork: 'Teamwork',
-    fairness: 'Fairness',
-    leadership: 'Leadership',
-    forgiveness: 'Forgiveness',
-    humility: 'Humility',
-    prudence: 'Prudence',
-    selfRegulation: 'Self-Regulation',
-    appreciation: 'Appreciation of Beauty',
-    gratitude: 'Gratitude',
-    hope: 'Hope',
-    humor: 'Humor',
-    spirituality: 'Spirituality'
-  };
+
 
   // Transform VIA data for chart
   const getChartData = () => {

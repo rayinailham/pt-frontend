@@ -5,6 +5,7 @@ import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadius
 import apiService from '../../services/apiService';
 import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import useScrollToTop from '../../hooks/useScrollToTop';
+import AssessmentRelation from './AssessmentExplanations';
 
 const ResultOcean = () => {
   const { resultId } = useParams();
@@ -202,23 +203,23 @@ const ResultOcean = () => {
   // Navigation cards data
   const navigationCards = [
     {
-      title: 'Career Interests',
+      title: 'Minat Karier',
       subtitle: 'RIASEC Assessment',
-      description: 'Explore your career interests and work environment preferences',
+      description: 'Jelajahi minat karier dan preferensi lingkungan kerja Anda.',
       path: `/results/${resultId}/riasec`,
       color: 'from-emerald-500 to-emerald-600'
     },
     {
-      title: 'Character Strengths',
+      title: 'Kekuatan Karakter',
       subtitle: 'VIA-IS Assessment',
-      description: 'Discover your core character strengths and values',
+      description: 'Temukan kekuatan inti dan nilai-nilai karakter Anda.',
       path: `/results/${resultId}/via-is`,
       color: 'from-purple-500 to-purple-600'
     },
     {
-      title: 'Career Persona',
+      title: 'Persona Karier',
       subtitle: 'Integrated Profile',
-      description: 'Your comprehensive career recommendations',
+      description: 'Rekomendasi karier komprehensif berdasarkan profil Anda.',
       path: `/results/${resultId}/persona`,
       color: 'from-indigo-500 to-indigo-600'
     }
@@ -437,12 +438,14 @@ const ResultOcean = () => {
               </div>
             </motion.div>
 
+
+
             {/* Radar Chart Visualization */}
             {result.assessment_data?.ocean && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
                 className="mb-8"
               >
                 <div className="bg-white rounded border border-gray-200 shadow-sm p-6">
@@ -486,7 +489,7 @@ const ResultOcean = () => {
                           key={item.trait}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                          transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
                           className="text-center p-3 bg-gray-50 rounded"
                         >
                           <div className="text-lg font-bold text-blue-600 mb-1">
@@ -554,7 +557,7 @@ const ResultOcean = () => {
                               className="bg-gray-900 h-2 rounded-sm"
                               initial={{ width: 0 }}
                               animate={{ width: `${Math.min(score, 100)}%` }}
-                              transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
+                              transition={{ duration: 1, delay: 0.7 + index * 0.1 }}
                             />
                           </div>
                         </div>
@@ -634,7 +637,7 @@ const ResultOcean = () => {
                                 className="bg-gray-900 h-2 rounded-sm"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${Math.min(score, 100)}%` }}
-                                transition={{ duration: 1, delay: 0.5 + (index + 3) * 0.1 }}
+                                transition={{ duration: 1, delay: 0.7 + (index + 3) * 0.1 }}
                               />
                             </div>
                           </div>
@@ -669,24 +672,119 @@ const ResultOcean = () => {
               </div>
             )}
 
+            {/* OCEAN Accuracy and Validity Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-16 mb-12"
+            >
+              <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="bg-gray-50 border-b border-gray-100 px-8 py-6">
+                  <div className="flex items-center mb-3">
+                    <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mr-4">
+                      <span className="text-white text-xl font-semibold">✓</span>
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900 mb-1">Akurasi dan Validitas Assessment</h2>
+                      <p className="text-gray-600 font-medium">Mengapa OCEAN Sangat Tepat untuk Assessment Kepribadian</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-8">
+                  <div className="grid md:grid-cols-2 gap-8 mb-8">
+                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                        <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white text-sm">1</span>
+                        </span>
+                        Standar Emas Psikologi
+                      </h4>
+                      <ul className="text-sm text-gray-700 space-y-3">
+                        <li className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>Model kepribadian paling diterima dalam psikologi modern</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>Validasi lintas budaya di 50+ negara dengan konsistensi tinggi</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>Stabilitas temporal tinggi (r &gt; 0.75) sepanjang hidup dewasa</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                        <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-white text-sm">2</span>
+                        </span>
+                        Keunggulan Metodologi
+                      </h4>
+                      <ul className="text-sm text-gray-700 space-y-3">
+                        <li className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>Berdasarkan analisis faktor empiris dari ribuan trait</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>Prediksi akurat untuk perilaku kerja dan kepuasan hidup</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          <span>Tidak bias terhadap budaya, gender, atau usia</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <span className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white text-sm">3</span>
+                      </span>
+                      Hubungan dengan Assessment Lain
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h5 className="font-medium text-gray-900 mb-2">Dengan VIA IS (Kekuatan Karakter):</h5>
+                        <p className="text-sm text-gray-700 leading-relaxed">Trait kepribadian mempengaruhi ekspresi karakter. Openness mendukung "Creativity", Conscientiousness memperkuat "Perseverance", dan Agreeableness berkorelasi dengan "Kindness".</p>
+                      </div>
+                      <div>
+                        <h5 className="font-medium text-gray-900 mb-2">Dengan RIASEC (Minat Karier):</h5>
+                        <p className="text-sm text-gray-700 leading-relaxed">Kepribadian membentuk preferensi lingkungan kerja. Extraversion tinggi cocok dengan Social/Enterprising, Openness dengan Artistic/Investigative, dan Conscientiousness dengan Conventional.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Assessment Integration Section */}
+            <div className="mb-12">
+              <AssessmentRelation delay={0.35} />
+            </div>
+
             {/* Navigation to Other Results */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.0 }}
+              transition={{ duration: 0.5, delay: 1.2 }}
               className="mb-12"
             >
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-md p-8 mb-8">
+              <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-md p-8 mb-8">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-md mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-md mb-4">
                     <span className="text-2xl">🧭</span>
                   </div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                    Explore Your Complete Profile
+                  <h2 className="text-3xl font-light text-slate-900 mb-3 tracking-tight">
+                    Jelajahi Profil Lengkap Anda
                   </h2>
-                  <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                    Continue your journey by exploring other aspects of your assessment results.
-                    Each assessment provides unique insights into different facets of your personality and career potential.
+                  <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed font-normal">
+                    Lanjutkan perjalanan Anda dengan mengeksplorasi aspek lain dari hasil assessment. Setiap assessment memberikan wawasan unik tentang berbagai sisi kepribadian dan potensi karier Anda.
                   </p>
                 </div>
               </div>
@@ -697,7 +795,7 @@ const ResultOcean = () => {
                     key={card.title}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 1.1 + index * 0.1 }}
+                    transition={{ duration: 0.3, delay: 1.3 + index * 0.1 }}
                     whileHover={{
                       y: -4,
                       transition: { duration: 0.15 }
@@ -721,20 +819,20 @@ const ResultOcean = () => {
                         </div>
 
                         <div className="flex-grow">
-                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors">
+                          <h3 className="text-xl font-light text-slate-900 mb-2 group-hover:text-slate-700 transition-colors tracking-tight">
                             {card.title}
                           </h3>
-                          <p className="text-sm text-gray-500 mb-3 font-semibold uppercase tracking-wide">
+                          <p className="text-sm text-slate-500 mb-3 font-medium uppercase tracking-wide">
                             {card.subtitle}
                           </p>
-                          <p className="text-gray-600 leading-relaxed">
+                          <p className="text-slate-600 leading-relaxed font-normal">
                             {card.description}
                           </p>
                         </div>
 
                         <div className="mt-4 pt-4 border-t border-gray-100">
-                          <div className="flex items-center text-sm font-medium text-gray-500 group-hover:text-blue-600 transition-colors">
-                            <span>Explore Assessment</span>
+                          <div className="flex items-center text-sm font-medium text-slate-500 group-hover:text-slate-800 transition-colors">
+                            <span>Lihat Assessment</span>
                             <motion.svg
                               className="w-4 h-4 ml-1"
                               fill="none"

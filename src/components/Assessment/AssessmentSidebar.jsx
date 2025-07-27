@@ -107,29 +107,29 @@ const AssessmentSidebar = ({
   const totalProgress = getTotalProgress();
 
   return (
-    <div className="hidden lg:block fixed right-0 top-0 h-full w-80 bg-white shadow-xl border-l border-gray-100 overflow-y-auto z-20">
+    <div className="hidden lg:block fixed right-0 top-0 h-full w-80 bg-white border-l border-gray-200 overflow-y-auto z-20">
       <div className="p-6 h-full flex flex-col">
         {/* Assessment Info */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <div className="p-1 bg-indigo-100 rounded">
-              <Clock className="h-4 w-4 text-indigo-600" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-3">
+            <div className="p-2 bg-gray-100 border border-gray-200">
+              <Clock className="h-4 w-4 text-gray-700" />
             </div>
-            <span>Assessment Progress</span>
+            <span>Progres Penilaian</span>
           </h3>
 
           <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-indigo-600">
+            <div className="text-center p-4 bg-gray-50 border border-gray-200">
+              <div className="text-2xl font-bold text-gray-900">
                 {totalProgress.answered}
               </div>
-              <div className="text-xs text-gray-500">Completed</div>
+              <div className="text-xs text-gray-600 font-medium">Selesai</div>
             </div>
-            <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-400">
+            <div className="text-center p-4 bg-gray-50 border border-gray-200">
+              <div className="text-2xl font-bold text-gray-600">
                 {totalProgress.total - totalProgress.answered}
               </div>
-              <div className="text-xs text-gray-500">Remaining</div>
+              <div className="text-xs text-gray-600 font-medium">Tersisa</div>
             </div>
           </div>
 
@@ -138,38 +138,38 @@ const AssessmentSidebar = ({
 
         {/* Phase Structure */}
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Assessment Structure
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Struktur Penilaian
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {assessmentPhases.map((phase) => {
               const isCurrentPhase = phase.step === currentStep;
               // Show actual progress for current phase, total questions for others
               const phaseProgress = isCurrentPhase ? totalProgress : { answered: 0, total: phase.totalQuestions };
 
               return (
-                <div key={phase.id} className={`border rounded-lg p-4 transition-all duration-200 ${isCurrentPhase ? 'border-indigo-200 bg-indigo-50' : 'border-gray-200 bg-gray-50 hover:border-indigo-300 hover:bg-indigo-25'}`}>
+                <div key={phase.id} className={`border p-4 transition-all duration-200 ${isCurrentPhase ? 'border-gray-400 bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
                   <button
                     onClick={() => navigateToPhase(phase.step)}
-                    className={`w-full text-left transition-all duration-200 ${!isCurrentPhase ? 'hover:scale-105' : ''}`}
+                    className={`w-full text-left transition-all duration-200`}
                     disabled={isCurrentPhase}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <h4 className={`font-semibold ${isCurrentPhase ? 'text-indigo-900' : 'text-gray-700 hover:text-indigo-700'}`}>
+                        <h4 className={`font-semibold ${isCurrentPhase ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}>
                           {phase.title}
                         </h4>
-                        <p className={`text-sm ${isCurrentPhase ? 'text-indigo-700' : 'text-gray-500 hover:text-indigo-600'}`}>
+                        <p className={`text-sm ${isCurrentPhase ? 'text-gray-700' : 'text-gray-600 hover:text-gray-700'}`}>
                           {phase.subtitle}
                         </p>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <div className={`text-sm font-medium ${isCurrentPhase ? 'text-indigo-600' : 'text-gray-400'}`}>
+                        <div className={`text-sm font-medium ${isCurrentPhase ? 'text-gray-900' : 'text-gray-500'}`}>
                           {phaseProgress.answered}/{phaseProgress.total}
                         </div>
                         {!isCurrentPhase && (
-                          <ChevronRight className="h-4 w-4 text-gray-400" />
+                          <ChevronRight className="h-4 w-4 text-gray-500" />
                         )}
                       </div>
                     </div>
@@ -181,17 +181,17 @@ const AssessmentSidebar = ({
                       {Object.entries(assessmentData.categories).map(([categoryKey, category]) => {
                         const categoryProgress = getCategoryProgress(categoryKey);
                         const isCompleted = categoryProgress.answered === categoryProgress.total;
-                        
+
                         return (
                           <button
                             key={categoryKey}
                             onClick={() => navigateToCategory(categoryKey)}
-                            className={`w-full text-left p-3 rounded-lg transition-all duration-200 hover:scale-105 ${
-                              isCompleted 
-                                ? 'bg-green-100 border border-green-200 text-green-800' 
+                            className={`w-full text-left p-3 border transition-all duration-200 ${
+                              isCompleted
+                                ? 'bg-gray-100 border-gray-300 text-gray-900'
                                 : categoryProgress.answered > 0
-                                ? 'bg-blue-100 border border-blue-200 text-blue-800'
-                                : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                                ? 'bg-gray-50 border-gray-300 text-gray-800'
+                                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
                             }`}
                           >
                             <div className="flex items-center justify-between">
@@ -199,7 +199,7 @@ const AssessmentSidebar = ({
                                 {category.name}
                               </span>
                               <div className="flex items-center space-x-2">
-                                <span className="text-xs">
+                                <span className="text-xs font-medium">
                                   {categoryProgress.answered}/{categoryProgress.total}
                                 </span>
                                 <ChevronRight className="h-3 w-3" />
@@ -218,32 +218,32 @@ const AssessmentSidebar = ({
 
         {/* Auto Fill Section */}
         {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_AUTO_FILL) && (
-          <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
-            <h4 className="text-sm font-semibold text-purple-800 mb-3 flex items-center space-x-2">
+          <div className="mt-6 p-4 bg-gray-50 border border-gray-200">
+            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center space-x-2">
               <Zap className="h-4 w-4" />
-              <span>Quick Fill Options</span>
+              <span>Opsi Pengisian Cepat</span>
             </h4>
             <div className="space-y-2">
               {/* Fill Current Assessment */}
               <button
                 onClick={onFillRandomAnswers}
-                className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-white border border-purple-300 text-purple-700 rounded-lg hover:bg-purple-50 hover:border-purple-400 transition-all duration-200 text-sm font-medium"
+                className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 text-sm font-medium"
               >
                 <Shuffle className="h-4 w-4" />
-                <span>Fill Current Phase</span>
+                <span>Isi Fase Saat Ini</span>
               </button>
 
               {/* Fill All Assessments */}
               <button
                 onClick={() => onFillAllAssessments(true)} // Pass true to navigate to last question
-                className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 text-sm font-medium shadow-sm"
+                className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 text-sm font-medium"
               >
                 <Zap className="h-4 w-4" />
-                <span>Fill All 200 Questions</span>
+                <span>Isi Semua 200 Pertanyaan</span>
               </button>
             </div>
-            <p className="text-xs text-purple-600 mt-2 text-center">
-              Auto-filled answers can be edited manually
+            <p className="text-xs text-gray-600 mt-2 text-center">
+            Jawaban yang terisi otomatis dapat diedit secara manual
             </p>
           </div>
         )}
@@ -251,15 +251,15 @@ const AssessmentSidebar = ({
         {/* Total Progress - Bottom Section */}
         <div className="mt-auto pt-6 border-t border-gray-200">
           <div className="text-center mb-4">
-            <h4 className="text-base font-medium text-gray-600 mb-3">Current Phase Progress</h4>
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <h4 className="text-base font-medium text-gray-900 mb-3">Progres Fase Saat Ini</h4>
+            <div className="w-full bg-gray-200 h-3">
               <div
-                className="bg-indigo-600 h-3 rounded-full transition-all duration-500 ease-out"
+                className="bg-gray-900 h-3 transition-all duration-500 ease-out"
                 style={{ width: `${totalProgress.total > 0 ? (totalProgress.answered / totalProgress.total) * 100 : 0}%` }}
               ></div>
             </div>
-            <div className="text-sm text-gray-500 mt-2">
-              {totalProgress.total > 0 ? Math.round((totalProgress.answered / totalProgress.total) * 100) : 0}% Complete
+            <div className="text-sm text-gray-600 mt-2 font-medium">
+              {totalProgress.total > 0 ? Math.round((totalProgress.answered / totalProgress.total) * 100) : 0}% Selesai
             </div>
           </div>
         </div>

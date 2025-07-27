@@ -5,8 +5,7 @@ const AssessmentQuestion = ({
   totalQuestions,
   scale,
   value,
-  onChange,
-  isReverse = false
+  onChange
 }) => {
   // Convert scale array to min/max format for button-based selection
   const scaleConfig = {
@@ -16,25 +15,20 @@ const AssessmentQuestion = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 hover:shadow-md transition-shadow duration-200">
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">
+    <div className="bg-white border border-gray-200 p-8 mb-6 hover:border-gray-300 transition-all duration-200">
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-semibold text-gray-700 bg-gray-100 px-3 py-1 border border-gray-200">
             Question {questionIndex + 1} of {totalQuestions}
           </span>
-          {isReverse && (
-            <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-              Reverse scored
-            </span>
-          )}
         </div>
-        <h3 className="text-lg font-medium text-gray-900 leading-relaxed">
+        <h3 className="text-lg font-medium text-gray-900 leading-relaxed tracking-tight">
           {question}
         </h3>
       </div>
 
-      <div className="space-y-3">
-        <div className="flex justify-between text-xs text-gray-500 mb-2">
+      <div className="space-y-4">
+        <div className="flex justify-between text-xs text-gray-600 mb-3 font-medium">
           <span>{scaleConfig.labels[0]}</span>
           <span>{scaleConfig.labels[scaleConfig.labels.length - 1]}</span>
         </div>
@@ -49,10 +43,10 @@ const AssessmentQuestion = ({
                 key={scaleValue}
                 onClick={() => onChange(scaleValue)}
                 className={`
-                  flex-1 h-12 rounded-lg border-2 transition-all duration-200 font-medium text-sm
+                  flex-1 h-12 border-2 transition-all duration-200 font-semibold text-sm
                   ${isSelected
-                    ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg scale-105'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-indigo-300 hover:bg-indigo-50'
+                    ? 'bg-gray-900 border-gray-900 text-white'
+                    : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
                   }
                 `}
               >

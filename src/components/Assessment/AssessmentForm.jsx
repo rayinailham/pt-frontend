@@ -269,28 +269,28 @@ const AssessmentForm = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gray-50">
       <div className="flex max-w-7xl mx-auto">
         {/* Main Content */}
         <div className="flex-1 lg:mr-80 p-4 lg:p-8">
           {/* Desktop Header */}
-          <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-3xl mx-auto">
+          <div className="mb-8 bg-white border border-gray-200 p-8 max-w-3xl mx-auto">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-indigo-100 rounded-lg">
-                  <BookOpen className="h-6 w-6 text-indigo-600" />
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-gray-100 border border-gray-200">
+                  <BookOpen className="h-6 w-6 text-gray-700" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
+                  <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
                     {assessmentData.title}
                   </h1>
-                  <p className="text-gray-600 text-sm mt-1">
-                    Assessment {currentStep} of {totalSteps} - {assessmentData.description}
+                  <p className="text-gray-600 text-sm mt-1 font-medium">
+                    Penilaian {currentStep} dari {totalSteps} - {assessmentData.description}
                   </p>
                   {isAutoFillMode && (
-                    <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-300">
                       <Check className="h-3 w-3 mr-1" />
-                      Auto-filled - You can edit answers manually
+                      Terisi otomatis - Anda dapat mengubah jawaban secara manual
                     </div>
                   )}
                 </div>
@@ -337,14 +337,14 @@ const AssessmentForm = ({
             <button
               onClick={handlePreviousCategory}
               disabled={currentPage === 0}
-              className="flex items-center space-x-2 px-6 py-3 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="h-5 w-5" />
-              <span>Previous Category</span>
+              <span>Kategori Sebelumnya</span>
             </button>
 
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-600 font-medium">
                 {currentCategoryData?.name} ({currentPage + 1} of {totalPages})
               </span>
 
@@ -352,7 +352,7 @@ const AssessmentForm = ({
               {currentStep > 1 && currentPage === 0 && (
                 <button
                   onClick={onPrevious}
-                  className="flex items-center space-x-2 px-6 py-3 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
+                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
                 >
                   <ChevronLeft className="h-5 w-5" />
                   <span>Previous Assessment</span>
@@ -364,7 +364,7 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <Check className="h-5 w-5" />
                   <span>{isProcessingSubmit ? 'Submitting...' : 'Submit Assessment'}</span>
@@ -376,7 +376,7 @@ const AssessmentForm = ({
                 <button
                   onClick={onManualSubmit}
                   disabled={isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <Check className="h-5 w-5" />
                   <span>{isProcessingSubmit ? 'Submitting...' : 'Submit All Assessments'}</span>
@@ -388,7 +388,7 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <span>{isProcessingSubmit ? 'Processing...' : 'Next Assessment'}</span>
                   <ChevronRight className="h-5 w-5" />
@@ -399,7 +399,7 @@ const AssessmentForm = ({
               {currentPage < totalPages - 1 && (
                 <button
                   onClick={handleNextCategory}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all"
                 >
                   <span>Next Category</span>
                   <ChevronRight className="h-5 w-5" />
