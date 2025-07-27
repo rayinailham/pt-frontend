@@ -1,1 +1,173 @@
 @import "tailwindcss";
+
+/* ===== CUSTOM SCROLLBAR STYLES ===== */
+/* Modern, professional scrollbar design */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9; /* slate-100 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #64748b, #475569); /* slate-500 to slate-600 */
+  border-radius: 4px;
+  border: 1px solid #e2e8f0; /* slate-200 */
+  transition: all 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #475569, #334155); /* slate-600 to slate-700 */
+  border-color: #cbd5e1; /* slate-300 */
+  transform: scale(1.05);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(135deg, #334155, #1e293b); /* slate-700 to slate-800 */
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f5f9; /* slate-100 */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #64748b #f1f5f9; /* thumb: slate-500, track: slate-100 */
+}
+
+/* Enhanced scrollbar for dark themes */
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b; /* slate-800 */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #475569, #64748b); /* slate-600 to slate-500 */
+  border-color: #334155; /* slate-700 */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #64748b, #94a3b8); /* slate-500 to slate-400 */
+  border-color: #475569; /* slate-600 */
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(135deg, #94a3b8, #cbd5e1); /* slate-400 to slate-300 */
+}
+
+.dark ::-webkit-scrollbar-corner {
+  background: #1e293b; /* slate-800 */
+}
+
+.dark * {
+  scrollbar-color: #475569 #1e293b; /* thumb: slate-600, track: slate-800 */
+}
+
+/* Thin scrollbar variant for specific components */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #94a3b8, #64748b); /* slate-400 to slate-500 */
+  border-radius: 3px;
+  border: none;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #64748b, #475569); /* slate-500 to slate-600 */
+}
+
+/* Invisible scrollbar variant (for custom scroll indicators) */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Accent colored scrollbar for special areas */
+.scrollbar-accent::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #6366f1, #4f46e5); /* indigo-500 to indigo-600 */
+  border-color: #e0e7ff; /* indigo-100 */
+}
+
+.scrollbar-accent::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca); /* indigo-600 to indigo-700 */
+  border-color: #c7d2fe; /* indigo-200 */
+}
+
+.scrollbar-accent * {
+  scrollbar-color: #6366f1 #f1f5f9; /* thumb: indigo-500, track: slate-100 */
+}
+
+/* Smooth scrolling for the entire application */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scroll animations */
+@keyframes scrollbar-fade-in {
+  from {
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  animation: scrollbar-fade-in 0.2s ease-out;
+}
+
+/* Responsive scrollbar adjustments */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  ::-webkit-scrollbar-thumb {
+    background: #000000;
+    border: 2px solid #ffffff;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #ffffff;
+    border: 1px solid #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  ::-webkit-scrollbar-thumb {
+    transition: none;
+    animation: none;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

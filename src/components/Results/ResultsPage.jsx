@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import apiService from '../../services/apiService';
+import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import RiasecRadarChart from './RiasecRadarChart';
 import OceanBarChart from './OceanBarChart';
 import ViaisChart from './ViaisChart';
 import AssessmentExplanations from './AssessmentExplanations';
 import Chatbot from '../Chatbot/Chatbot';
+
 
 const ResultsPage = () => {
   const { resultId } = useParams();
@@ -382,7 +384,8 @@ const ResultsPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex flex-col bg-gray-50">
+        <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <div className="h-16 w-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="h-8 w-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
@@ -398,13 +401,16 @@ const ResultsPage = () => {
             Back to Dashboard
           </button>
         </div>
+        </div>
+
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 flex flex-col">
+      {/* Main Content Area */}
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -523,36 +529,20 @@ const ResultsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="space-y-8"
           >
-            {/* Enhanced Loading skeleton */}
-            <div className="space-y-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                  <div className="animate-pulse">
-                    <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-1/3 mb-4"></div>
-                    <div className="space-y-3">
-                      <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-full"></div>
-                      <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-3/4"></div>
-                      <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-1/2"></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="text-center text-gray-600 py-8">
-              <div className="inline-flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
-                <span className="text-lg font-medium">Loading your results...</span>
-              </div>
-              <p className="text-sm mt-3 text-gray-500">This may take a few moments while we retrieve your analysis.</p>
-            </div>
+            <EnhancedLoadingScreen
+              title="Loading Results..."
+              subtitle="Fetching your assessment analysis and insights"
+              skeletonCount={4}
+              className="min-h-[400px]"
+            />
           </motion.div>
         )}
-      </div>
+      </main>
 
       {/* Chatbot Component */}
       {result && <Chatbot assessmentId={resultId} />}
+
     </div>
   );
 };
