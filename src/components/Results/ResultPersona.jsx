@@ -158,107 +158,91 @@ const ResultPersona = () => {
     }
 
     return (
-      <div className="space-y-8 sm:space-y-10">
+      <div className="space-y-4 sm:space-y-6">
         {/* Archetype & Summary */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-white p-6 sm:p-8 rounded-lg shadow-sm border-0 relative overflow-hidden"
-          style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-          }}
+          className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden"
         >
-          <h3 className="text-2xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 tracking-tight">
-            {personaProfile.archetype}
-          </h3>
-          <p className="text-slate-700 leading-relaxed font-normal text-sm sm:text-base">
-            {personaProfile.shortSummary}
-          </p>
+          {/* Header */}
+          <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+              {personaProfile.archetype}
+            </h3>
+          </div>
+          {/* Content */}
+          <div className="p-4 sm:p-6">
+            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+              {personaProfile.shortSummary}
+            </p>
+          </div>
         </motion.div>
 
         {/* Core Strengths & Development Insights */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Core Strengths */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
-            style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-            }}
+            className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full"
           >
-            <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 text-slate-700"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+            {/* Header */}
+            <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+              <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                <span className="text-xl mr-3">✅</span>
+                Core Strengths
+              </h4>
+            </div>
+            {/* Content */}
+            <div className="p-4 sm:p-6">
+              {personaProfile.strengthSummary && (
+                <p className="text-gray-700 mb-4 text-sm sm:text-base bg-gray-50 p-3 sm:p-4 rounded border border-gray-100">
+                  {personaProfile.strengthSummary}
+                </p>
+              )}
+              <div className="space-y-2">
+                {personaProfile.strengths?.map((strength, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start text-xs sm:text-sm text-gray-700"
+                  >
+                    <span className="text-gray-400 mr-2 mt-0.5">•</span>
+                    <span>{strength}</span>
+                  </div>
+                ))}
               </div>
-              Core Strengths
-            </h4>
-            {personaProfile.strengthSummary && (
-              <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
-                {personaProfile.strengthSummary}
-              </p>
-            )}
-            <ul className="space-y-2.5 sm:space-y-3">
-              {personaProfile.strengths?.map((strength, idx) => (
-                <li
-                  key={idx}
-                  className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
-                >
-                  <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span className="font-normal text-sm sm:text-base leading-relaxed">{strength}</span>
-                </li>
-              ))}
-            </ul>
+            </div>
           </motion.div>
 
           {/* Skill Suggestions */}
           {personaProfile.skillSuggestion &&
             personaProfile.skillSuggestion.length > 0 && (
-              <div
-                className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
-                style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-                }}
-              >
-                <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-slate-700"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+              <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
+                {/* Header */}
+                <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+                  <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                    <span className="text-xl mr-3">🎯</span>
+                    Skill Development
+                  </h4>
+                </div>
+                {/* Content */}
+                <div className="p-4 sm:p-6">
+                  <p className="text-gray-700 mb-4 text-sm sm:text-base bg-gray-50 p-3 sm:p-4 rounded border border-gray-100">
+                    Rekomendasi keahlian yang dirancang khusus untuk memperkokoh fondasi keunggulan utama yang telah Anda miliki.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {personaProfile.skillSuggestion.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="text-gray-800 bg-gray-100 px-3 py-1.5 rounded text-xs sm:text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
                   </div>
-                  Skill Development
-                </h4>
-                <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
-                  Rekomendasi keahlian yang dirancang khusus untuk memperkokoh fondasi keunggulan utama yang telah Anda miliki. Penguasaan keterampilan akan meningkatkan daya saing Anda secara signifikan.
-                </p>
-                <div className="flex flex-wrap gap-2 sm:gap-2.5">
-                  {personaProfile.skillSuggestion.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="text-slate-800 bg-slate-50/70 px-3 py-2 rounded-lg border-0 text-sm sm:text-base font-medium"
-                    >
-                      {skill}
-                    </span>
-                  ))}
                 </div>
               </div>
             )}
@@ -269,118 +253,85 @@ const ResultPersona = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-white p-6 sm:p-8 rounded-lg shadow-sm border-0 relative"
-          style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-          }}
+          className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden"
         >
-          <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-6 sm:mb-8 flex items-center">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-lg flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-slate-700"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2zm4-3a1 1 0 00-1 1v1h2V4a1 1 0 00-1-1zm-3 4a1 1 0 100 2h6a1 1 0 100-2H7z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            Career Recommendations
-          </h4>
-          <div className="grid gap-4 sm:gap-5">
-            {personaProfile.careerRecommendation?.map((career, idx) => (
-              <div
-                key={idx}
-                className="bg-slate-50/70 border-0 rounded-lg p-4 sm:p-5 relative"
-                style={{
-                  boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.03)'
-                }}
-              >
-                <h5 className="text-lg sm:text-xl font-light text-slate-900 mb-4 sm:mb-5 text-center tracking-tight">
-                  {career.careerName}
-                </h5>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-                  {Object.entries(career.careerProspect || {}).map(
-                    ([key, value]) => (
-                      <div key={key} className="text-center">
-                        {/* Compact progress indicator */}
-                        <div className="mb-2">
-                          <div className="w-full bg-gray-300/60 rounded-full h-1.5 mb-2">
-                            <div
-                              className="bg-slate-700 h-1.5 rounded-full transition-all duration-500"
-                              style={{
-                                width: `${
-                                  (getProspectLevel(value) / 5) * 100
-                                }%`,
-                              }}
-                            ></div>
+          {/* Header */}
+          <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+            <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+              <span className="text-xl mr-3">💼</span>
+              Career Recommendations
+            </h4>
+          </div>
+          {/* Content */}
+          <div className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              {personaProfile.careerRecommendation?.map((career, idx) => (
+                <div
+                  key={idx}
+                  className="bg-gray-50 rounded border border-gray-100 overflow-hidden"
+                >
+                  {/* Career Header */}
+                  <div className="bg-white border-b border-gray-200 p-4">
+                    <h5 className="text-lg font-bold text-gray-900 text-center">
+                      {career.careerName}
+                    </h5>
+                  </div>
+                  {/* Career Prospects */}
+                  <div className="p-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {Object.entries(career.careerProspect || {}).map(
+                        ([key, value]) => (
+                          <div key={key} className="text-center">
+                            <div className="text-lg font-bold text-gray-900 mb-1">
+                              {getProspectLevel(value)}/5
+                            </div>
+                            <div className={`text-xs font-medium mb-2 px-2 py-1 rounded ${getProspectColor(value)}`}>
+                              {value}
+                            </div>
+                            <div className="text-xs text-gray-600 font-medium leading-tight">
+                              {formatProspectLabel(key)}
+                            </div>
                           </div>
-                          <div
-                            className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium border-0 ${getProspectColor(
-                              value
-                            )}`}
-                          >
-                            {value}
-                          </div>
-                        </div>
-                        <div className="text-xs text-slate-700 font-medium tracking-wide leading-tight">
-                          {formatProspectLabel(key)}
-                        </div>
-                      </div>
-                    )
-                  )}
+                        )
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </motion.div>
 
         {/* Development Areas & Skills Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
-          {/* Development Areas (moved from above) */}
-          <div
-            className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
-            style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-            }}
-          >
-            <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 text-slate-700"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          {/* Development Areas */}
+          <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
+            {/* Header */}
+            <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+              <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                <span className="text-xl mr-3">⚠️</span>
+                Development Areas
+              </h4>
+            </div>
+            {/* Content */}
+            <div className="p-4 sm:p-6">
+              {personaProfile.weaknessSummary && (
+                <p className="text-gray-700 mb-4 text-sm sm:text-base bg-gray-50 p-3 sm:p-4 rounded border border-gray-100">
+                  {personaProfile.weaknessSummary}
+                </p>
+              )}
+              <div className="space-y-2">
+                {personaProfile.weaknesses?.map((weakness, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start text-xs sm:text-sm text-gray-700"
+                  >
+                    <span className="text-gray-400 mr-2 mt-0.5">•</span>
+                    <span>{weakness}</span>
+                  </div>
+                ))}
               </div>
-              Development Areas
-            </h4>
-            {personaProfile.weaknessSummary && (
-              <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
-                {personaProfile.weaknessSummary}
-              </p>
-            )}
-            <ul className="space-y-2.5 sm:space-y-3">
-              {personaProfile.weaknesses?.map((weakness, idx) => (
-                <li
-                  key={idx}
-                  className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
-                >
-                  <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span className="font-normal text-sm sm:text-base leading-relaxed">{weakness}</span>
-                </li>
-              ))}
-            </ul>
+            </div>
           </div>
 
           {/* Development Insights */}
@@ -388,152 +339,106 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
-            style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-            }}
+            className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full"
           >
-            <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 text-slate-700"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+            {/* Header */}
+            <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+              <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                <span className="text-xl mr-3">💡</span>
+                Development Insights
+              </h4>
+            </div>
+            {/* Content */}
+            <div className="p-4 sm:p-6">
+              <p className="text-gray-700 mb-4 text-sm sm:text-base bg-gray-50 p-3 sm:p-4 rounded border border-gray-100">
+                Wawasan strategis yang mendalam untuk membantu Anda mengenali dan menyikapi area-area yang perlu dikembangkan.
+              </p>
+              <div className="space-y-2">
+                {personaProfile.insights?.map((insight, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start text-xs sm:text-sm text-gray-700"
+                  >
+                    <span className="text-gray-400 mr-2 mt-0.5">•</span>
+                    <span>{insight}</span>
+                  </div>
+                ))}
               </div>
-              Development Insights
-            </h4>
-            <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
-              Wawasan strategis yang mendalam untuk membantu Anda mengenali dan menyikapi area-area yang perlu dikembangkan.
-            </p>
-            <ul className="space-y-2.5 sm:space-y-3">
-              {personaProfile.insights?.map((insight, idx) => (
-                <li
-                  key={idx}
-                  className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
-                >
-                  <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span className="font-normal text-sm sm:text-base leading-relaxed">{insight}</span>
-                </li>
-              ))}
-            </ul>
+            </div>
           </motion.div>
         </div>
 
         {/* Possible Pitfalls - Full Width */}
         {personaProfile.possiblePitfalls &&
           personaProfile.possiblePitfalls.length > 0 && (
-            <div
-              className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 relative"
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-              }}
-            >
-              <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-slate-700"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+            <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
+              {/* Header */}
+              <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+                <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                  <span className="text-xl mr-3">🚨</span>
+                  Potential Challenges
+                </h4>
+              </div>
+              {/* Content */}
+              <div className="p-4 sm:p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+                  {personaProfile.possiblePitfalls.map((pitfall, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start text-xs sm:text-sm text-gray-700 bg-gray-50 p-3 sm:p-4 rounded border border-gray-100"
+                    >
+                      <span className="text-gray-400 mr-2 mt-0.5">•</span>
+                      <span>{pitfall}</span>
+                    </div>
+                  ))}
                 </div>
-                Potential Challenges
-              </h4>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-                {personaProfile.possiblePitfalls.map((pitfall, idx) => (
-                  <div
-                    key={idx}
-                    className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
-                  >
-                    <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                    <span className="font-normal text-sm sm:text-base leading-relaxed">{pitfall}</span>
-                  </div>
-                ))}
               </div>
             </div>
           )}
 
         {/* Work Environment & Role Models */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Work Environment */}
           {personaProfile.workEnvironment && (
-            <div
-              className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-              }}
-            >
-              <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-slate-700"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                Work Environment
-              </h4>
-              <p className="text-slate-700 leading-relaxed font-normal text-sm sm:text-base">
-                {personaProfile.workEnvironment}
-              </p>
+            <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
+              {/* Header */}
+              <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+                <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                  <span className="text-xl mr-3">🏢</span>
+                  Work Environment
+                </h4>
+              </div>
+              {/* Content */}
+              <div className="p-4 sm:p-6">
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                  {personaProfile.workEnvironment}
+                </p>
+              </div>
             </div>
           )}
 
           {/* Role Models */}
           {personaProfile.roleModel && personaProfile.roleModel.length > 0 && (
-            <div
-              className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
-                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
-              }}
-            >
-              <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-slate-700"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+            <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
+              {/* Header */}
+              <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+                <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                  <span className="text-xl mr-3">👥</span>
+                  Role Models
+                </h4>
+              </div>
+              {/* Content */}
+              <div className="p-4 sm:p-6">
+                <div className="flex flex-wrap gap-2">
+                  {personaProfile.roleModel.map((model, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-gray-100 text-gray-800 px-3 py-1.5 rounded text-xs sm:text-sm font-medium hover:bg-gray-200 transition-colors"
+                    >
+                      {model}
+                    </span>
+                  ))}
                 </div>
-                Role Models
-              </h4>
-              <div className="flex flex-wrap gap-2 sm:gap-2.5">
-                {personaProfile.roleModel.map((model, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-slate-100/80 text-slate-800 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-medium border-0 hover:bg-slate-200/80 transition-colors"
-                  >
-                    {model}
-                  </span>
-                ))}
               </div>
             </div>
           )}
@@ -545,7 +450,7 @@ const ResultPersona = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Loading State */}
         {!result && !error && (
           <motion.div
@@ -674,7 +579,7 @@ const ResultPersona = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <h2 className="text-2xl sm:text-3xl font-light text-slate-800 mb-8 sm:mb-12 tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
                 Your Complete Career Profile
               </h2>
               {renderPersonaProfile(result.persona_profile)}

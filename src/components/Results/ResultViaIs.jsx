@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
 import apiService from '../../services/apiService';
 import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import useScrollToTop from '../../hooks/useScrollToTop';
@@ -167,49 +167,7 @@ const ResultViaIs = () => {
     }));
   };
 
-  // Prepare bar chart data for all strengths
-  const prepareBarData = (viaIsData) => {
-    if (!viaIsData) return [];
 
-    // Create a more flexible mapping for field names with scale conversion
-    const getStrengthValue = (data, strengthKey) => {
-      // Try different variations of the key
-      const variations = [
-        strengthKey,
-        strengthKey.replace(/_/g, ' '),
-        strengthKey.replace(/_/g, ''),
-        strengthKey.toLowerCase(),
-        strengthKey.replace(/_/g, ' ').toLowerCase(),
-        // Add camelCase variations for backend compatibility
-        strengthKey.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
-        // Specific mappings for problematic fields
-        strengthKey === 'love_of_learning' ? 'loveOfLearning' : null,
-        strengthKey === 'social_intelligence' ? 'socialIntelligence' : null,
-        strengthKey === 'self_regulation' ? 'selfRegulation' : null,
-        strengthKey === 'appreciation_of_beauty' ? 'appreciationOfBeauty' : null
-      ].filter(Boolean);
-
-      for (const variation of variations) {
-        if (data[variation] !== undefined) {
-          // Convert from 0-100 scale to 0-5 scale for display
-          const rawValue = data[variation];
-          return rawValue / 20; // Convert 0-100 to 0-5
-        }
-      }
-      return 0;
-    };
-
-    return Object.entries(viaCategories)
-      .flatMap(([_, category]) =>
-        category.strengths.map(strength => ({
-          name: strengthLabels[strength] || strength.replace(/_/g, ' '),
-          value: getStrengthValue(viaIsData, strength),
-          key: strength,
-          category: _
-        }))
-      )
-      .sort((a, b) => b.value - a.value);
-  };
 
   // Custom tooltip for radar chart
   const CustomRadarTooltip = ({ active, payload, label }) => {
@@ -239,40 +197,7 @@ const ResultViaIs = () => {
     return null;
   };
 
-  // Custom tooltip for bar chart
-  const CustomBarTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0];
-      const categoryKey = data.payload.category;
-      const category = viaCategories[categoryKey];
-      const scoreLevel = getScoreLevel(data.value);
 
-      return (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white p-4 rounded shadow-lg border border-gray-200 max-w-sm"
-        >
-          <h4 className="font-semibold text-gray-900 mb-2">{label}</h4>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="text-lg font-bold text-gray-900">
-              Score: {data.value.toFixed(2)}
-            </div>
-            <span className={`text-sm font-medium ${scoreLevel.intensity}`}>
-              ({scoreLevel.level})
-            </span>
-          </div>
-          <div className="text-xs text-gray-500 mb-2">
-            <strong>Category:</strong> {category?.name}
-          </div>
-          <p className="text-xs text-gray-600">
-            {getStrengthDescription(data.payload.key, viaStrengthsData)}
-          </p>
-        </motion.div>
-      );
-    }
-    return null;
-  };
 
   // Navigation cards data
   const navigationCards = [
@@ -493,58 +418,7 @@ const ResultViaIs = () => {
               </motion.div>
             )}
 
-            {/* All Strengths Bar Chart */}
-            {result.assessment_data?.viaIs && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-                className="mb-6 sm:mb-8"
-              >
-                <div className="bg-white rounded border border-slate-200 shadow-sm p-4 sm:p-6">
-                  <div className="text-center mb-4 sm:mb-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">All 24 Character Strengths</h3>
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">Peringkat lengkap kekuatan karakter Anda dari yang tertinggi hingga terendah</p>
-                  </div>
 
-                  <div className="h-[400px] sm:h-[500px] overflow-hidden">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={prepareBarData(result.assessment_data.viaIs)}
-                        margin={{
-                          top: 20,
-                          right: 15,
-                          left: 15,
-                          bottom: 130
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                        <XAxis
-                          dataKey="name"
-                          tick={{ fontSize: 7, fill: '#1e293b', fontWeight: 500 }}
-                          angle={-45}
-                          textAnchor="end"
-                          height={130}
-                          interval={0}
-                        />
-                        <YAxis
-                          domain={[0, 5]}
-                          tick={{ fontSize: 9, fill: '#64748b' }}
-                        />
-                        <Tooltip content={<CustomBarTooltip />} />
-                        <Bar
-                          dataKey="value"
-                          fill="#475569"
-                          radius={[2, 2, 0, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-
-
-                </div>
-              </motion.div>
-            )}
 
             {/* Virtue Categories Detailed Analysis */}
             {result.assessment_data?.viaIs && (
