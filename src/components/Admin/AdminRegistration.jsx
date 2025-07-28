@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import adminService from '../../services/adminService';
+import { VALIDATION_PATTERNS } from '../../utils/validationUtils';
 
 const AdminRegistration = () => {
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ const AdminRegistration = () => {
   useEffect(() => {
     // Check if current admin has superadmin role
     if (!adminService.hasRole('superadmin')) {
-      navigate('/secretdashboard', { replace: true });
+      navigate('/admin-secure-portal', { replace: true });
       return;
     }
   }, [navigate]);
@@ -103,13 +104,7 @@ const AdminRegistration = () => {
                 <label className="block text-sm font-medium text-gray-300">Email</label>
                 <input
                   type="email"
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address'
-                    }
-                  })}
+                  {...register('email', VALIDATION_PATTERNS.email)}
                   className="mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   placeholder="Enter email address"
                   disabled={loading}

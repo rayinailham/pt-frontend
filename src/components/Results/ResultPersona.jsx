@@ -118,11 +118,11 @@ const ResultPersona = () => {
 
   const formatProspectLabel = (key) => {
     const labels = {
-      jobAvailability: "Job Availability",
-      salaryPotential: "Salary Potential",
-      careerProgression: "Career Progression",
-      industryGrowth: "Industry Growth",
-      skillDevelopment: "Skill Development",
+      jobAvailability: "Ketersediaan Pekerjaan",
+      salaryPotential: "Potensi Penghasilan",
+      careerProgression: "Peluang Pengembangan Karier",
+      industryGrowth: "Pertumbuhan Industri",
+      skillDevelopment: "Pengembangan Keahlian",
     };
     return labels[key] || key;
   };
@@ -159,7 +159,7 @@ const ResultPersona = () => {
 
     return (
       <div className="space-y-4 sm:space-y-6">
-        {/* Archetype & Summary */}
+        {/* Tipe Karier & Ringkasan */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -182,7 +182,7 @@ const ResultPersona = () => {
 
         {/* Core Strengths & Development Insights */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          {/* Core Strengths */}
+          {/* Kekuatan Utama */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -193,7 +193,7 @@ const ResultPersona = () => {
             <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
               <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                 <span className="text-xl mr-3">✅</span>
-                Core Strengths
+                Kekuatan Utama
               </h4>
             </div>
             {/* Content */}
@@ -217,7 +217,7 @@ const ResultPersona = () => {
             </div>
           </motion.div>
 
-          {/* Skill Suggestions */}
+          {/* Pengembangan Keahlian */}
           {personaProfile.skillSuggestion &&
             personaProfile.skillSuggestion.length > 0 && (
               <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
@@ -225,7 +225,7 @@ const ResultPersona = () => {
                 <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
                   <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                     <span className="text-xl mr-3">🎯</span>
-                    Skill Development
+                    Pengembangan Keahlian
                   </h4>
                 </div>
                 {/* Content */}
@@ -248,7 +248,7 @@ const ResultPersona = () => {
             )}
         </div>
 
-        {/* Career Recommendations */}
+        {/* Rekomendasi Karier */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -259,7 +259,7 @@ const ResultPersona = () => {
           <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
             <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
               <span className="text-xl mr-3">💼</span>
-              Career Recommendations
+              Rekomendasi Karier
             </h4>
           </div>
           {/* Content */}
@@ -304,13 +304,13 @@ const ResultPersona = () => {
 
         {/* Development Areas & Skills Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          {/* Development Areas */}
+          {/* Area Pengembangan */}
           <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
             {/* Header */}
             <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
               <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                 <span className="text-xl mr-3">⚠️</span>
-                Development Areas
+                Area Pengembangan
               </h4>
             </div>
             {/* Content */}
@@ -334,7 +334,7 @@ const ResultPersona = () => {
             </div>
           </div>
 
-          {/* Development Insights */}
+          {/* Wawasan Pengembangan */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -345,7 +345,7 @@ const ResultPersona = () => {
             <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
               <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                 <span className="text-xl mr-3">💡</span>
-                Development Insights
+                Wawasan Pengembangan
               </h4>
             </div>
             {/* Content */}
@@ -368,7 +368,7 @@ const ResultPersona = () => {
           </motion.div>
         </div>
 
-        {/* Possible Pitfalls - Full Width */}
+        {/* Tantangan Potensial - Full Width */}
         {personaProfile.possiblePitfalls &&
           personaProfile.possiblePitfalls.length > 0 && (
             <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
@@ -376,7 +376,7 @@ const ResultPersona = () => {
               <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
                 <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                   <span className="text-xl mr-3">🚨</span>
-                  Potential Challenges
+                  Tantangan Potensial
                 </h4>
               </div>
               {/* Content */}
@@ -398,14 +398,14 @@ const ResultPersona = () => {
 
         {/* Work Environment & Role Models */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          {/* Work Environment */}
+          {/* Lingkungan Kerja */}
           {personaProfile.workEnvironment && (
             <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
               {/* Header */}
               <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
                 <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                   <span className="text-xl mr-3">🏢</span>
-                  Work Environment
+                  Lingkungan Kerja
                 </h4>
               </div>
               {/* Content */}
@@ -417,14 +417,14 @@ const ResultPersona = () => {
             </div>
           )}
 
-          {/* Role Models */}
+          {/* Panutan Karier */}
           {personaProfile.roleModel && personaProfile.roleModel.length > 0 && (
             <div className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden h-full">
               {/* Header */}
               <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
                 <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
                   <span className="text-xl mr-3">👥</span>
-                  Role Models
+                  Panutan Karier
                 </h4>
               </div>
               {/* Content */}

@@ -1,10 +1,14 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAdmin } from './AdminContext';
+import { performAdminSecurityCheck } from '../../utils/adminSecurity';
 
 const AdminLogin = () => {
   const { login, isLoading, error } = useAdmin();
   const navigate = useNavigate();
+  const [securityCheck, setSecurityCheck] = useState({ passed: true, failures: [] });
+  const [isPerformingSecurityCheck, setIsPerformingSecurityCheck] = useState(true);
   
   const {
     register,
@@ -12,19 +16,99 @@ const AdminLogin = () => {
     formState: { errors }
   } = useForm();
 
+  // Perform security checks on component mount
+  useEffect(() => {
+    const checkSecurity = async () => {
+      try {
+        const result = await performAdminSecurityCheck({
+          checkIP: true,
+          checkRateLimit: false, // Don't check rate limit on page load
+          checkTimeAccess: false // Optional time-based access
+        });
+
+        setSecurityCheck(result);
+      } catch (error) {
+        console.error('Security check failed:', error);
+        setSecurityCheck({ passed: false, failures: ['SECURITY_CHECK_FAILED'] });
+      } finally {
+        setIsPerformingSecurityCheck(false);
+      }
+    };
+
+    checkSecurity();
+  }, []);
+
   const onSubmit = async (data) => {
     try {
+      // Perform additional security checks before login
+      const loginSecurityCheck = await performAdminSecurityCheck({
+        checkIP: true,
+        checkRateLimit: true,
+        checkTimeAccess: false,
+        identifier: data.username
+      });
+
+      if (!loginSecurityCheck.passed) {
+        console.error('Login blocked by security checks:', loginSecurityCheck.failures);
+        return;
+      }
+
       const result = await login(data.username, data.password);
 
       if (result.success) {
         // Redirect to admin dashboard
-        navigate('/secretdashboard', { replace: true });
+        navigate('/admin-secure-portal', { replace: true });
       }
       // Error handling is done in the context
     } catch (err) {
       // Error handling is done in the context
     }
   };
+
+  // Show loading during security check
+  if (isPerformingSecurityCheck) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Performing security checks...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show security failure message
+  if (!securityCheck.passed) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full text-center">
+          <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-red-600 mb-6">
+            <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-4">Access Denied</h1>
+          <p className="text-gray-400 mb-6">
+            Your access to the admin panel has been restricted due to security policies.
+          </p>
+          <div className="text-sm text-gray-500">
+            {securityCheck.failures.includes('IP_NOT_ALLOWED') && (
+              <p className="mb-2">• Your IP address is not in the allowed list</p>
+            )}
+            {securityCheck.failures.includes('RATE_LIMIT_EXCEEDED') && (
+              <p className="mb-2">• Too many login attempts detected</p>
+            )}
+            {securityCheck.failures.includes('TIME_ACCESS_DENIED') && (
+              <p className="mb-2">• Access is restricted outside business hours</p>
+            )}
+            {securityCheck.failures.includes('SECURITY_CHECK_FAILED') && (
+              <p className="mb-2">• Security validation failed</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

@@ -13,6 +13,7 @@ import apiService from '../../services/apiService';
 import ErrorMessage from '../UI/ErrorMessage';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { transformAssessmentScores, validateAssessmentData } from '../../utils/assessmentTransformers';
+import { secureStorage, migrateToEncrypted } from '../../utils/encryption';
 
 /**
  * Assessment Component
@@ -114,37 +115,73 @@ const Assessment = () => {
     setFlaggedQuestions(newFlaggedQuestions);
   };
 
-  // Step 2: Auto-Save to localStorage
+  // Step 2: Auto-Save to localStorage with encryption
   useEffect(() => {
     if (Object.keys(answers).length > 0) {
-      localStorage.setItem('assessmentAnswers', JSON.stringify(answers));
+      try {
+        secureStorage.setItem('assessmentAnswers', answers);
+      } catch (error) {
+        console.error('Failed to save encrypted answers:', error);
+        // Fallback to unencrypted storage if encryption fails
+        localStorage.setItem('assessmentAnswers', JSON.stringify(answers));
+      }
     }
   }, [answers]);
 
-  // Auto-Save flagged questions to localStorage
+  // Auto-Save flagged questions to localStorage with encryption
   useEffect(() => {
-    localStorage.setItem('assessmentFlaggedQuestions', JSON.stringify(flaggedQuestions));
+    try {
+      secureStorage.setItem('assessmentFlaggedQuestions', flaggedQuestions);
+    } catch (error) {
+      console.error('Failed to save encrypted flagged questions:', error);
+      // Fallback to unencrypted storage if encryption fails
+      localStorage.setItem('assessmentFlaggedQuestions', JSON.stringify(flaggedQuestions));
+    }
   }, [flaggedQuestions]);
 
-  // Load saved answers and flagged questions on component mount
+  // Load saved answers and flagged questions on component mount with encryption support
   useEffect(() => {
-    const savedAnswers = localStorage.getItem('assessmentAnswers');
-    if (savedAnswers) {
-      try {
-        const parsedAnswers = JSON.parse(savedAnswers);
-        setAnswers(parsedAnswers);
-      } catch (error) {
-        console.error('Failed to load saved answers:', error);
+    // Migrate existing unencrypted data to encrypted storage
+    migrateToEncrypted('assessmentAnswers', secureStorage);
+    migrateToEncrypted('assessmentFlaggedQuestions', secureStorage);
+
+    // Load encrypted answers
+    try {
+      const savedAnswers = secureStorage.getItem('assessmentAnswers');
+      if (savedAnswers) {
+        setAnswers(savedAnswers);
+      }
+    } catch (error) {
+      console.error('Failed to load encrypted answers, trying unencrypted fallback:', error);
+      // Fallback to unencrypted storage
+      const savedAnswers = localStorage.getItem('assessmentAnswers');
+      if (savedAnswers) {
+        try {
+          const parsedAnswers = JSON.parse(savedAnswers);
+          setAnswers(parsedAnswers);
+        } catch (parseError) {
+          console.error('Failed to load saved answers:', parseError);
+        }
       }
     }
 
-    const savedFlaggedQuestions = localStorage.getItem('assessmentFlaggedQuestions');
-    if (savedFlaggedQuestions) {
-      try {
-        const parsedFlaggedQuestions = JSON.parse(savedFlaggedQuestions);
-        setFlaggedQuestions(parsedFlaggedQuestions);
-      } catch (error) {
-        console.error('Failed to load saved flagged questions:', error);
+    // Load encrypted flagged questions
+    try {
+      const savedFlaggedQuestions = secureStorage.getItem('assessmentFlaggedQuestions');
+      if (savedFlaggedQuestions) {
+        setFlaggedQuestions(savedFlaggedQuestions);
+      }
+    } catch (error) {
+      console.error('Failed to load encrypted flagged questions, trying unencrypted fallback:', error);
+      // Fallback to unencrypted storage
+      const savedFlaggedQuestions = localStorage.getItem('assessmentFlaggedQuestions');
+      if (savedFlaggedQuestions) {
+        try {
+          const parsedFlaggedQuestions = JSON.parse(savedFlaggedQuestions);
+          setFlaggedQuestions(parsedFlaggedQuestions);
+        } catch (parseError) {
+          console.error('Failed to load saved flagged questions:', parseError);
+        }
       }
     }
   }, []);
@@ -363,7 +400,15 @@ const Assessment = () => {
       const response = await apiService.submitAssessment(transformedData);
 
       if (response.success && response.data?.jobId) {
-        // Clear saved progress
+        // Clear saved progress from both encrypted and unencrypted storage
+        try {
+          secureStorage.removeItem('assessmentAnswers');
+          secureStorage.removeItem('assessmentFlaggedQuestions');
+        } catch (error) {
+          console.error('Failed to clear encrypted storage:', error);
+        }
+
+        // Also clear unencrypted fallback storage
         localStorage.removeItem('assessmentAnswers');
         localStorage.removeItem('assessmentFlaggedQuestions');
 

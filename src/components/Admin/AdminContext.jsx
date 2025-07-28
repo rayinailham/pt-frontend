@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import adminService from '../../services/adminService';
+import { setAdminUserData } from '../../utils/cookieUtils';
 
 const AdminContext = createContext();
 
@@ -41,8 +42,8 @@ export const AdminProvider = ({ children }) => {
       setAdminUser(response.data.admin);
       setIsAuthenticated(true);
       
-      // Update localStorage with fresh data
-      localStorage.setItem('adminUser', JSON.stringify(response.data.admin));
+      // Update cookies with fresh data
+      setAdminUserData(response.data.admin);
     } catch (error) {
       // Check if it's a network error (backend not available)
       if (error.message.includes('Network Error') || error.code === 'ERR_NETWORK') {
@@ -93,7 +94,7 @@ export const AdminProvider = ({ children }) => {
       setAdminUser(null);
       setError('');
       setIsLoading(false);
-      navigate('/secretdashboard/login', { replace: true });
+      navigate('/admin-secure-portal/login', { replace: true });
     }
   };
 

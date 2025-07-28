@@ -1,17 +1,39 @@
 import axios from 'axios';
 import { API_CONFIG } from '../config/api';
+import {
+  getAdminToken,
+  setAdminToken,
+  removeAdminToken,
+  getAdminUserData,
+  setAdminUserData,
+  removeAdminUserData,
+  migrateFromLocalStorage
+} from '../utils/cookieUtils';
 
 // Admin API Service - Terpisah dari user authentication
 class AdminService {
   constructor() {
     this.baseURL = API_CONFIG.BASE_URL;
-    this.adminToken = localStorage.getItem('adminToken');
-    this.adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+
+    // Migrate existing localStorage data to cookies
+    migrateFromLocalStorage('adminToken', setAdminToken);
+    migrateFromLocalStorage('adminUser', (userData) => {
+      try {
+        const parsedUser = JSON.parse(userData);
+        return setAdminUserData(parsedUser);
+      } catch (error) {
+        console.error('Failed to migrate admin user data:', error);
+        return false;
+      }
+    });
+
+    this.adminToken = getAdminToken();
+    this.adminUser = getAdminUserData() || {};
   }
 
   // Helper method untuk authenticated requests
   async adminApiRequest(endpoint, options = {}) {
-    const token = localStorage.getItem('adminToken');
+    const token = getAdminToken();
 
     // Ensure endpoint is a full URL
     const fullUrl = endpoint.startsWith('http') ? endpoint : `${this.baseURL}${endpoint}`;
@@ -52,9 +74,13 @@ class AdminService {
       if (response.data.success) {
         const { admin, token } = response.data.data;
 
-        // Store admin session
-        localStorage.setItem('adminToken', token);
-        localStorage.setItem('adminUser', JSON.stringify(admin));
+        // Store admin session in cookies
+        setAdminToken(token);
+        setAdminUserData(admin);
+
+        // Clear any remaining localStorage data
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
 
         this.adminToken = token;
         this.adminUser = admin;
@@ -89,6 +115,8 @@ class AdminService {
       // Silently handle logout errors
     } finally {
       // Clear admin session regardless of API response
+      removeAdminToken();
+      removeAdminUserData();
       localStorage.removeItem('adminToken');
       localStorage.removeItem('adminUser');
       this.adminToken = null;

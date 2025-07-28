@@ -19,16 +19,17 @@ import HealthCheck from './components/Admin/HealthCheck';
 import SecretAdminDashboard from './components/Admin/SecretAdminDashboard';
 import axios from 'axios';
 import { API_CONFIG } from './config/api';
+import { getAuthToken, removeAuthToken, removeUserData } from './utils/cookieUtils';
 
 // Configure axios defaults
 axios.defaults.baseURL = API_CONFIG.BASE_URL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.timeout = API_CONFIG.TIMEOUT;
 
-// Add request interceptor to include auth token
+// Add request interceptor to include auth token from cookies
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -47,7 +48,9 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
+      // Token expired or invalid - clear cookies and localStorage
+      removeAuthToken();
+      removeUserData();
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/auth';
@@ -135,8 +138,8 @@ function App() {
               </ProtectedRoute>
             } />
 
-            {/* Secret Admin Dashboard - Hidden route, no navigation links */}
-            <Route path="/secretdashboard/*" element={<SecretAdminDashboard />} />
+            {/* Admin Portal - Secure route with obfuscated path */}
+            <Route path="/admin-secure-portal/*" element={<SecretAdminDashboard />} />
 
             {/* Default redirect */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />

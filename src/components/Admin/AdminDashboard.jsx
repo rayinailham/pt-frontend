@@ -288,7 +288,7 @@ const AdminDashboard = () => {
 
             {adminService.hasRole('superadmin') && (
               <button
-                onClick={() => navigate('/secretdashboard/register')}
+                onClick={() => navigate('/admin-secure-portal/register')}
                 className="relative group bg-gray-700 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 rounded-lg hover:bg-gray-600"
               >
                 <div>

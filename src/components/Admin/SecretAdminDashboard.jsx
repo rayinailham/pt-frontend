@@ -6,6 +6,7 @@ import AdminDashboard from './AdminDashboard';
 import UserManagement from './UserManagement';
 import AdminProfile from './AdminProfile';
 import AdminRegistration from './AdminRegistration';
+import AdminProtectedRoute from './AdminProtectedRoute';
 
 const SecretAdminDashboard = () => {
   return (
@@ -48,22 +49,28 @@ const SecretAdminDashboardContent = () => {
         element={<AdminLogin />}
       />
       
-      {/* Protected admin routes */}
+      {/* Protected admin routes with enhanced security */}
       <Route path="/*" element={
         isAuthenticated ? (
-          <AdminLayout>
-            <Routes>
-              <Route path="/" element={<AdminDashboard />} />
-              <Route path="/users" element={<UserManagement />} />
-              <Route path="/profile" element={<AdminProfile />} />
-              <Route path="/register" element={<AdminRegistration />} />
-              
-              {/* Catch all route for admin area */}
-              <Route path="*" element={<Navigate to="/secretdashboard" replace />} />
-            </Routes>
-          </AdminLayout>
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <Routes>
+                <Route path="/" element={<AdminDashboard />} />
+                <Route path="/users" element={<UserManagement />} />
+                <Route path="/profile" element={<AdminProfile />} />
+                <Route path="/register" element={
+                  <AdminProtectedRoute requiredRole="superadmin">
+                    <AdminRegistration />
+                  </AdminProtectedRoute>
+                } />
+
+                {/* Catch all route for admin area */}
+                <Route path="*" element={<Navigate to="/admin-secure-portal" replace />} />
+              </Routes>
+            </AdminLayout>
+          </AdminProtectedRoute>
         ) : (
-          <Navigate to="/secretdashboard/login" replace />
+          <Navigate to="/admin-secure-portal/login" replace />
         )
       } />
     </Routes>

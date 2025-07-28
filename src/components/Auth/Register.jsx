@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiService from '../../services/apiService';
+import { VALIDATION_PATTERNS } from '../../utils/validationUtils';
 
 const Register = ({ onRegister }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,13 +52,7 @@ const Register = ({ onRegister }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
               <input
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Invalid email address'
-                  }
-                })}
+                {...register('email', VALIDATION_PATTERNS.email)}
                 type="email"
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
                 placeholder="Enter your email"

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import apiService from '../../services/apiService';
+import { sanitizeText } from '../../utils/sanitizationUtils';
 
 const Chatbot = ({ assessmentId }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -142,24 +143,13 @@ const Chatbot = ({ assessmentId }) => {
     }
   };
 
-  // Input sanitization function
-  const sanitizeInput = (input) => {
-    if (!input || typeof input !== 'string') return '';
 
-    // Remove potentially dangerous characters and limit length
-    return input
-      .trim()
-      .slice(0, 1000) // Limit message length
-      .replace(/[<>]/g, '') // Remove angle brackets to prevent HTML injection
-      .replace(/javascript:/gi, '') // Remove javascript: protocol
-      .replace(/on\w+=/gi, ''); // Remove event handlers
-  };
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || !conversation || isLoading) return;
 
     // Sanitize user input
-    const sanitizedMessage = sanitizeInput(inputMessage);
+    const sanitizedMessage = sanitizeText(inputMessage, 1000);
     if (!sanitizedMessage) return;
 
     const userMessage = {
@@ -201,7 +191,7 @@ const Chatbot = ({ assessmentId }) => {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    const suggestionText = sanitizeInput(suggestion.description || suggestion.title);
+    const suggestionText = sanitizeText(suggestion.description || suggestion.title, 500);
     setInputMessage(suggestionText);
   };
 
@@ -299,7 +289,7 @@ const Chatbot = ({ assessmentId }) => {
                             : 'bg-gray-100 text-gray-800'
                         }`}
                       >
-                        <p className="text-sm">{sanitizeInput(message.content)}</p>
+                        <p className="text-sm">{sanitizeText(message.content, 1000)}</p>
                         <p className="text-xs opacity-70 mt-1">
                           {new Date(message.timestamp).toLocaleTimeString()}
                         </p>

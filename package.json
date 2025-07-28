@@ -12,13 +12,20 @@
     "build:prod": "VITE_DEBUG=false NODE_ENV=production vite build",
     "serve": "vite preview --port 3000",
     "clean": "rm -rf dist node_modules/.vite",
-    "check": "npm run lint && npm run build"
+    "check": "npm run lint && npm run build",
+    "security:audit": "node scripts/security-audit.js",
+    "security:fix": "npm audit fix",
+    "security:check": "npm audit && npm outdated",
+    "precommit": "npm run lint && npm run security:audit"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.10.0",
+    "crypto-js": "^4.2.0",
+    "dompurify": "^3.2.6",
     "framer-motion": "^12.23.9",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

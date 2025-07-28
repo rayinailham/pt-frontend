@@ -1,5 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import {
+  getAuthToken,
+  setAuthToken,
+  removeAuthToken,
+  getUserData,
+  setUserData,
+  removeUserData,
+  migrateFromLocalStorage
+} from '../utils/cookieUtils';
 
 const AuthContext = createContext();
 
@@ -17,39 +26,70 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing token on app start
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    
+    // Migrate existing localStorage data to cookies
+    migrateFromLocalStorage('token', setAuthToken);
+    migrateFromLocalStorage('user', (userData) => {
+      try {
+        const parsedUser = JSON.parse(userData);
+        return setUserData(parsedUser);
+      } catch (error) {
+        console.error('Failed to migrate user data:', error);
+        return false;
+      }
+    });
+
+    // Check for existing token on app start from cookies
+    const savedToken = getAuthToken();
+    const savedUser = getUserData();
+
     if (savedToken && savedUser) {
       setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+      setUser(savedUser);
       // Set default axios header
       axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
     }
-    
+
     setIsLoading(false);
   }, []);
 
   const login = (newToken, newUser) => {
     setToken(newToken);
     setUser(newUser);
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify(newUser));
+
+    // Store in secure cookies instead of localStorage
+    setAuthToken(newToken);
+    setUserData(newUser);
+
+    // Also clear any remaining localStorage data
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
+
+    // Remove from cookies
+    removeAuthToken();
+    removeUserData();
+
+    // Also clear any remaining localStorage data
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+
     delete axios.defaults.headers.common['Authorization'];
   };
 
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
-    localStorage.setItem('user', JSON.stringify(updatedUser));
+
+    // Update in cookies
+    setUserData(updatedUser);
+
+    // Also clear any remaining localStorage data
+    localStorage.removeItem('user');
   };
 
   const value = {

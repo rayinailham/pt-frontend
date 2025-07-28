@@ -1,0 +1,102 @@
+{
+  "timestamp": "2025-07-28T21:09:22.017Z",
+  "summary": {
+    "totalVulnerabilities": 0,
+    "criticalVulnerabilities": 0,
+    "highVulnerabilities": 0,
+    "moderateVulnerabilities": 0,
+    "lowVulnerabilities": 0,
+    "outdatedPackages": 11,
+    "packageIssues": 0
+  },
+  "vulnerabilities": [],
+  "outdatedPackages": {
+    "@eslint/js": {
+      "current": "9.31.0",
+      "wanted": "9.32.0",
+      "latest": "9.32.0",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\@eslint\\js"
+    },
+    "@vitejs/plugin-react": {
+      "current": "4.6.0",
+      "wanted": "4.7.0",
+      "latest": "4.7.0",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\@vitejs\\plugin-react"
+    },
+    "axios": {
+      "current": "1.10.0",
+      "wanted": "1.11.0",
+      "latest": "1.11.0",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\axios"
+    },
+    "eslint": {
+      "current": "9.31.0",
+      "wanted": "9.32.0",
+      "latest": "9.32.0",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\eslint"
+    },
+    "framer-motion": {
+      "current": "12.23.9",
+      "wanted": "12.23.11",
+      "latest": "12.23.11",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\framer-motion"
+    },
+    "lucide-react": {
+      "current": "0.525.0",
+      "wanted": "0.525.0",
+      "latest": "0.532.0",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\lucide-react"
+    },
+    "react": {
+      "current": "19.1.0",
+      "wanted": "19.1.1",
+      "latest": "19.1.1",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\react"
+    },
+    "react-dom": {
+      "current": "19.1.0",
+      "wanted": "19.1.1",
+      "latest": "19.1.1",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\react-dom"
+    },
+    "react-hook-form": {
+      "current": "7.60.0",
+      "wanted": "7.61.1",
+      "latest": "7.61.1",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\react-hook-form"
+    },
+    "react-router-dom": {
+      "current": "7.6.3",
+      "wanted": "7.7.1",
+      "latest": "7.7.1",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\react-router-dom"
+    },
+    "vite": {
+      "current": "7.0.4",
+      "wanted": "7.0.6",
+      "latest": "7.0.6",
+      "dependent": "atma-frontend",
+      "location": "D:\\(program-projects)\\AI-Driven Talent Mapping Assessment\\atma-frontend\\node_modules\\vite"
+    }
+  },
+  "packageAnalysis": {
+    "issues": [],
+    "recommendations": [
+      "Specify Node.js and npm versions in engines field"
+    ]
+  },
+  "recommendations": [
+    "Update outdated packages to latest versions",
+    "Specify Node.js and npm versions in engines field"
+  ]
+}
