@@ -12,6 +12,7 @@ const MobileBottomNavigation = ({
   onPreviousCategory,
   onNextCategory,
   onPrevious,
+  onNextAssessment,
   onSubmitWithValidation,
   onManualSubmit,
   currentCategoryData
@@ -99,13 +100,10 @@ const MobileBottomNavigation = ({
             ) : /* Next Assessment Button */
             currentPage === totalPages - 1 && !isLastAssessment ? (
               <button
-                onClick={onSubmitWithValidation}
-                disabled={!isAssessmentComplete() || isProcessingSubmit}
-                className="flex items-center space-x-1 px-3 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                onClick={onNextAssessment}
+                className="flex items-center space-x-1 px-3 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all"
               >
-                <span className="text-xs font-medium">
-                  {isProcessingSubmit ? 'Next...' : 'Next'}
-                </span>
+                <span className="text-xs font-medium">Next</span>
                 <ChevronRight className="h-4 w-4" />
               </button>
             ) : /* Next Category Button */

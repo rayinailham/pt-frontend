@@ -704,7 +704,7 @@ const Assessment = () => {
               )}
 
               {/* Next Assessment Button */}
-              {currentPage === totalPages - 1 && !isLastAssessment && isCurrentAssessmentComplete && (
+              {currentPage === totalPages - 1 && !isLastAssessment && (
                 <button
                   onClick={handleNextAssessment}
                   className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 transition-all font-medium"
@@ -774,6 +774,7 @@ const Assessment = () => {
         onPreviousCategory={handlePreviousCategory}
         onNextCategory={handleNextCategory}
         onPrevious={handlePreviousAssessment}
+        onNextAssessment={handleNextAssessment}
         onSubmitWithValidation={() => {
           if (isAllComplete) {
             handleSubmit();

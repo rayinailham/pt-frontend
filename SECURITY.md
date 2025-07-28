@@ -7,12 +7,13 @@ This document outlines the security measures and best practices implemented in t
 ## Security Features Implemented
 
 ### 1. Content Security Policy (CSP)
-- **Location**: `vite.config.js`, `index.html`
+- **Location**: `vite.config.js` (HTTP headers), `index.html` (meta tag backup)
 - **Purpose**: Prevents XSS attacks and code injection
-- **Configuration**: 
+- **Configuration**:
   - Restricts script sources to self and safe domains
   - Blocks inline scripts and eval() in production
   - Allows only HTTPS external resources
+  - Allows connections to API domain: `https://api.chhrone.web.id`
 
 ### 2. Input Sanitization with DOMPurify
 - **Location**: `src/utils/sanitizationUtils.js`

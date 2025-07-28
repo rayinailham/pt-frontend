@@ -69,7 +69,7 @@ export const isURLAllowedByCSP = (url, directive = 'default-src') => {
       'style-src': ['self', 'https://fonts.googleapis.com'],
       'font-src': ['self', 'https://fonts.gstatic.com'],
       'img-src': ['self', 'data:', 'https:'],
-      'connect-src': ['self', 'https://api.ipify.org'],
+      'connect-src': ['self', 'https://api.ipify.org', 'https://api.chhrone.web.id'],
       'frame-src': [],
       'object-src': []
     };
