@@ -6,7 +6,7 @@ import NotificationContainer from './components/Layout/NotificationContainer';
 import GlobalNotificationHandler from './components/Layout/GlobalNotificationHandler';
 import AuthPage from './components/Auth/AuthPage';
 import Dashboard from './components/Dashboard/Dashboard';
-import AssessmentFlow from './components/Assessment/AssessmentFlow';
+import Assessment from './components/Assessment/Assessment';
 import AssessmentStatus from './components/Assessment/AssessmentStatus';
 import ResultsPage from './components/Results/ResultsPage';
 import ResultOverview from './components/Results/ResultOverview';
@@ -77,7 +77,7 @@ function App() {
 
             <Route path="/assessment" element={
               <ProtectedRoute>
-                <AssessmentFlow />
+                <Assessment />
               </ProtectedRoute>
             } />
 

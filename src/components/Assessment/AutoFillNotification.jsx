@@ -13,11 +13,7 @@ const AutoFillNotification = ({
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true);
-      // Auto close after 5 seconds
-      const timer = setTimeout(() => {
-        handleClose();
-      }, 5000);
-      return () => clearTimeout(timer);
+      // Auto close timer removed - user must close manually
     }
   }, [isVisible]);
 
@@ -33,7 +29,7 @@ const AutoFillNotification = ({
   return (
     <div className="fixed top-4 right-4 z-50">
       <div
-        className={`bg-white border border-gray-300 p-4 max-w-sm transition-all duration-300 ${
+        className={`bg-white border border-gray-300 rounded-2xs p-4 max-w-sm transition-all duration-300 ${
           isAnimating ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
         }`}
       >

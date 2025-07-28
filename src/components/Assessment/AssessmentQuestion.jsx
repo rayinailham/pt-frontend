@@ -1,11 +1,16 @@
 
+import { Flag } from 'lucide-react';
+
 const AssessmentQuestion = ({
   question,
   questionIndex,
   totalQuestions,
   scale,
   value,
-  onChange
+  onChange,
+  questionKey,
+  isFlagged,
+  onToggleFlag
 }) => {
   // Convert scale array to min/max format for button-based selection
   const scaleConfig = {
@@ -15,14 +20,28 @@ const AssessmentQuestion = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8 mb-4 sm:mb-6 hover:border-gray-300 transition-all duration-200">
+    <div
+      id={`question-${questionKey}`}
+      className="bg-white border border-gray-300 shadow-sm p-3 sm:p-4 md:p-6 lg:p-8 mb-4 sm:mb-6 hover:border-gray-400 transition-all duration-200"
+    >
       <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <span className="text-xs font-semibold text-gray-700 bg-gray-100 px-2 sm:px-3 py-1 border border-gray-200 rounded">
-            Question {questionIndex + 1} of {totalQuestions}
+          <span className="text-xs font-bold text-gray-700 bg-gray-100 px-2 sm:px-3 py-1 border border-gray-300">
+            Question {questionIndex} of {totalQuestions}
           </span>
+          <button
+            onClick={() => onToggleFlag && onToggleFlag(questionKey)}
+            className={`p-2 rounded-sm transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              isFlagged
+                ? 'text-red-600 hover:text-red-700 focus:ring-red-400 bg-red-50 hover:bg-red-100'
+                : 'text-gray-400 hover:text-gray-600 focus:ring-gray-400 hover:bg-gray-50'
+            }`}
+            title={isFlagged ? 'Remove flag' : 'Flag for review'}
+          >
+            <Flag className={`h-4 w-4 ${isFlagged ? 'fill-current' : ''}`} />
+          </button>
         </div>
-        <h3 className="text-base sm:text-lg font-medium text-gray-900 leading-relaxed tracking-tight">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 leading-relaxed tracking-tight">
           {question}
         </h3>
       </div>
@@ -33,7 +52,7 @@ const AssessmentQuestion = ({
           <span className="text-right">{scaleConfig.labels[scaleConfig.labels.length - 1]}</span>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 sm:gap-2 w-full">
+        <div className="grid grid-cols-5 gap-1 sm:gap-2 w-full">
           {Array.from({ length: scaleConfig.max - scaleConfig.min + 1 }, (_, i) => {
             const scaleValue = scaleConfig.min + i;
             const isSelected = value === scaleValue;
@@ -43,7 +62,7 @@ const AssessmentQuestion = ({
                 key={scaleValue}
                 onClick={() => onChange(scaleValue)}
                 className={`
-                  h-10 sm:h-12 border-2 transition-all duration-200 font-semibold text-xs sm:text-sm rounded
+                  h-10 sm:h-12 border-2 transition-all duration-200 font-bold text-xs sm:text-sm
                   flex items-center justify-center w-full
                   ${isSelected
                     ? 'bg-gray-900 border-gray-900 text-white'

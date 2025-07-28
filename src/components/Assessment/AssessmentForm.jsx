@@ -14,10 +14,8 @@ const AssessmentForm = ({
   isLastAssessment = false,
   currentStep = 1,
   totalSteps = 3,
-  isDebugMode = false,
   isProcessingSubmit = false,
   onFillAllAssessments,
-  allAssessmentsFilled = false,
   prefilledAnswers = null, // New prop for prefilled answers from auto fill
   isAutoFillMode = false, // Flag indicating auto-fill mode
   onManualSubmit, // Manual submit function for auto-fill mode
@@ -99,20 +97,7 @@ const AssessmentForm = ({
     }
   });
 
-  // Auto-fill answers in debug mode
-  useEffect(() => {
-    if (isDebugMode && import.meta.env.DEV) {
-      const autoAnswers = {};
-
-      // Generate random answers for all questions (5-7 range for good scores)
-      allQuestions.forEach((q) => {
-        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 5; // Random 5-7
-      });
-
-      setAnswers(autoAnswers);
-      setCurrentPage(Math.max(0, totalPages - 1)); // Go to last category
-    }
-  }, [isDebugMode, assessmentData.title]);
+  // Auto-fill functionality removed - users must fill answers manually
 
   // Load prefilled answers when available (from auto fill all assessments)
   useEffect(() => {
@@ -128,30 +113,7 @@ const AssessmentForm = ({
     }
   }, [prefilledAnswers, assessmentData.title]);
 
-  // Auto-fill answers when all assessments are filled and we're in the last phase
-  useEffect(() => {
-    if (allAssessmentsFilled && currentStep === 3 && import.meta.env.DEV && !prefilledAnswers) {
-      const autoAnswers = {};
-
-      // Generate random answers for all questions (5-7 range for good scores)
-      allQuestions.forEach((q) => {
-        autoAnswers[q.questionKey] = Math.floor(Math.random() * 3) + 5; // Random 5-7
-      });
-
-      setAnswers(autoAnswers);
-      setCurrentPage(Math.max(0, totalPages - 1)); // Go to last category
-    }
-  }, [allAssessmentsFilled, currentStep, assessmentData.title, prefilledAnswers]);
-
-  // Navigate to last category when all assessments are filled and we're in the last phase
-  useEffect(() => {
-    if (allAssessmentsFilled && currentStep === 3) {
-      // Small delay to ensure state is updated
-      setTimeout(() => {
-        setCurrentPage(Math.max(0, totalPages - 1)); // Go to last category
-      }, 100);
-    }
-  }, [allAssessmentsFilled, currentStep, totalPages]);
+  // Auto-fill and auto-navigation functionality removed - users must navigate manually
 
   const handleAnswerChange = (questionKey, value) => {
     setAnswers(prev => ({
@@ -193,8 +155,8 @@ const AssessmentForm = ({
         category.reverseQuestions.forEach((_, index) => {
           const questionKey = `${categoryKey}_reverse_${index}`;
           if (answers[questionKey]) {
-            // Reverse the score (8 - original score for 1-7 scale)
-            totalScore += (8 - answers[questionKey]);
+            // Reverse the score (6 - original score for 1-5 scale)
+            totalScore += (6 - answers[questionKey]);
             questionCount++;
           }
         });
@@ -202,7 +164,7 @@ const AssessmentForm = ({
       
       // Calculate average score (0-100 scale)
       if (questionCount > 0) {
-        scores[categoryKey] = Math.round(((totalScore / questionCount) - 1) * (100 / 6)); // Convert 1-7 to 0-100
+        scores[categoryKey] = Math.round(((totalScore / questionCount) - 1) * (100 / 4)); // Convert 1-5 to 0-100
       }
     });
     
@@ -264,9 +226,9 @@ const AssessmentForm = ({
   const fillRandomAnswers = () => {
     const randomAnswers = {};
 
-    // Generate random answers for all questions (1-7 range)
+    // Generate random answers for all questions (1-5 range)
     allQuestions.forEach((q) => {
-      randomAnswers[q.questionKey] = Math.floor(Math.random() * 7) + 1; // Random 1-7
+      randomAnswers[q.questionKey] = Math.floor(Math.random() * 5) + 1; // Random 1-5
     });
 
     setAnswers(randomAnswers);
@@ -295,10 +257,10 @@ const AssessmentForm = ({
         {/* Main Content */}
         <div className="flex-1 lg:mr-80 p-2 sm:p-4 lg:p-8 pb-32 sm:pb-36 lg:pb-8">
           {/* Desktop Header */}
-          <div className="hidden lg:block mb-8 bg-white border border-gray-200 p-8 max-w-3xl mx-auto">
+          <div className="hidden lg:block mb-8 bg-white border border-gray-200 rounded-2xs p-8 max-w-3xl mx-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gray-100 border border-gray-200">
+                <div className="p-3 bg-gray-100 border border-gray-200 rounded-2xs">
                   <BookOpen className="h-6 w-6 text-gray-700" />
                 </div>
                 <div>
@@ -309,7 +271,7 @@ const AssessmentForm = ({
                     Assessment {currentStep} of {totalSteps} - {assessmentData.description}
                   </p>
                   {isAutoFillMode && (
-                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-300">
+                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-300 rounded-2xs">
                       <Check className="h-3 w-3 mr-1" />
                       Auto-filled - You can edit answers manually
                     </div>
@@ -360,7 +322,7 @@ const AssessmentForm = ({
             <button
               onClick={handlePreviousCategory}
               disabled={currentPage === 0}
-              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xs hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="h-5 w-5" />
               <span>Previous Category</span>
@@ -375,7 +337,7 @@ const AssessmentForm = ({
               {currentStep > 1 && currentPage === 0 && (
                 <button
                   onClick={onPrevious}
-                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
+                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xs hover:bg-gray-50 transition-colors"
                 >
                   <ChevronLeft className="h-5 w-5" />
                   <span>Previous Assessment</span>
@@ -387,7 +349,7 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <Check className="h-5 w-5" />
                   <span>{isProcessingSubmit ? 'Submitting...' : 'Submit Assessment'}</span>
@@ -399,7 +361,7 @@ const AssessmentForm = ({
                 <button
                   onClick={onManualSubmit}
                   disabled={isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <Check className="h-5 w-5" />
                   <span>{isProcessingSubmit ? 'Submitting...' : 'Submit All Assessments'}</span>
@@ -411,7 +373,7 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <span>{isProcessingSubmit ? 'Processing...' : 'Next Assessment'}</span>
                   <ChevronRight className="h-5 w-5" />
@@ -422,7 +384,7 @@ const AssessmentForm = ({
               {currentPage < totalPages - 1 && (
                 <button
                   onClick={handleNextCategory}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 transition-all"
                 >
                   <span>Next Category</span>
                   <ChevronRight className="h-5 w-5" />
