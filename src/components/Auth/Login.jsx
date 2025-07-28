@@ -61,7 +61,7 @@ const Login = ({ onLogin }) => {
                   }
                 })}
                 type="email"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
                 placeholder="Enter your email"
               />
             </div>
@@ -86,7 +86,7 @@ const Login = ({ onLogin }) => {
               <input
                 {...register('password', { required: 'Password is required' })}
                 type={showPassword ? 'text' : 'password'}
-                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
+                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
                 placeholder="Enter your password"
               />
               <button
@@ -123,7 +123,7 @@ const Login = ({ onLogin }) => {
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
             />
             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
               Remember me
@@ -131,7 +131,7 @@ const Login = ({ onLogin }) => {
           </div>
 
           <div className="text-sm">
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+            <a href="#" className="font-medium text-black hover:text-gray-700 transition-colors">
               Forgot your password?
             </a>
           </div>
@@ -151,7 +151,7 @@ const Login = ({ onLogin }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 sm:py-3.5 px-4 bg-gradient-to-r from-slate-600 to-blue-600 text-white font-medium rounded-lg hover:from-slate-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-md touch-manipulation"
+          className="w-full py-3 sm:py-3.5 px-4 bg-gradient-to-r from-black to-gray-800 text-white font-medium rounded-lg hover:from-gray-900 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] shadow-md touch-manipulation"
         >
           {isLoading ? (
             <div className="flex items-center justify-center">
