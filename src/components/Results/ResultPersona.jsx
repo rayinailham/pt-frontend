@@ -158,16 +158,19 @@ const ResultPersona = () => {
     }
 
     return (
-      <div className="space-y-12">
+      <div className="space-y-8 sm:space-y-10">
         {/* Archetype & Summary */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-white p-6 sm:p-10 rounded-md shadow-sm border border-gray-100 relative overflow-hidden"
+          className="bg-white p-6 sm:p-8 rounded-lg shadow-sm border-0 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+          }}
         >
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-800 to-slate-600"></div>
-          <h3 className="text-2xl sm:text-4xl font-light text-slate-900 mb-6 sm:mb-8 tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 tracking-tight">
             {personaProfile.archetype}
           </h3>
           <p className="text-slate-700 leading-relaxed font-normal text-sm sm:text-base">
@@ -176,19 +179,22 @@ const ResultPersona = () => {
         </motion.div>
 
         {/* Core Strengths & Development Insights */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
           {/* Core Strengths */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 h-full relative"
+            className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
+            style={{
+              background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+            }}
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-slate-800"></div>
-            <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+            <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                 <svg
-                  className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                  className="w-4 h-4 text-slate-700"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -202,18 +208,18 @@ const ResultPersona = () => {
               Core Strengths
             </h4>
             {personaProfile.strengthSummary && (
-              <p className="text-slate-700 mb-4 sm:mb-6 text-sm sm:text-base font-normal bg-slate-50 p-3 sm:p-4 rounded border border-slate-200">
+              <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
                 {personaProfile.strengthSummary}
               </p>
             )}
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-2.5 sm:space-y-3">
               {personaProfile.strengths?.map((strength, idx) => (
                 <li
                   key={idx}
-                  className="text-slate-800 flex items-start bg-slate-50 p-3 sm:p-4 rounded border border-slate-200"
+                  className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
                 >
-                  <div className="w-3 h-3 bg-slate-600 rounded-sm mr-3 sm:mr-4 mt-1 sm:mt-2 flex-shrink-0"></div>
-                  <span className="font-normal text-sm sm:text-base">{strength}</span>
+                  <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span className="font-normal text-sm sm:text-base leading-relaxed">{strength}</span>
                 </li>
               ))}
             </ul>
@@ -222,12 +228,17 @@ const ResultPersona = () => {
           {/* Skill Suggestions */}
           {personaProfile.skillSuggestion &&
             personaProfile.skillSuggestion.length > 0 && (
-              <div className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 h-full relative">
-                <div className="absolute top-0 left-0 w-full h-1 bg-slate-700"></div>
-                <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+              <div
+                className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
+                style={{
+                  background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+                }}
+              >
+                <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                      className="w-4 h-4 text-slate-700"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -236,14 +247,14 @@ const ResultPersona = () => {
                   </div>
                   Skill Development
                 </h4>
-                <p className="text-slate-700 mb-4 sm:mb-6 text-sm sm:text-base font-normal bg-slate-50 p-3 sm:p-4 rounded border border-slate-200">
+                <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
                   Rekomendasi keahlian yang dirancang khusus untuk memperkokoh fondasi keunggulan utama yang telah Anda miliki. Penguasaan keterampilan akan meningkatkan daya saing Anda secara signifikan.
                 </p>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5">
                   {personaProfile.skillSuggestion.map((skill, idx) => (
                     <span
                       key={idx}
-                      className="text-slate-800 flex items-start bg-slate-50 p-3 sm:p-4 rounded border border-slate-200 text-sm sm:text-base"
+                      className="text-slate-800 bg-slate-50/70 px-3 py-2 rounded-lg border-0 text-sm sm:text-base font-medium"
                     >
                       {skill}
                     </span>
@@ -258,13 +269,16 @@ const ResultPersona = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-white p-6 sm:p-10 rounded-md shadow-sm border border-gray-100 relative"
+          className="bg-white p-6 sm:p-8 rounded-lg shadow-sm border-0 relative"
+          style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+          }}
         >
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-800 to-slate-600"></div>
-          <h4 className="text-2xl sm:text-4xl font-light text-slate-900 mb-6 sm:mb-10 flex items-center">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+          <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-6 sm:mb-8 flex items-center">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-lg flex items-center justify-center">
               <svg
-                className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700"
+                className="w-5 h-5 text-slate-700"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -277,13 +291,16 @@ const ResultPersona = () => {
             </div>
             Career Recommendations
           </h4>
-          <div className="grid gap-4 sm:gap-6">
+          <div className="grid gap-4 sm:gap-5">
             {personaProfile.careerRecommendation?.map((career, idx) => (
               <div
                 key={idx}
-                className="bg-slate-50 border border-slate-200 rounded-md p-4 sm:p-6 relative"
+                className="bg-slate-50/70 border-0 rounded-lg p-4 sm:p-5 relative"
+                style={{
+                  boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.03)'
+                }}
               >
-                <h5 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-6 text-center tracking-tight">
+                <h5 className="text-lg sm:text-xl font-light text-slate-900 mb-4 sm:mb-5 text-center tracking-tight">
                   {career.careerName}
                 </h5>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
@@ -292,9 +309,9 @@ const ResultPersona = () => {
                       <div key={key} className="text-center">
                         {/* Compact progress indicator */}
                         <div className="mb-2">
-                          <div className="w-full bg-gray-300 rounded-full h-1.5 mb-2">
+                          <div className="w-full bg-gray-300/60 rounded-full h-1.5 mb-2">
                             <div
-                              className="bg-slate-700 h-1.5 rounded-sm transition-all duration-500"
+                              className="bg-slate-700 h-1.5 rounded-full transition-all duration-500"
                               style={{
                                 width: `${
                                   (getProspectLevel(value) / 5) * 100
@@ -303,7 +320,7 @@ const ResultPersona = () => {
                             ></div>
                           </div>
                           <div
-                            className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs font-medium border ${getProspectColor(
+                            className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium border-0 ${getProspectColor(
                               value
                             )}`}
                           >
@@ -323,14 +340,19 @@ const ResultPersona = () => {
         </motion.div>
 
         {/* Development Areas & Skills Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
           {/* Development Areas (moved from above) */}
-          <div className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 h-full relative">
-            <div className="absolute top-0 left-0 w-full h-1 bg-slate-600"></div>
-            <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+          <div
+            className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
+            style={{
+              background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+            }}
+          >
+            <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                 <svg
-                  className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                  className="w-4 h-4 text-slate-700"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -344,18 +366,18 @@ const ResultPersona = () => {
               Development Areas
             </h4>
             {personaProfile.weaknessSummary && (
-              <p className="text-slate-700 mb-4 sm:mb-6 text-sm sm:text-base font-normal bg-slate-50 p-3 sm:p-4 rounded border border-slate-200">
+              <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
                 {personaProfile.weaknessSummary}
               </p>
             )}
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-2.5 sm:space-y-3">
               {personaProfile.weaknesses?.map((weakness, idx) => (
                 <li
                   key={idx}
-                  className="text-slate-800 flex items-start bg-slate-50 p-3 sm:p-4 rounded border border-slate-200"
+                  className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
                 >
-                  <div className="w-3 h-3 bg-slate-600 rounded-sm mr-3 sm:mr-4 mt-1 sm:mt-2 flex-shrink-0"></div>
-                  <span className="font-normal text-sm sm:text-base">{weakness}</span>
+                  <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span className="font-normal text-sm sm:text-base leading-relaxed">{weakness}</span>
                 </li>
               ))}
             </ul>
@@ -366,13 +388,16 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 h-full relative"
+            className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
+            style={{
+              background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+            }}
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-slate-700"></div>
-            <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+            <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                 <svg
-                  className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                  className="w-4 h-4 text-slate-700"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -385,17 +410,17 @@ const ResultPersona = () => {
               </div>
               Development Insights
             </h4>
-            <p className="text-slate-700 mb-4 sm:mb-6 text-sm sm:text-base font-normal bg-slate-50 p-3 sm:p-4 rounded border border-slate-200">
+            <p className="text-slate-700 mb-4 sm:mb-5 text-sm sm:text-base font-normal bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0">
               Wawasan strategis yang mendalam untuk membantu Anda mengenali dan menyikapi area-area yang perlu dikembangkan.
             </p>
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-2.5 sm:space-y-3">
               {personaProfile.insights?.map((insight, idx) => (
                 <li
                   key={idx}
-                  className="text-slate-800 flex items-start bg-slate-50 p-3 sm:p-4 rounded border border-slate-200"
+                  className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
                 >
-                  <div className="w-3 h-3 bg-slate-600 rounded-sm mr-3 sm:mr-4 mt-1 sm:mt-2 flex-shrink-0"></div>
-                  <span className="font-normal text-sm sm:text-base">{insight}</span>
+                  <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span className="font-normal text-sm sm:text-base leading-relaxed">{insight}</span>
                 </li>
               ))}
             </ul>
@@ -405,12 +430,17 @@ const ResultPersona = () => {
         {/* Possible Pitfalls - Full Width */}
         {personaProfile.possiblePitfalls &&
           personaProfile.possiblePitfalls.length > 0 && (
-            <div className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-slate-600"></div>
-              <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+            <div
+              className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 relative"
+              style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+              }}
+            >
+              <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                   <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                    className="w-4 h-4 text-slate-700"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -423,14 +453,14 @@ const ResultPersona = () => {
                 </div>
                 Potential Challenges
               </h4>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 {personaProfile.possiblePitfalls.map((pitfall, idx) => (
                   <div
                     key={idx}
-                    className="text-slate-800 flex items-start bg-slate-50 p-3 sm:p-4 rounded border border-slate-200"
+                    className="text-slate-800 flex items-start bg-slate-50/70 p-3 sm:p-4 rounded-lg border-0"
                   >
-                    <div className="w-3 h-3 bg-slate-600 rounded-sm mr-3 sm:mr-4 mt-1 sm:mt-2 flex-shrink-0"></div>
-                    <span className="font-normal text-sm sm:text-base">{pitfall}</span>
+                    <div className="w-2 h-2 bg-slate-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                    <span className="font-normal text-sm sm:text-base leading-relaxed">{pitfall}</span>
                   </div>
                 ))}
               </div>
@@ -438,15 +468,20 @@ const ResultPersona = () => {
           )}
 
         {/* Work Environment & Role Models */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
           {/* Work Environment */}
           {personaProfile.workEnvironment && (
-            <div className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 h-full relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-slate-700"></div>
-              <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+            <div
+              className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
+              style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+              }}
+            >
+              <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                   <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                    className="w-4 h-4 text-slate-700"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -467,12 +502,17 @@ const ResultPersona = () => {
 
           {/* Role Models */}
           {personaProfile.roleModel && personaProfile.roleModel.length > 0 && (
-            <div className="bg-white p-6 sm:p-8 rounded-md shadow-sm border border-gray-100 h-full relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-slate-700"></div>
-              <h4 className="text-xl sm:text-3xl font-light text-slate-900 mb-4 sm:mb-6 flex items-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 sm:mr-4 bg-slate-100 rounded-md flex items-center justify-center">
+            <div
+              className="bg-white p-5 sm:p-7 rounded-lg shadow-sm border-0 h-full relative"
+              style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+              }}
+            >
+              <h4 className="text-lg sm:text-2xl font-light text-slate-900 mb-4 sm:mb-5 flex items-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 mr-3 bg-slate-100 rounded-lg flex items-center justify-center">
                   <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"
+                    className="w-4 h-4 text-slate-700"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -485,11 +525,11 @@ const ResultPersona = () => {
                 </div>
                 Role Models
               </h4>
-              <div className="flex flex-wrap gap-2 sm:gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-2.5">
                 {personaProfile.roleModel.map((model, idx) => (
                   <span
                     key={idx}
-                    className="bg-slate-100 text-slate-800 px-3 sm:px-4 py-2 sm:py-3 rounded text-sm sm:text-base font-medium border border-slate-200 hover:bg-slate-200 transition-colors"
+                    className="bg-slate-100/80 text-slate-800 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-medium border-0 hover:bg-slate-200/80 transition-colors"
                   >
                     {model}
                   </span>
@@ -785,7 +825,19 @@ const ResultPersona = () => {
                     className="group cursor-pointer"
                     onClick={() => navigate(card.path)}
                   >
-                    <div className="bg-white rounded-md p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full">
+                    <div
+                      className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border-0 hover:shadow-lg transition-all duration-300 h-full"
+                      style={{
+                        background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+                        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02)';
+                      }}
+                    >
                       <div className="flex flex-col h-full">
                         <div className="flex items-start justify-end mb-3 sm:mb-4">
                           <motion.svg
