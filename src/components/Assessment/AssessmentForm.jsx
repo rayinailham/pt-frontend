@@ -115,11 +115,79 @@ const AssessmentForm = ({
 
   // Auto-fill and auto-navigation functionality removed - users must navigate manually
 
+  // Helper function to get all question keys in rendering order
+  const getAllQuestionKeysInOrder = () => {
+    const questionKeys = [];
+
+    Object.entries(assessmentData.categories).forEach(([categoryKey, category]) => {
+      // Add regular questions
+      category.questions.forEach((_, index) => {
+        questionKeys.push(`${categoryKey}_${index}`);
+      });
+
+      // Add reverse questions
+      if (category.reverseQuestions) {
+        category.reverseQuestions.forEach((_, index) => {
+          questionKeys.push(`${categoryKey}_reverse_${index}`);
+        });
+      }
+    });
+
+    return questionKeys;
+  };
+
+  // Helper function to find next unanswered question
+  const findNextUnansweredQuestion = (currentQuestionKey, allQuestionKeys, answers) => {
+    const currentIndex = allQuestionKeys.indexOf(currentQuestionKey);
+    if (currentIndex === -1) return null;
+
+    // Look for next unanswered question
+    for (let i = currentIndex + 1; i < allQuestionKeys.length; i++) {
+      const questionKey = allQuestionKeys[i];
+      if (answers[questionKey] === undefined) {
+        return questionKey;
+      }
+    }
+
+    return null; // No more unanswered questions
+  };
+
+  // Helper function to scroll to a specific question
+  const scrollToQuestion = (questionKey) => {
+    setTimeout(() => {
+      const element = document.getElementById(`question-${questionKey}`);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      }
+    }, 100); // Small delay to ensure DOM is updated
+  };
+
   const handleAnswerChange = (questionKey, value) => {
-    setAnswers(prev => ({
-      ...prev,
-      [questionKey]: value
-    }));
+    // Check if this is a new answer (not changing existing answer)
+    const isNewAnswer = answers[questionKey] === undefined;
+
+    setAnswers(prev => {
+      const newAnswers = {
+        ...prev,
+        [questionKey]: value
+      };
+
+      // Auto scroll to next unanswered question only for new answers
+      if (isNewAnswer) {
+        const allQuestionKeys = getAllQuestionKeysInOrder();
+        const nextUnansweredQuestion = findNextUnansweredQuestion(questionKey, allQuestionKeys, newAnswers);
+
+        if (nextUnansweredQuestion) {
+          scrollToQuestion(nextUnansweredQuestion);
+        }
+      }
+
+      return newAnswers;
+    });
   };
 
   const handleNextCategory = () => {

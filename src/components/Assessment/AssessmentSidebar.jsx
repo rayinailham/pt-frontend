@@ -1,4 +1,4 @@
-import { ChevronRight, Flag, Home } from 'lucide-react';
+import { ChevronRight, Flag, Home, Zap, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { viaQuestions, riasecQuestions, bigFiveQuestions } from '../../data/assessmentQuestions';
 
@@ -12,9 +12,14 @@ const AssessmentSidebar = ({
   currentAssessmentType, // Add this prop to know which assessment we're in
   onNavigateToPhase, // New prop for phase navigation
   overallProgress, // Add this prop for total progress across all assessments
-  flaggedQuestions // Add this prop for flagged questions
+  flaggedQuestions, // Add this prop for flagged questions
+  onFillRandomAnswers, // Function to fill current assessment
+  onFillAllAssessments // Function to fill all assessments
 }) => {
   const navigate = useNavigate();
+
+  // Check if autofill is enabled via environment variable
+  const isAutofillEnabled = import.meta.env.VITE_ENABLE_AUTOFILL === 'true';
 
   const handleBackToDashboard = () => {
     navigate('/dashboard');
@@ -375,6 +380,41 @@ const AssessmentSidebar = ({
               {overallProgress ? `${overallProgress.totalAnswered}/${overallProgress.totalQuestions}` : '0/0'} questions answered
             </div>
           </div>
+
+          {/* Autofill Buttons - Development Feature */}
+          {isAutofillEnabled && (
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <div className="text-center mb-2">
+                <h5 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                  Development Tools
+                </h5>
+              </div>
+              <div className="space-y-2">
+                {/* Fill Current Assessment Button */}
+                <button
+                  onClick={onFillRandomAnswers}
+                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 group"
+                  title="Fill current assessment with random answers"
+                >
+                  <Zap className="h-3 w-3 group-hover:scale-110 transition-transform duration-200" />
+                  <span>Fill Current</span>
+                </button>
+
+                {/* Fill All Assessments Button */}
+                <button
+                  onClick={onFillAllAssessments}
+                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-md hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 group"
+                  title="Fill all assessments with random answers"
+                >
+                  <RotateCcw className="h-3 w-3 group-hover:scale-110 transition-transform duration-200" />
+                  <span>Fill All</span>
+                </button>
+              </div>
+              <div className="text-xs text-gray-500 mt-2 text-center">
+                For testing purposes only
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

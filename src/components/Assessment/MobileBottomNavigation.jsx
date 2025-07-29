@@ -75,16 +75,28 @@ const MobileBottomNavigation = ({
           <div className="flex justify-end">
             {/* Submit Assessment Button */}
             {currentPage === totalPages - 1 && isLastAssessment && !isAutoFillMode ? (
-              <button
-                onClick={onSubmitWithValidation}
-                disabled={!isAssessmentComplete() || isProcessingSubmit}
-                className="flex items-center space-x-1 px-3 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                <Check className="h-4 w-4" />
-                <span className="text-xs font-medium">
-                  {isProcessingSubmit ? 'Submit...' : 'Submit'}
-                </span>
-              </button>
+              <div className="relative group">
+                <button
+                  onClick={isAssessmentComplete() ? onSubmitWithValidation : undefined}
+                  disabled={!isAssessmentComplete() || isProcessingSubmit}
+                  className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all ${
+                    isAssessmentComplete() && !isProcessingSubmit
+                      ? 'bg-gray-900 text-white hover:bg-gray-800'
+                      : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                  } ${isProcessingSubmit ? 'opacity-50' : ''}`}
+                >
+                  <Check className="h-4 w-4" />
+                  <span className="text-xs font-medium">
+                    {isProcessingSubmit ? 'Submit...' : 'Submit'}
+                  </span>
+                </button>
+                {!isAssessmentComplete() && !isProcessingSubmit && (
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
+                    Selesaikan semua pertanyaan
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-2 border-transparent border-t-gray-800"></div>
+                  </div>
+                )}
+              </div>
             ) : /* Manual Submit Button for Auto-Fill Mode */
             isAutoFillMode && isLastAssessment ? (
               <button
@@ -101,7 +113,7 @@ const MobileBottomNavigation = ({
             currentPage === totalPages - 1 && !isLastAssessment ? (
               <button
                 onClick={onNextAssessment}
-                className="flex items-center space-x-1 px-3 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all"
+                className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all bg-gray-900 text-white hover:bg-gray-800"
               >
                 <span className="text-xs font-medium">Next</span>
                 <ChevronRight className="h-4 w-4" />

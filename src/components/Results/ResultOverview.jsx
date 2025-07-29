@@ -346,9 +346,9 @@ const ResultOverview = () => {
       icon: '🎪',
       path: `/results/${resultId}/persona`,
       preview: result?.persona_profile ? [
-        { strength: 'Archetype', score: result.persona_profile.archetype },
-        { strength: 'Risk Tolerance', score: result.persona_profile.riskTolerance },
-        { strength: 'Total Recommendations', score: result.persona_profile.careerRecommendation?.length || 0 }
+        { strength: 'Archetype', score: result.persona_profile.archetype || result.persona_profile.career_persona?.archetype || 'N/A' },
+        { strength: 'Risk Tolerance', score: result.persona_profile.riskTolerance || result.persona_profile.risk_tolerance || 'N/A' },
+        { strength: 'Total Recommendations', score: result.persona_profile.careerRecommendation?.length || result.persona_profile.career_recommendations?.length || 0 }
       ] : []
     }
   ];
@@ -479,25 +479,32 @@ const ResultOverview = () => {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Career Persona Summary */}
-                {result.persona_profile?.archetype && (
-                  <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
-                    <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
-                      Career Persona Anda
-                    </h2>
-                    <motion.div
-                      className="inline-block bg-gray-50 px-3 sm:px-4 py-2 rounded-lg border border-gray-200/40 shadow-xs mb-3 sm:mb-4"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <span className="text-sm sm:text-base font-medium text-gray-900">
-                        {result.persona_profile.archetype}
-                      </span>
-                    </motion.div>
-                    <p className="text-gray-600 leading-relaxed text-xs sm:text-sm">
-                      {result.persona_profile.shortSummary}
-                    </p>
-                  </div>
-                )}
+                {(() => {
+                  const archetype = result.persona_profile?.archetype || result.persona_profile?.career_persona?.archetype;
+                  const shortSummary = result.persona_profile?.shortSummary || result.persona_profile?.short_summary || result.persona_profile?.summary;
+
+                  return archetype && (
+                    <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
+                      <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
+                        Career Persona Anda
+                      </h2>
+                      <motion.div
+                        className="inline-block bg-gray-50 px-3 sm:px-4 py-2 rounded-lg border border-gray-200/40 shadow-xs mb-3 sm:mb-4"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <span className="text-sm sm:text-base font-medium text-gray-900">
+                          {archetype}
+                        </span>
+                      </motion.div>
+                      {shortSummary && (
+                        <p className="text-gray-600 leading-relaxed text-xs sm:text-sm">
+                          {shortSummary}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {/* Introduction Section */}
                 <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">

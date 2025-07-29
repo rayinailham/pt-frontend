@@ -6,7 +6,7 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import ErrorMessage from '../UI/ErrorMessage';
 
 /**
- * AssessmentStatus Component - Uses Observer Pattern (No Polling)
+ * AssessmentStatus Component - Uses Observer Pattern with Fallback Polling
  *
  * Stage Transitions:
  * Stage 1 (Processing) → Stage 2 (Analysis) → Stage 3 (Report)
@@ -14,8 +14,9 @@ import ErrorMessage from '../UI/ErrorMessage';
  * Triggers:
  * 1. Processing → Analysis: Automatic after 3 seconds
  * 2. Analysis → Report: Wait for WebSocket notification from onAnalysisComplete
+ *    - Fallback: Polling every 5 seconds if WebSocket fails
  *
- * No polling is used - purely event-driven architecture
+ * Hybrid architecture: Event-driven with polling fallback
  */
 const AssessmentStatus = () => {
   const { jobId } = useParams();
@@ -25,52 +26,124 @@ const AssessmentStatus = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentStage, setCurrentStage] = useState('processing'); // processing, analyzing, preparing
+  const [connectionStatus, setConnectionStatus] = useState({ connected: false, authenticated: false });
+  const [debugInfo, setDebugInfo] = useState([]);
   const processingToAnalysisTimeoutRef = useRef(null);
+  const pollingIntervalRef = useRef(null);
+  const hasNavigatedRef = useRef(false);
+
+  // Add debug logging
+  const addDebugInfo = (message) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setDebugInfo(prev => [...prev.slice(-4), `${timestamp}: ${message}`]);
+    console.log(`[AssessmentStatus] ${message}`);
+  };
 
   // Observer Pattern: Setup WebSocket notifications as observers
   const { isConnected, isAuthenticated } = useNotifications({
     onAnalysisComplete: (data) => {
-      if (data.jobId === jobId) {
+      addDebugInfo(`WebSocket: Analysis complete received for jobId: ${data.jobId}`);
+      if (data.jobId === jobId && !hasNavigatedRef.current) {
+        hasNavigatedRef.current = true;
+        addDebugInfo(`Transitioning to preparing stage`);
+
         // Transition to Report stage immediately when notification is received
         setCurrentStage('preparing');
 
+        // Clear polling if active
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+          addDebugInfo('Polling cleared due to WebSocket success');
+        }
+
         // Navigate after minimum 3 seconds to allow UI transition
         setTimeout(() => {
+          addDebugInfo(`Navigating to results: ${data.resultId}`);
           navigate(`/results/${data.resultId}`);
         }, 3000);
       }
     },
     onAnalysisFailed: (data) => {
+      addDebugInfo(`WebSocket: Analysis failed for jobId: ${data.jobId}`);
       if (data.jobId === jobId) {
         setError(data.message || 'Analysis failed');
+        // Clear polling on failure
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+        }
       }
     }
   });
 
   // Observer: WebSocket connection status tracking
   useEffect(() => {
-    // Connection status is tracked silently
-  }, [isConnected, isAuthenticated, jobId]);
+    setConnectionStatus({ connected: isConnected, authenticated: isAuthenticated });
+    addDebugInfo(`WebSocket status - Connected: ${isConnected}, Authenticated: ${isAuthenticated}`);
+
+    // Start fallback polling if WebSocket is not working properly
+    if (currentStage === 'analyzing' && (!isConnected || !isAuthenticated)) {
+      startFallbackPolling();
+    }
+  }, [isConnected, isAuthenticated, currentStage]);
+
+  // Fallback polling mechanism
+  const startFallbackPolling = () => {
+    if (pollingIntervalRef.current) return; // Already polling
+
+    addDebugInfo('Starting fallback polling (WebSocket unavailable)');
+    pollingIntervalRef.current = setInterval(async () => {
+      try {
+        const response = await apiService.getAssessmentStatus(jobId);
+        if (response.success && response.data.status === 'completed' && !hasNavigatedRef.current) {
+          hasNavigatedRef.current = true;
+          addDebugInfo('Polling: Analysis completed, transitioning to preparing');
+
+          setCurrentStage('preparing');
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+
+          setTimeout(() => {
+            addDebugInfo(`Polling: Navigating to results: ${response.data.resultId || jobId}`);
+            navigate(`/results/${response.data.resultId || jobId}`);
+          }, 3000);
+        } else if (response.data.status === 'failed') {
+          setError('Analysis failed. Please try again.');
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+        }
+      } catch (err) {
+        addDebugInfo(`Polling error: ${err.message}`);
+      }
+    }, 5000); // Poll every 5 seconds
+  };
 
   // Initial status check (only called once)
   const checkInitialStatus = async () => {
     try {
+      addDebugInfo('Checking initial assessment status');
       const response = await apiService.getAssessmentStatus(jobId);
 
       if (response.success) {
         const statusData = response.data;
         setStatus(statusData);
+        addDebugInfo(`Initial status: ${statusData.status}`);
 
         // If already completed when we first check, navigate immediately
-        if (statusData.status === 'completed') {
+        if (statusData.status === 'completed' && !hasNavigatedRef.current) {
+          hasNavigatedRef.current = true;
+          addDebugInfo('Assessment already completed, navigating immediately');
           navigate(`/results/${statusData.resultId || jobId}`);
         } else if (statusData.status === 'failed') {
           setError('Analysis failed. Please try again.');
         }
-        // For 'queued' or 'processing', we rely on observer pattern
+        // For 'queued' or 'processing', we rely on observer pattern + fallback
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to check status');
+      const errorMsg = err.response?.data?.message || 'Failed to check status';
+      addDebugInfo(`Initial status check error: ${errorMsg}`);
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -84,26 +157,39 @@ const AssessmentStatus = () => {
       return;
     }
 
+    addDebugInfo(`Component mounted for jobId: ${jobId}`);
+
     // Check if we just came from assessment submission
     const isFromSubmission = location.state?.fromSubmission;
     if (isFromSubmission) {
+      addDebugInfo('Coming from assessment submission, starting processing stage');
       setCurrentStage('processing');
 
       // Stage 1 → Stage 2: Processing to Analysis after 3 seconds
       processingToAnalysisTimeoutRef.current = setTimeout(() => {
+        addDebugInfo('Transitioning from processing to analyzing stage');
         setCurrentStage('analyzing');
-        // Stage 2 (Analysis) will wait for WebSocket notification to proceed to Stage 3
+        // Stage 2 (Analysis) will wait for WebSocket notification + fallback polling
+        // Start fallback polling if WebSocket is not connected
+        if (!isConnected || !isAuthenticated) {
+          startFallbackPolling();
+        }
       }, 3000);
     }
 
-    // Only do initial status check (no polling)
+    // Only do initial status check
     checkInitialStatus();
 
     // Cleanup
     return () => {
+      addDebugInfo('Component unmounting, cleaning up');
       if (processingToAnalysisTimeoutRef.current) {
         clearTimeout(processingToAnalysisTimeoutRef.current);
         processingToAnalysisTimeoutRef.current = null;
+      }
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
       }
     };
   }, [jobId, navigate, location.state]);
@@ -222,6 +308,32 @@ const AssessmentStatus = () => {
           <p className="text-gray-700 max-w-lg mx-auto font-medium">
             Your assessment is being processed using AI technology
           </p>
+
+          {/* Connection Status Indicator */}
+          <div className="mt-4 flex justify-center">
+            <div className="flex items-center space-x-2 text-xs">
+              <div className={`w-2 h-2 rounded-full ${connectionStatus.connected && connectionStatus.authenticated ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+              <span className="text-gray-600">
+                {connectionStatus.connected && connectionStatus.authenticated
+                  ? 'Real-time updates active'
+                  : 'Using backup monitoring'}
+              </span>
+            </div>
+          </div>
+
+          {/* Debug Info (only in development) */}
+          {process.env.NODE_ENV === 'development' && debugInfo.length > 0 && (
+            <div className="mt-4 max-w-md mx-auto">
+              <details className="text-left">
+                <summary className="text-xs text-gray-500 cursor-pointer">Debug Info</summary>
+                <div className="mt-2 p-2 bg-gray-100 rounded text-xs text-gray-700 font-mono">
+                  {debugInfo.map((info, index) => (
+                    <div key={index}>{info}</div>
+                  ))}
+                </div>
+              </details>
+            </div>
+          )}
         </div>
 
         {/* Main Content */}

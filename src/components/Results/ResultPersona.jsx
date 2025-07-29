@@ -173,10 +173,37 @@ const ResultPersona = () => {
             </h3>
           </div>
           {/* Content */}
-          <div className="p-4 sm:p-6">
+          <div className="p-4 sm:p-6 space-y-4">
             <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
               {personaProfile.shortSummary}
             </p>
+
+            {/* Core Motivators */}
+            {personaProfile.coreMotivators && personaProfile.coreMotivators.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">Motivator Utama:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {personaProfile.coreMotivators.map((motivator, idx) => (
+                    <span
+                      key={idx}
+                      className="text-gray-800 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded text-xs sm:text-sm font-medium"
+                    >
+                      {motivator}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Learning Style */}
+            {personaProfile.learningStyle && (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-2">Gaya Belajar:</h4>
+                <p className="text-gray-700 text-sm bg-gray-50 p-3 rounded border border-gray-100">
+                  {personaProfile.learningStyle}
+                </p>
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -264,7 +291,7 @@ const ResultPersona = () => {
           </div>
           {/* Content */}
           <div className="p-4 sm:p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {personaProfile.careerRecommendation?.map((career, idx) => (
                 <div
                   key={idx}
@@ -276,25 +303,74 @@ const ResultPersona = () => {
                       {career.careerName}
                     </h5>
                   </div>
-                  {/* Career Prospects */}
-                  <div className="p-4">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {Object.entries(career.careerProspect || {}).map(
-                        ([key, value]) => (
-                          <div key={key} className="text-center">
-                            <div className="text-lg font-bold text-gray-900 mb-1">
-                              {getProspectLevel(value)}/5
+
+                  <div className="p-4 space-y-4">
+                    {/* Justification */}
+                    {career.justification && (
+                      <div>
+                        <h6 className="text-sm font-semibold text-gray-900 mb-2">Mengapa Cocok untuk Anda:</h6>
+                        <p className="text-xs sm:text-sm text-gray-700 leading-relaxed bg-white p-3 rounded border border-gray-200">
+                          {career.justification}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Career Prospects */}
+                    <div>
+                      <h6 className="text-sm font-semibold text-gray-900 mb-3">Prospek Karier:</h6>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                        {Object.entries(career.careerProspect || {}).map(
+                          ([key, value]) => (
+                            <div key={key} className="text-center bg-white p-3 rounded border border-gray-200">
+                              <div className="text-lg font-bold text-gray-900 mb-1">
+                                {getProspectLevel(value)}/5
+                              </div>
+                              <div className={`text-xs font-medium mb-2 px-2 py-1 rounded ${getProspectColor(value)}`}>
+                                {value}
+                              </div>
+                              <div className="text-xs text-gray-600 font-medium leading-tight">
+                                {formatProspectLabel(key)}
+                              </div>
                             </div>
-                            <div className={`text-xs font-medium mb-2 px-2 py-1 rounded ${getProspectColor(value)}`}>
-                              {value}
-                            </div>
-                            <div className="text-xs text-gray-600 font-medium leading-tight">
-                              {formatProspectLabel(key)}
-                            </div>
-                          </div>
-                        )
-                      )}
+                          )
+                        )}
+                      </div>
                     </div>
+
+                    {/* First Steps */}
+                    {career.firstSteps && career.firstSteps.length > 0 && (
+                      <div>
+                        <h6 className="text-sm font-semibold text-gray-900 mb-2">Langkah Pertama:</h6>
+                        <div className="space-y-2">
+                          {career.firstSteps.map((step, stepIdx) => (
+                            <div
+                              key={stepIdx}
+                              className="flex items-start text-xs sm:text-sm text-gray-700 bg-white p-3 rounded border border-gray-200"
+                            >
+                              <span className="text-blue-600 mr-2 mt-0.5 font-bold">{stepIdx + 1}.</span>
+                              <span>{step}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Related Majors */}
+                    {career.relatedMajors && career.relatedMajors.length > 0 && (
+                      <div>
+                        <h6 className="text-sm font-semibold text-gray-900 mb-2">Jurusan Terkait:</h6>
+                        <div className="flex flex-wrap gap-2">
+                          {career.relatedMajors.map((major, majorIdx) => (
+                            <span
+                              key={majorIdx}
+                              className="text-gray-800 bg-white border border-gray-200 px-3 py-1.5 rounded text-xs sm:text-sm font-medium"
+                            >
+                              {major}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -443,6 +519,101 @@ const ResultPersona = () => {
             </div>
           )}
         </div>
+
+        {/* Development Activities Section */}
+        {personaProfile.developmentActivities && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="bg-white rounded border border-gray-200 shadow-sm overflow-hidden"
+          >
+            {/* Header */}
+            <div className="bg-gray-50 border-b border-gray-200 p-4 sm:p-6">
+              <h4 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
+                <span className="text-xl mr-3">🚀</span>
+                Aktivitas Pengembangan
+              </h4>
+            </div>
+            {/* Content */}
+            <div className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                {/* Extracurricular Activities */}
+                {personaProfile.developmentActivities.extracurricular &&
+                 personaProfile.developmentActivities.extracurricular.length > 0 && (
+                  <div className="bg-gray-50 rounded border border-gray-100 p-4">
+                    <h5 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+                      <span className="text-lg mr-2">🎯</span>
+                      Ekstrakurikuler
+                    </h5>
+                    <div className="space-y-2">
+                      {personaProfile.developmentActivities.extracurricular.map((activity, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start text-xs sm:text-sm text-gray-700"
+                        >
+                          <span className="text-gray-400 mr-2 mt-0.5">•</span>
+                          <span>{activity}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Project Ideas */}
+                {personaProfile.developmentActivities.projectIdeas &&
+                 personaProfile.developmentActivities.projectIdeas.length > 0 && (
+                  <div className="bg-gray-50 rounded border border-gray-100 p-4">
+                    <h5 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+                      <span className="text-lg mr-2">💡</span>
+                      Ide Proyek
+                    </h5>
+                    <div className="space-y-2">
+                      {personaProfile.developmentActivities.projectIdeas.map((project, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start text-xs sm:text-sm text-gray-700"
+                        >
+                          <span className="text-gray-400 mr-2 mt-0.5">•</span>
+                          <span>{project}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Book Recommendations */}
+                {personaProfile.developmentActivities.bookRecommendations &&
+                 personaProfile.developmentActivities.bookRecommendations.length > 0 && (
+                  <div className="bg-gray-50 rounded border border-gray-100 p-4">
+                    <h5 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+                      <span className="text-lg mr-2">📚</span>
+                      Rekomendasi Buku
+                    </h5>
+                    <div className="space-y-3">
+                      {personaProfile.developmentActivities.bookRecommendations.map((book, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-white p-3 rounded border border-gray-200"
+                        >
+                          <h6 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">
+                            {book.title}
+                          </h6>
+                          <p className="text-xs text-gray-600 mb-2">
+                            oleh {book.author}
+                          </p>
+                          <p className="text-xs text-gray-700 leading-relaxed">
+                            {book.reason}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     );
   };
@@ -559,12 +730,15 @@ const ResultPersona = () => {
                       <span className="w-2 h-2 bg-gray-900 rounded-sm mr-2"></span>
                       Completed: {formatDate(result.created_at)}
                     </div>
-                    {result.persona_profile?.riskTolerance && (
-                      <div className="flex items-center">
-                        <span className="w-2 h-2 bg-blue-600 rounded-sm mr-2"></span>
-                        Risk Profile: <span className="font-medium ml-1 capitalize">{result.persona_profile.riskTolerance}</span>
-                      </div>
-                    )}
+                    {(() => {
+                      const riskTolerance = result.persona_profile?.riskTolerance || result.persona_profile?.risk_tolerance;
+                      return riskTolerance && (
+                        <div className="flex items-center">
+                          <span className="w-2 h-2 bg-blue-600 rounded-sm mr-2"></span>
+                          Risk Profile: <span className="font-medium ml-1 capitalize">{riskTolerance}</span>
+                        </div>
+                      );
+                    })()}
                   </div>
                   <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium self-start sm:self-auto">
                     Integrated Profile

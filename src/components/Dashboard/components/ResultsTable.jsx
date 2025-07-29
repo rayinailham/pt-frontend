@@ -138,15 +138,22 @@ const ResultsTable = ({
                     </td>
                     <td className="hidden md:table-cell px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       {result.status === 'completed' ? (
-                        result.persona_profile?.archetype ? (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
-                            {result.persona_profile.archetype}
-                          </span>
-                        ) : (
-                          <span className="text-slate-400 text-xs">
-                            No archetype
-                          </span>
-                        )
+                        (() => {
+                          // Handle both old and new persona_profile structure
+                          const archetype = result.persona_profile?.archetype ||
+                                          result.persona_profile?.career_persona?.archetype ||
+                                          result.archetype; // fallback for very old structure
+
+                          return archetype ? (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                              {archetype}
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 text-xs">
+                              No archetype
+                            </span>
+                          );
+                        })()
                       ) : result.status === 'processing' ? (
                         <span className="text-blue-600 text-xs">
                           Processing...
@@ -166,15 +173,22 @@ const ResultsTable = ({
                       {/* Show archetype on mobile below status */}
                       <div className="md:hidden mt-1">
                         {result.status === 'completed' ? (
-                          result.persona_profile?.archetype ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
-                              {result.persona_profile.archetype}
-                            </span>
-                          ) : (
-                            <span className="text-slate-400 text-xs">
-                              No archetype
-                            </span>
-                          )
+                          (() => {
+                            // Handle both old and new persona_profile structure
+                            const archetype = result.persona_profile?.archetype ||
+                                            result.persona_profile?.career_persona?.archetype ||
+                                            result.archetype; // fallback for very old structure
+
+                            return archetype ? (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                                {archetype}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400 text-xs">
+                                No archetype
+                              </span>
+                            );
+                          })()
                         ) : null}
                       </div>
                     </td>

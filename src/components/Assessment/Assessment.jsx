@@ -62,6 +62,7 @@ const Assessment = () => {
   const [showAutoFillNotification, setShowAutoFillNotification] = useState(false);
   const [isAutoFillMode, setIsAutoFillMode] = useState(false);
   const [showCompletionNotification, setShowCompletionNotification] = useState(false);
+  const [hasUserDismissedNotification, setHasUserDismissedNotification] = useState(false);
 
   // Flagging system state
   const [flaggedQuestions, setFlaggedQuestions] = useState({});
@@ -91,13 +92,78 @@ const Assessment = () => {
   const currentAssessment = assessments[currentAssessmentType];
   const totalSteps = Object.keys(assessments).length;
 
-  // Step 1: User Input Handling - Radio Button Selection
+  // Helper function to get all question keys in rendering order
+  const getAllQuestionKeysInOrder = () => {
+    const questionKeys = [];
+    const currentAssessment = assessments[currentAssessmentType];
+
+    Object.entries(currentAssessment.data.categories).forEach(([categoryKey, category]) => {
+      // Add regular questions
+      category.questions.forEach((_, index) => {
+        questionKeys.push(`${currentAssessmentType}_${categoryKey}_${index}`);
+      });
+
+      // Add reverse questions
+      if (category.reverseQuestions) {
+        category.reverseQuestions.forEach((_, index) => {
+          questionKeys.push(`${currentAssessmentType}_${categoryKey}_reverse_${index}`);
+        });
+      }
+    });
+
+    return questionKeys;
+  };
+
+  // Helper function to find next unanswered question
+  const findNextUnansweredQuestion = (currentQuestionKey, allQuestionKeys, answers) => {
+    const currentIndex = allQuestionKeys.indexOf(currentQuestionKey);
+    if (currentIndex === -1) return null;
+
+    // Look for next unanswered question
+    for (let i = currentIndex + 1; i < allQuestionKeys.length; i++) {
+      const questionKey = allQuestionKeys[i];
+      if (answers[questionKey] === undefined) {
+        return questionKey;
+      }
+    }
+
+    return null; // No more unanswered questions
+  };
+
+  // Helper function to scroll to a specific question
+  const scrollToQuestion = (questionKey) => {
+    setTimeout(() => {
+      const element = document.getElementById(`question-${questionKey}`);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      }
+    }, 100); // Small delay to ensure DOM is updated
+  };
+
+  // Step 1: User Input Handling - Radio Button Selection with Auto Scroll
   const handleAnswer = (questionKey, value) => {
+    // Check if this is a new answer (not changing existing answer)
+    const isNewAnswer = answers[questionKey] === undefined;
+
     const newAnswers = {
       ...answers,
       [questionKey]: value
     };
     setAnswers(newAnswers);
+
+    // Auto scroll to next unanswered question only for new answers
+    if (isNewAnswer) {
+      const allQuestionKeys = getAllQuestionKeysInOrder();
+      const nextUnansweredQuestion = findNextUnansweredQuestion(questionKey, allQuestionKeys, newAnswers);
+
+      if (nextUnansweredQuestion) {
+        scrollToQuestion(nextUnansweredQuestion);
+      }
+    }
   };
 
   // Flagging system - Toggle flag for questions
@@ -442,12 +508,17 @@ const Assessment = () => {
   // Removed auto-submit functionality - users must manually submit
   // This prevents accidental submissions when all questions are answered
 
+  // Reset notification dismissal when navigating between assessments
+  useEffect(() => {
+    setHasUserDismissedNotification(false);
+  }, [currentAssessmentType]);
+
   // Show completion notification when all assessments are complete
   useEffect(() => {
-    if (isAllComplete && !isSubmitting && !submitError && !isAutoFillMode && !showCompletionNotification) {
+    if (isAllComplete && !isSubmitting && !submitError && !isAutoFillMode && !showCompletionNotification && !hasUserDismissedNotification) {
       setShowCompletionNotification(true);
     }
-  }, [isAllComplete, isSubmitting, submitError, isAutoFillMode, showCompletionNotification]);
+  }, [isAllComplete, isSubmitting, submitError, isAutoFillMode, showCompletionNotification, hasUserDismissedNotification]);
 
   // Auto-fill function for testing
   const fillAllAssessments = () => {
@@ -683,31 +754,43 @@ const Assessment = () => {
               )}
 
               {/* Submit Assessment Button */}
-              {currentPage === totalPages - 1 && isLastAssessment && isAllComplete && (
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <LoadingSpinner size="sm" className="mr-2" />
-                      Submitting Assessment...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-5 w-5" />
-                      Submit Assessment
-                    </>
+              {currentPage === totalPages - 1 && isLastAssessment && (
+                <div className="relative group">
+                  <button
+                    onClick={isAllComplete ? handleSubmit : undefined}
+                    disabled={!isAllComplete || isSubmitting}
+                    className={`flex items-center space-x-2 px-6 py-3 rounded-2xs transition-all font-medium ${
+                      isAllComplete
+                        ? 'bg-gray-900 text-white hover:bg-gray-800'
+                        : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                    } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        Submitting Assessment...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-5 w-5" />
+                        Submit Assessment
+                      </>
+                    )}
+                  </button>
+                  {!isAllComplete && !isSubmitting && (
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
+                      Selesaikan semua pertanyaan terlebih dahulu
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+                    </div>
                   )}
-                </button>
+                </div>
               )}
 
               {/* Next Assessment Button */}
               {currentPage === totalPages - 1 && !isLastAssessment && (
                 <button
                   onClick={handleNextAssessment}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 transition-all font-medium"
+                  className="flex items-center space-x-2 px-6 py-3 rounded-2xs transition-all font-medium bg-gray-900 text-white hover:bg-gray-800"
                 >
                   <span>Next Assessment</span>
                   <ChevronRight className="h-5 w-5" />
@@ -796,7 +879,10 @@ const Assessment = () => {
       {/* Assessment Completion Notification */}
       <CompletionNotification
         isVisible={showCompletionNotification}
-        onClose={() => setShowCompletionNotification(false)}
+        onClose={() => {
+          setShowCompletionNotification(false);
+          setHasUserDismissedNotification(true);
+        }}
         onSubmit={handleSubmit}
         totalQuestions={allQuestions.length}
         totalSteps={totalSteps}
