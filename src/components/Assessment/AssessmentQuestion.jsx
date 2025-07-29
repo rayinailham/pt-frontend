@@ -62,11 +62,11 @@ const AssessmentQuestion = ({
                 key={scaleValue}
                 onClick={() => onChange(scaleValue)}
                 className={`
-                  h-10 sm:h-12 border-2 transition-all duration-300 font-bold text-xs sm:text-sm
-                  flex items-center justify-center w-full rounded-lg transform hover:scale-105 active:scale-95
+                  h-10 sm:h-12 border-2 transition-all duration-200 font-bold text-xs sm:text-sm
+                  flex items-center justify-center w-full rounded-lg
                   ${isSelected
                     ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-900 text-white shadow-lg'
-                    : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 hover:shadow-md'
+                    : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 hover:shadow-md hover:brightness-105'
                   }
                 `}
               >

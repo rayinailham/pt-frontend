@@ -429,7 +429,7 @@ const AssessmentForm = ({
                 <button
                   onClick={onManualSubmit}
                   disabled={isProcessingSubmit}
-                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95"
+                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold"
                 >
                   <Check className={`h-5 w-5 ${isProcessingSubmit ? 'animate-spin' : ''}`} />
                   <span className={isProcessingSubmit ? 'animate-pulse' : ''}>{isProcessingSubmit ? 'Submitting...' : 'Submit All Assessments'}</span>
@@ -441,7 +441,7 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95 group"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold group"
                 >
                   <span className={isProcessingSubmit ? 'animate-pulse' : ''}>{isProcessingSubmit ? 'Processing...' : 'Next Assessment'}</span>
                   <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
@@ -452,7 +452,7 @@ const AssessmentForm = ({
               {currentPage < totalPages - 1 && (
                 <button
                   onClick={handleNextCategory}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95 group"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg hover:brightness-110 transition-all duration-200 font-semibold group"
                 >
                   <span>Next Category</span>
                   <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
