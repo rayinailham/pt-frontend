@@ -75,18 +75,18 @@ const MobileAssessmentNavbar = ({
   const progressPercentage = progress.total > 0 ? (progress.answered / progress.total) * 100 : 0;
 
   return (
-    <div className="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+    <div className="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm rounded-b-xl">
       <div className="px-3 sm:px-4 py-3 sm:py-4">
         {/* Header Layout: Back Button | Title & Subtitle | Menu Button */}
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 mb-3">
           {/* Back to Dashboard Button */}
           <button
             onClick={handleBackToDashboard}
-            className="p-2 bg-gray-100 border border-gray-200 rounded-2xs flex-shrink-0 hover:bg-gray-200 transition-colors duration-200 active:scale-95 group"
+            className="p-2 bg-gray-100 border border-gray-200 rounded-lg flex-shrink-0 hover:bg-gray-200 transition-all duration-200 transform hover:scale-105 active:scale-95 group"
             aria-label="Back to Dashboard"
             title="Back to Dashboard"
           >
-            <ArrowLeft className="h-4 w-4 text-gray-700 group-hover:text-gray-900" />
+            <ArrowLeft className="h-4 w-4 text-gray-700 group-hover:text-gray-900 transition-transform duration-200 group-hover:-translate-x-1" />
           </button>
 
           {/* Title and Subtitle */}
@@ -102,7 +102,7 @@ const MobileAssessmentNavbar = ({
           {/* Menu Button */}
           <button
             onClick={onTogglePhaseMenu}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-2xs transition-colors flex-shrink-0"
+            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200 flex-shrink-0 transform hover:scale-105 active:scale-95"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -115,15 +115,15 @@ const MobileAssessmentNavbar = ({
             <span className="text-xs font-medium text-gray-700">
               Assessment {currentStep} of {totalSteps}
             </span>
-            <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-2xs">
+            <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-lg">
               {progress.answered}/{progress.total}
             </span>
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-2xs h-2">
+          <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-gray-900 h-2 rounded-2xs transition-all duration-500 ease-out"
+              className="bg-gradient-to-r from-gray-800 to-gray-900 h-2 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>

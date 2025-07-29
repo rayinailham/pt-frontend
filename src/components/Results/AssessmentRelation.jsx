@@ -28,8 +28,8 @@ const AssessmentRelation = ({ delay = 0 }) => {
 
           {/* Three Pillars Visualization */}
           <div className="grid md:grid-cols-3 gap-8 mb-10">
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center group hover:bg-white hover:shadow-sm transition-all duration-300">
-              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:border-gray-300 transition-colors">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center transition-all duration-300">
+              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -41,8 +41,8 @@ const AssessmentRelation = ({ delay = 0 }) => {
               </div>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center group hover:bg-white hover:shadow-sm transition-all duration-300">
-              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:border-gray-300 transition-colors">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center transition-all duration-300">
+              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -55,8 +55,8 @@ const AssessmentRelation = ({ delay = 0 }) => {
               </div>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center group hover:bg-white hover:shadow-sm transition-all duration-300">
-              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:border-gray-300 transition-colors">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 text-center transition-all duration-300">
+              <div className="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>

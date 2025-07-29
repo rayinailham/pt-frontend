@@ -197,7 +197,7 @@ const AssessmentSidebar = ({
   };
 
   return (
-    <div className="hidden lg:block fixed right-0 top-0 h-full w-90 bg-white border-l border-gray-300 overflow-y-auto z-20 shadow-lg">
+    <div className="hidden lg:block fixed right-0 top-0 h-full w-90 bg-white border-l border-gray-300 overflow-y-auto z-20 shadow-lg rounded-l-xl">
       <div className="p-3 h-full flex flex-col">
         {/* Phase Structure */}
         <div className="flex-1">
@@ -207,7 +207,7 @@ const AssessmentSidebar = ({
             </h3>
             <button
               onClick={handleBackToDashboard}
-              className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-all duration-200 border border-gray-200 hover:border-gray-300 group"
+              className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200 border border-gray-200 hover:border-gray-300 group transform hover:scale-105"
               aria-label="Back to Dashboard"
               title="Back to Dashboard"
             >
@@ -224,7 +224,7 @@ const AssessmentSidebar = ({
               const progressPercentage = phaseProgress.total > 0 ? (phaseProgress.answered / phaseProgress.total) * 100 : 0;
 
               return (
-                <div key={phase.id} className={`border rounded-2xs transition-all duration-200 ${isCurrentPhase ? 'border-gray-400 bg-gray-50 shadow-sm' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'}`}>
+                <div key={phase.id} className={`border rounded-xl transition-all duration-200 transform hover:scale-[1.02] ${isCurrentPhase ? 'border-gray-400 bg-gray-50 shadow-md' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'}`}>
                   <button
                     onClick={() => navigateToPhase(phase.step)}
                     className={`w-full text-left transition-all duration-200`}
@@ -245,15 +245,15 @@ const AssessmentSidebar = ({
                             {phaseProgress.answered}/{phaseProgress.total}
                           </div>
                           {!isCurrentPhase && (
-                            <ChevronRight className="h-4 w-4 text-gray-400" />
+                            <ChevronRight className="h-4 w-4 text-gray-400 transition-transform duration-200 group-hover:translate-x-1" />
                           )}
                         </div>
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="w-full bg-gray-200 h-1.5 rounded-2xs">
+                      <div className="w-full bg-gray-200 h-1.5 rounded-full">
                         <div
-                          className={`h-1.5 rounded-2xs transition-all duration-300 ${isCurrentPhase ? 'bg-gray-800' : 'bg-gray-600'}`}
+                          className={`h-1.5 rounded-full transition-all duration-300 ${isCurrentPhase ? 'bg-gradient-to-r from-gray-700 to-gray-800' : 'bg-gray-600'}`}
                           style={{ width: `${progressPercentage}%` }}
                         ></div>
                       </div>
@@ -268,11 +268,11 @@ const AssessmentSidebar = ({
                         const categoryProgress = getCategoryProgress(categoryKey);
 
                         return (
-                          <div key={categoryKey} className="border border-gray-200 bg-white overflow-hidden rounded-2xs">
+                          <div key={categoryKey} className="border border-gray-200 bg-white overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                             {/* Category Header */}
                             <button
                               onClick={() => navigateToCategory(categoryKey)}
-                              className={`w-full text-left p-2 transition-all duration-200 ${
+                              className={`w-full text-left p-2 transition-all duration-200 group ${
                                 isCurrentCategory
                                   ? 'bg-gray-50'
                                   : 'bg-white hover:bg-gray-50'
@@ -288,7 +288,7 @@ const AssessmentSidebar = ({
                                   <span className="text-xs font-semibold text-gray-600">
                                     {categoryProgress.answered}/{categoryProgress.total}
                                   </span>
-                                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                                  <ChevronRight className="h-4 w-4 text-gray-400 transition-transform duration-200 group-hover:translate-x-1" />
                                 </div>
                               </div>
                             </button>
@@ -305,7 +305,7 @@ const AssessmentSidebar = ({
                                       <button
                                         key={`q-${questionIndex}`}
                                         onClick={() => navigateToQuestion(categoryKey, questionIndex)}
-                                        className={`group relative h-9 w-9 rounded-2xs text-xs font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                                        className={`group relative h-9 w-9 rounded-lg text-xs font-semibold transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                                           isAnswered
                                             ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow-lg hover:shadow-xl focus:ring-slate-400'
                                             : 'bg-white text-slate-600 border border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md hover:bg-slate-50 focus:ring-slate-300'
@@ -314,7 +314,7 @@ const AssessmentSidebar = ({
                                       >
                                         <span className="relative z-10">{questionIndex + 1}</span>
                                         {isAnswered && (
-                                          <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-transparent rounded-2xs"></div>
+                                          <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-transparent rounded-lg"></div>
                                         )}
                                         {isFlagged && (
                                           <Flag className="absolute -top-1 -right-1 h-3 w-3 text-red-500 fill-current" />
@@ -332,7 +332,7 @@ const AssessmentSidebar = ({
                                       <button
                                         key={`r-${questionIndex}`}
                                         onClick={() => navigateToQuestion(categoryKey, questionIndex, true)}
-                                        className={`group relative h-9 w-9 rounded-2xs text-xs font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                                        className={`group relative h-9 w-9 rounded-lg text-xs font-semibold transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                                           isAnswered
                                             ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow-lg hover:shadow-xl focus:ring-slate-400'
                                             : 'bg-white text-slate-600 border border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md hover:bg-slate-50 focus:ring-slate-300'
@@ -341,7 +341,7 @@ const AssessmentSidebar = ({
                                       >
                                         <span className="relative z-10">{questionNumber}</span>
                                         {isAnswered && (
-                                          <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-transparent rounded-2xs"></div>
+                                          <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-transparent rounded-lg"></div>
                                         )}
                                         {isFlagged && (
                                           <Flag className="absolute -top-1 -right-1 h-3 w-3 text-red-500 fill-current" />
@@ -367,9 +367,9 @@ const AssessmentSidebar = ({
         <div className="mt-auto pt-3 border-t border-gray-300">
           <div className="text-center">
             <h4 className="text-sm font-semibold text-gray-900 mb-2">Overall Progress</h4>
-            <div className="w-full bg-gray-200 h-2.5 rounded-2xs">
+            <div className="w-full bg-gray-200 h-2.5 rounded-full">
               <div
-                className="bg-gray-900 h-2.5 rounded-2xs transition-all duration-500 ease-out"
+                className="bg-gradient-to-r from-gray-800 to-gray-900 h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${overallProgress ? overallProgress.percentage : 0}%` }}
               ></div>
             </div>
@@ -393,7 +393,7 @@ const AssessmentSidebar = ({
                 {/* Fill Current Assessment Button */}
                 <button
                   onClick={onFillRandomAnswers}
-                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 group"
+                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 group transform hover:scale-105 active:scale-95"
                   title="Fill current assessment with random answers"
                 >
                   <Zap className="h-3 w-3 group-hover:scale-110 transition-transform duration-200" />
@@ -403,7 +403,7 @@ const AssessmentSidebar = ({
                 {/* Fill All Assessments Button */}
                 <button
                   onClick={onFillAllAssessments}
-                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-md hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 group"
+                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 group transform hover:scale-105 active:scale-95"
                   title="Fill all assessments with random answers"
                 >
                   <RotateCcw className="h-3 w-3 group-hover:scale-110 transition-transform duration-200" />

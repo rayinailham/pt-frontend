@@ -665,10 +665,10 @@ const Assessment = () => {
         {/* Main Content */}
         <div className="flex-1 lg:mr-80 p-2 sm:p-4 lg:p-8 pb-32 sm:pb-36 lg:pb-8">
           {/* Desktop Header */}
-          <div className="hidden lg:block mb-8 bg-white border border-gray-300 rounded-2xs shadow-sm p-8 max-w-3xl mx-auto">
+          <div className="hidden lg:block mb-8 bg-white border border-gray-300 rounded-xl shadow-sm p-8 max-w-3xl mx-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gray-100 border border-gray-300 rounded-2xs">
+                <div className="p-3 bg-gray-100 border border-gray-300 rounded-lg">
                   <BookOpen className="h-6 w-6 text-gray-700" />
                 </div>
                 <div>
@@ -679,7 +679,7 @@ const Assessment = () => {
                     Assessment {currentAssessment.step} of {totalSteps} - {currentAssessment.description}
                   </p>
                   {isAutoFillMode && (
-                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300 rounded-2xs">
+                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300 rounded-lg">
                       <Check className="h-3 w-3 mr-1" />
                       Auto-filled - You can edit answers manually
                     </div>
@@ -731,9 +731,9 @@ const Assessment = () => {
             <button
               onClick={handlePreviousCategory}
               disabled={currentPage === 0}
-              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xs hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium transform hover:scale-105 active:scale-95"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1" />
               <span>Previous Category</span>
             </button>
 
@@ -746,9 +746,9 @@ const Assessment = () => {
               {currentAssessment.step > 1 && currentPage === 0 && (
                 <button
                   onClick={handlePreviousAssessment}
-                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xs hover:bg-gray-50 transition-colors font-medium"
+                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:shadow-md transition-all duration-200 font-medium transform hover:scale-105 active:scale-95 group"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1" />
                   <span>Previous Assessment</span>
                 </button>
               )}
@@ -759,21 +759,21 @@ const Assessment = () => {
                   <button
                     onClick={isAllComplete ? handleSubmit : undefined}
                     disabled={!isAllComplete || isSubmitting}
-                    className={`flex items-center space-x-2 px-6 py-3 rounded-2xs transition-all font-medium ${
+                    className={`flex items-center space-x-2 px-8 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg transform ${
                       isAllComplete
-                        ? 'bg-gray-900 text-white hover:bg-gray-800'
+                        ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-xl hover:scale-105 active:scale-95'
                         : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                    } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    } ${isSubmitting ? 'opacity-75 cursor-not-allowed animate-pulse' : ''}`}
                   >
                     {isSubmitting ? (
                       <>
                         <LoadingSpinner size="sm" className="mr-2" />
-                        Submitting Assessment...
+                        <span className="animate-pulse">Submitting Assessment...</span>
                       </>
                     ) : (
                       <>
-                        <Send className="h-5 w-5" />
-                        Submit Assessment
+                        <Send className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
+                        <span>Submit Assessment</span>
                       </>
                     )}
                   </button>
@@ -790,10 +790,10 @@ const Assessment = () => {
               {currentPage === totalPages - 1 && !isLastAssessment && (
                 <button
                   onClick={handleNextAssessment}
-                  className="flex items-center space-x-2 px-6 py-3 rounded-2xs transition-all font-medium bg-gray-900 text-white hover:bg-gray-800"
+                  className="flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 font-semibold bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-lg transform hover:scale-105 active:scale-95 group"
                 >
                   <span>Next Assessment</span>
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               )}
 
@@ -801,10 +801,10 @@ const Assessment = () => {
               {currentPage < totalPages - 1 && (
                 <button
                   onClick={handleNextCategory}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 transition-all font-medium"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95 group"
                 >
                   <span>Next Category</span>
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               )}
             </div>

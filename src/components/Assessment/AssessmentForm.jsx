@@ -325,10 +325,10 @@ const AssessmentForm = ({
         {/* Main Content */}
         <div className="flex-1 lg:mr-80 p-2 sm:p-4 lg:p-8 pb-32 sm:pb-36 lg:pb-8">
           {/* Desktop Header */}
-          <div className="hidden lg:block mb-8 bg-white border border-gray-200 rounded-2xs p-8 max-w-3xl mx-auto">
+          <div className="hidden lg:block mb-8 bg-white border border-gray-200 rounded-xl shadow-sm p-8 max-w-3xl mx-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gray-100 border border-gray-200 rounded-2xs">
+                <div className="p-3 bg-gray-100 border border-gray-200 rounded-lg">
                   <BookOpen className="h-6 w-6 text-gray-700" />
                 </div>
                 <div>
@@ -339,7 +339,7 @@ const AssessmentForm = ({
                     Assessment {currentStep} of {totalSteps} - {assessmentData.description}
                   </p>
                   {isAutoFillMode && (
-                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-300 rounded-2xs">
+                    <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 border border-gray-300 rounded-lg">
                       <Check className="h-3 w-3 mr-1" />
                       Auto-filled - You can edit answers manually
                     </div>
@@ -386,17 +386,17 @@ const AssessmentForm = ({
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex max-w-full sm:max-w-2xl lg:max-w-3xl mx-auto mt-8 justify-between items-center">
+          <div className="hidden lg:flex max-w-full sm:max-w-2xl lg:max-w-3xl mx-auto mt-8 justify-between items-center overflow-hidden">
             <button
               onClick={handlePreviousCategory}
               disabled={currentPage === 0}
-              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xs hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:shadow-md hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium group"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1" />
               <span>Previous Category</span>
             </button>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 overflow-hidden">
               <span className="text-sm text-gray-600 font-medium">
                 {currentCategoryData?.name} ({currentPage + 1} of {totalPages})
               </span>
@@ -405,9 +405,9 @@ const AssessmentForm = ({
               {currentStep > 1 && currentPage === 0 && (
                 <button
                   onClick={onPrevious}
-                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xs hover:bg-gray-50 transition-colors"
+                  className="flex items-center space-x-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:shadow-md hover:border-gray-400 transition-all duration-200 font-medium group"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1" />
                   <span>Previous Assessment</span>
                 </button>
               )}
@@ -417,10 +417,10 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold group"
                 >
-                  <Check className="h-5 w-5" />
-                  <span>{isProcessingSubmit ? 'Submitting...' : 'Submit Assessment'}</span>
+                  <Check className={`h-5 w-5 ${isProcessingSubmit ? 'animate-spin' : ''}`} />
+                  <span className={isProcessingSubmit ? 'animate-pulse' : ''}>{isProcessingSubmit ? 'Submitting...' : 'Submit Assessment'}</span>
                 </button>
               )}
 
@@ -429,10 +429,10 @@ const AssessmentForm = ({
                 <button
                   onClick={onManualSubmit}
                   disabled={isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95"
                 >
-                  <Check className="h-5 w-5" />
-                  <span>{isProcessingSubmit ? 'Submitting...' : 'Submit All Assessments'}</span>
+                  <Check className={`h-5 w-5 ${isProcessingSubmit ? 'animate-spin' : ''}`} />
+                  <span className={isProcessingSubmit ? 'animate-pulse' : ''}>{isProcessingSubmit ? 'Submitting...' : 'Submit All Assessments'}</span>
                 </button>
               )}
 
@@ -441,10 +441,10 @@ const AssessmentForm = ({
                 <button
                   onClick={handleSubmitWithValidation}
                   disabled={!isAssessmentComplete() || isProcessingSubmit}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95 group"
                 >
-                  <span>{isProcessingSubmit ? 'Processing...' : 'Next Assessment'}</span>
-                  <ChevronRight className="h-5 w-5" />
+                  <span className={isProcessingSubmit ? 'animate-pulse' : ''}>{isProcessingSubmit ? 'Processing...' : 'Next Assessment'}</span>
+                  <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               )}
 
@@ -452,10 +452,10 @@ const AssessmentForm = ({
               {currentPage < totalPages - 1 && (
                 <button
                   onClick={handleNextCategory}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-900 text-white rounded-2xs hover:bg-gray-800 transition-all"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 hover:shadow-lg transition-all duration-300 font-semibold transform hover:scale-105 active:scale-95 group"
                 >
                   <span>Next Category</span>
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               )}
             </div>

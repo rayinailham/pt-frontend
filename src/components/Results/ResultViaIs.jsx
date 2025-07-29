@@ -5,7 +5,7 @@ import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadius
 import apiService from '../../services/apiService';
 import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import useScrollToTop from '../../hooks/useScrollToTop';
-import AssessmentRelation from './AssessmentExplanations';
+import AssessmentRelation from './AssessmentRelation';
 import {
   viaCategories,
   strengthLabels,
@@ -934,10 +934,7 @@ const ResultViaIs = () => {
               </div>
             </motion.div>
 
-            {/* Assessment Integration Section */}
-            <div className="mb-8 sm:mb-12">
-              <AssessmentRelation delay={0.35} />
-            </div>
+  
 
             {/* Navigation to Other Results */}
             <motion.div

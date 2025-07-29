@@ -30,7 +30,9 @@ const AssessmentStatus = () => {
   const [debugInfo, setDebugInfo] = useState([]);
   const processingToAnalysisTimeoutRef = useRef(null);
   const pollingIntervalRef = useRef(null);
+  const navigationTimeoutRef = useRef(null);
   const hasNavigatedRef = useRef(false);
+  const isHandlingWebSocketRef = useRef(false);
 
   // Add debug logging
   const addDebugInfo = (message) => {
@@ -42,8 +44,16 @@ const AssessmentStatus = () => {
   // Observer Pattern: Setup WebSocket notifications as observers
   const { isConnected, isAuthenticated } = useNotifications({
     onAnalysisComplete: (data) => {
-      addDebugInfo(`WebSocket: Analysis complete received for jobId: ${data.jobId}`);
-      if (data.jobId === jobId && !hasNavigatedRef.current) {
+      addDebugInfo(`WebSocket: Analysis complete received for jobId: ${data?.jobId}`);
+
+      // Prevent race conditions - only handle if not already processing
+      if (isHandlingWebSocketRef.current) {
+        addDebugInfo('WebSocket: Already handling analysis complete, ignoring duplicate');
+        return;
+      }
+
+      if (data?.jobId === jobId && !hasNavigatedRef.current) {
+        isHandlingWebSocketRef.current = true;
         hasNavigatedRef.current = true;
         addDebugInfo(`Transitioning to preparing stage`);
 
@@ -58,21 +68,30 @@ const AssessmentStatus = () => {
         }
 
         // Navigate after minimum 3 seconds to allow UI transition
-        setTimeout(() => {
-          addDebugInfo(`Navigating to results: ${data.resultId}`);
-          navigate(`/results/${data.resultId}`);
+        navigationTimeoutRef.current = setTimeout(() => {
+          if (hasNavigatedRef.current && data?.resultId) {
+            addDebugInfo(`Navigating to results: ${data.resultId}`);
+            navigate(`/results/${data.resultId}`);
+          }
         }, 3000);
       }
     },
     onAnalysisFailed: (data) => {
-      addDebugInfo(`WebSocket: Analysis failed for jobId: ${data.jobId}`);
-      if (data.jobId === jobId) {
+      addDebugInfo(`WebSocket: Analysis failed for jobId: ${data?.jobId}`);
+      if (data?.jobId === jobId) {
         setError(data.message || 'Analysis failed');
         // Clear polling on failure
         if (pollingIntervalRef.current) {
           clearInterval(pollingIntervalRef.current);
           pollingIntervalRef.current = null;
         }
+        // Clear navigation timeout on failure
+        if (navigationTimeoutRef.current) {
+          clearTimeout(navigationTimeoutRef.current);
+          navigationTimeoutRef.current = null;
+        }
+        // Reset handling flag
+        isHandlingWebSocketRef.current = false;
       }
     }
   });
@@ -191,6 +210,13 @@ const AssessmentStatus = () => {
         clearInterval(pollingIntervalRef.current);
         pollingIntervalRef.current = null;
       }
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+        navigationTimeoutRef.current = null;
+      }
+      // Reset flags to prevent memory leaks
+      hasNavigatedRef.current = false;
+      isHandlingWebSocketRef.current = false;
     };
   }, [jobId, navigate, location.state]);
 

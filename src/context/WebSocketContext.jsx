@@ -44,7 +44,8 @@ export const WebSocketProvider = ({ children }) => {
         try {
           callback(data);
         } catch (error) {
-          // Silently handle callback errors
+          // Log callback errors for debugging but don't crash the app
+          console.error(`WebSocket callback error for ${eventType}:`, error);
         }
       });
     }
@@ -122,6 +123,8 @@ export const WebSocketProvider = ({ children }) => {
     // Cleanup on unmount
     return () => {
       isConnectingRef.current = false;
+      // Clear all callbacks to prevent memory leaks
+      callbacksRef.current = {};
       // Don't disconnect here to prevent multiple disconnects
       // Let the service handle its own lifecycle
     };

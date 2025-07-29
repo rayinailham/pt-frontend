@@ -60,8 +60,15 @@ export const useNotifications = (options = {}) => {
 
     // Cleanup function
     return () => {
-      unregisterFunctionsRef.current.forEach(unregister => unregister());
+      unregisterFunctionsRef.current.forEach(unregister => {
+        try {
+          unregister();
+        } catch (error) {
+          console.error('Error during callback cleanup:', error);
+        }
+      });
       unregisterFunctionsRef.current = [];
+      callbacksRef.current = {};
     };
   }, [
     options.onAuthError,

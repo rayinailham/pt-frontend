@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import apiService from '../../services/apiService';
 import EnhancedLoadingScreen from '../UI/EnhancedLoadingScreen';
 import useScrollToTop from '../../hooks/useScrollToTop';
-import AssessmentExplanations from './AssessmentExplanations';
+import AssessmentRelation from './AssessmentRelation';
 
 const ResultOverview = () => {
   const { resultId } = useParams();
@@ -525,13 +525,15 @@ const ResultOverview = () => {
               </div>
             </motion.div>
 
+            {/* Assessment Explanations */}
+            <div className="mt-12 sm:mt-14 lg:mt-16">
+              <AssessmentRelation delay={0.3}/>
+            </div>
+
             {/* Assessment Results Graphic */}
             <AssessmentResultsGraphic assessmentData={result.assessment_data} />
 
-            {/* Assessment Explanations */}
-            <div className="mt-12 sm:mt-14 lg:mt-16">
-              <AssessmentExplanations delay={0.3}/>
-            </div>
+            
 
             {/* Assessment Sections */}
             <motion.div

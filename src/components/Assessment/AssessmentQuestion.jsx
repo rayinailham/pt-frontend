@@ -22,16 +22,16 @@ const AssessmentQuestion = ({
   return (
     <div
       id={`question-${questionKey}`}
-      className="bg-white border border-gray-300 shadow-sm p-3 sm:p-4 md:p-6 lg:p-8 mb-4 sm:mb-6 hover:border-gray-400 transition-all duration-200"
+      className="bg-white border border-gray-300 shadow-sm rounded-xl p-3 sm:p-4 md:p-6 lg:p-8 mb-4 sm:mb-6 hover:border-gray-400 hover:shadow-md transition-all duration-300 transform hover:scale-[1.02]"
     >
       <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <span className="text-xs font-bold text-gray-700 bg-gray-100 px-2 sm:px-3 py-1 border border-gray-300">
+          <span className="text-xs font-bold text-gray-700 bg-gray-100 px-2 sm:px-3 py-1 border border-gray-300 rounded-lg">
             Question {questionIndex} of {totalQuestions}
           </span>
           <button
             onClick={() => onToggleFlag && onToggleFlag(questionKey)}
-            className={`p-2 rounded-sm transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            className={`p-2 rounded-lg transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
               isFlagged
                 ? 'text-red-600 hover:text-red-700 focus:ring-red-400 bg-red-50 hover:bg-red-100'
                 : 'text-gray-400 hover:text-gray-600 focus:ring-gray-400 hover:bg-gray-50'
@@ -62,11 +62,11 @@ const AssessmentQuestion = ({
                 key={scaleValue}
                 onClick={() => onChange(scaleValue)}
                 className={`
-                  h-10 sm:h-12 border-2 transition-all duration-200 font-bold text-xs sm:text-sm
-                  flex items-center justify-center w-full
+                  h-10 sm:h-12 border-2 transition-all duration-300 font-bold text-xs sm:text-sm
+                  flex items-center justify-center w-full rounded-lg transform hover:scale-105 active:scale-95
                   ${isSelected
-                    ? 'bg-gray-900 border-gray-900 text-white'
-                    : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
+                    ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-900 text-white shadow-lg'
+                    : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 hover:shadow-md'
                   }
                 `}
               >
