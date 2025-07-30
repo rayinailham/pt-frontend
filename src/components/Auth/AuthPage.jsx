@@ -113,7 +113,7 @@ const AuthPage = () => {
             {/* Title with Enhanced Typography */}
             <div className="mb-8">
               <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-white via-gray-100 to-gray-200 bg-clip-text text-transparent leading-tight">
-                Peta Talenta
+                PetaTalenta
               </h1>
               <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto mb-6"></div>
             </div>
@@ -192,7 +192,7 @@ const AuthPage = () => {
             {/* Additional Professional Touch */}
             <div className="mt-16">
               <p className="text-gray-200/60 text-sm font-light italic">
-                "Find your calling in life with Peta Talenta."
+                "Find your calling in life with PetaTalenta."
               </p>
             </div>
           </div>
@@ -220,7 +220,7 @@ const AuthPage = () => {
           {/* Mobile Header (visible only on small screens) */}
           <div className="lg:hidden text-center mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-              Peta Talenta Platform
+              PetaTalenta Platform
             </h1>
             <p className="text-sm sm:text-base text-gray-500">Platform Pemetaan Talenta Berbasis AI</p>
           </div>
@@ -261,7 +261,7 @@ const AuthPage = () => {
           {/* Footer */}
           <div className="text-center mt-6 sm:mt-8">
             <p className="text-xs sm:text-sm text-gray-400">
-              © 2025 Peta Talenta Platform. All rights reserved.
+              © 2025 PetaTalenta Platform. All rights reserved.
             </p>
           </div>
         </div>

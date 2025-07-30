@@ -374,30 +374,27 @@ const AssessmentSidebar = ({
 
         {/* Bottom Section - Fixed to bottom */}
         <div id="sidebar-bottom-section" className="mt-auto pt-3 border-t border-gray-300">
-          {/* Submit Assessment Button - Now first */}
-          <div id="submit-section" className="mb-4">
-            <button
-              id="submit-assessment-btn"
-              onClick={isAllComplete ? onSubmit : undefined}
-              disabled={!isAllComplete || isSubmitting}
-              className={`w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg ${
-                isAllComplete && !isSubmitting
-                  ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-xl hover:brightness-110 transform hover:scale-105 active:scale-95"
-                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
-              }`}
-              title={!isAllComplete ? "Complete all assessments to submit" : "Submit your assessment"}
-            >
-              <Send className={`h-5 w-5 transition-transform duration-200 ${isSubmitting ? 'animate-pulse' : 'group-hover:translate-x-1'}`} />
-              <span className={isSubmitting ? 'animate-pulse' : ''}>
-                {isSubmitting ? 'Submitting...' : 'Submit Assessment'}
-              </span>
-            </button>
-            {!isAllComplete && !isSubmitting && (
-              <div id="submit-help-text" className="text-xs text-gray-500 mt-2 text-center">
-                Complete all phases to submit
-              </div>
-            )}
-          </div>
+          {/* Submit Assessment Button - Only show when all assessments are complete */}
+          {isAllComplete && (
+            <div id="submit-section" className="mb-4">
+              <button
+                id="submit-assessment-btn"
+                onClick={onSubmit}
+                disabled={isSubmitting}
+                className={`w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg ${
+                  !isSubmitting
+                    ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-xl hover:brightness-110 transform hover:scale-105 active:scale-95"
+                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                }`}
+                title="Submit your assessment"
+              >
+                <Send className={`h-5 w-5 transition-transform duration-200 ${isSubmitting ? 'animate-pulse' : 'group-hover:translate-x-1'}`} />
+                <span className={isSubmitting ? 'animate-pulse' : ''}>
+                  {isSubmitting ? 'Submitting...' : 'Submit Assessment'}
+                </span>
+              </button>
+            </div>
+          )}
 
           {/* Overall Progress - Now second */}
           <div id="overall-progress-section" className="text-center pt-3 border-t border-gray-200">
