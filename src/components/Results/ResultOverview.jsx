@@ -91,6 +91,68 @@ const ResultOverview = () => {
     });
   };
 
+  // Function to handle viewing raw result data
+  const handleViewRawResult = async () => {
+    try {
+      const response = await apiService.getResultById(resultId);
+      if (response.success) {
+        // Open raw data in a new window/tab for debugging
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.document.write(`
+            <html>
+              <head>
+                <title>Raw Result Data - ${resultId}</title>
+                <style>
+                  body {
+                    font-family: 'Courier New', monospace;
+                    margin: 20px;
+                    background-color: #f8f9fa;
+                  }
+                  .container {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                  .header {
+                    border-bottom: 2px solid #e9ecef;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                  }
+                  pre {
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    background-color: #f8f9fa;
+                    padding: 15px;
+                    border-radius: 4px;
+                    border: 1px solid #dee2e6;
+                    font-size: 12px;
+                    line-height: 1.4;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <h1>Raw Result Data</h1>
+                    <p><strong>Result ID:</strong> ${resultId}</p>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                  </div>
+                  <pre>${JSON.stringify(response.data, null, 2)}</pre>
+                </div>
+              </body>
+            </html>
+          `);
+          newWindow.document.close();
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch raw result:', error);
+      alert('Failed to fetch raw result data. Please try again.');
+    }
+  };
+
   // Assessment Results Graphic Component
   const AssessmentResultsGraphic = ({ assessmentData }) => {
     const getScoreColor = (score) => {
@@ -117,10 +179,10 @@ const ResultOverview = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="mb-16"
+        className="mb-8"
       >
         <div className="bg-white rounded-xl border border-gray-200/60 shadow-xs overflow-hidden">
-          <div className="bg-gradient-to-b from-gray-50/30 to-white p-4 sm:p-6 lg:p-10 border-b border-gray-100/60">
+          <div className="bg-gradient-to-b from-gray-50/30 to-white p-4 sm:p-6 border-b border-gray-100/60">
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-xl sm:text-2xl font-medium text-gray-900 mb-3 tracking-tight">
                 Visualisasi Hasil Assessment
@@ -131,10 +193,10 @@ const ResultOverview = () => {
             </div>
           </div>
 
-          <div className="p-4 sm:p-6 lg:p-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* VIA Character Strengths */}
-              <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+              <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]">
                 <div className="flex items-start mb-4 sm:mb-6">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                     <span className="text-gray-700 text-lg sm:text-xl">⭐</span>
@@ -169,7 +231,7 @@ const ResultOverview = () => {
               </div>
 
               {/* RIASEC Interests */}
-              <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+              <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]">
                 <div className="flex items-start mb-4 sm:mb-6">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                     <span className="text-gray-700 text-lg sm:text-xl">🎯</span>
@@ -204,7 +266,7 @@ const ResultOverview = () => {
               </div>
 
               {/* OCEAN Personality */}
-              <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+              <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]">
                 <div className="flex items-start mb-4 sm:mb-6">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
                     <span className="text-gray-700 text-lg sm:text-xl">🧭</span>
@@ -240,14 +302,10 @@ const ResultOverview = () => {
             </div>
 
             {/* Overall Score Summary */}
-            <div className="mt-6 sm:mt-8 lg:mt-10 pt-6 sm:pt-8 border-t border-gray-200/60">
-              <h4 className="text-base sm:text-lg font-medium text-gray-900 text-center mb-6 sm:mb-8">Skor Tertinggi Anda</h4>
+            <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-200/60">
+              <h4 className="text-base sm:text-lg font-medium text-gray-900 text-center mb-6">Skor Tertinggi Anda</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
-                <motion.div
-                  className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
-                  whileHover={{ scale: 1.01, y: -1 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                >
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]">
                   <div className="text-2xl sm:text-3xl font-medium text-gray-900 mb-2 sm:mb-3 tabular-nums">
                     {viaTopScores.length > 0 ? viaTopScores[0].score.toFixed(0) : 'N/A'}
                   </div>
@@ -255,12 +313,8 @@ const ResultOverview = () => {
                   <div className="text-xs text-gray-500 font-medium capitalize">
                     {viaTopScores.length > 0 ? viaTopScores[0].name : 'No data'}
                   </div>
-                </motion.div>
-                <motion.div
-                  className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
-                  whileHover={{ scale: 1.01, y: -1 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                >
+                </div>
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]">
                   <div className="text-2xl sm:text-3xl font-medium text-gray-900 mb-2 sm:mb-3 tabular-nums">
                     {riasecTopScores.length > 0 ? riasecTopScores[0].score.toFixed(0) : 'N/A'}
                   </div>
@@ -268,12 +322,8 @@ const ResultOverview = () => {
                   <div className="text-xs text-gray-500 font-medium capitalize">
                     {riasecTopScores.length > 0 ? riasecTopScores[0].name : 'No data'}
                   </div>
-                </motion.div>
-                <motion.div
-                  className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]"
-                  whileHover={{ scale: 1.01, y: -1 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                >
+                </div>
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-[0_2px_12px_rgb(0,0,0,0.04)]">
                   <div className="text-2xl sm:text-3xl font-medium text-gray-900 mb-2 sm:mb-3 tabular-nums">
                     {oceanTopScores.length > 0 ? oceanTopScores[0].score.toFixed(0) : 'N/A'}
                   </div>
@@ -281,7 +331,7 @@ const ResultOverview = () => {
                   <div className="text-xs text-gray-500 font-medium capitalize">
                     {oceanTopScores.length > 0 ? oceanTopScores[0].name : 'No data'}
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>
@@ -342,6 +392,7 @@ const ResultOverview = () => {
     },
     {
       title: 'Career Persona',
+      title: 'Profile Persona',
       description: 'Mensintesis semua penilaian menjadi rekomendasi karir yang dapat ditindaklanjuti dan peluang pengembangan',
       icon: '🎪',
       path: `/results/${resultId}/persona`,
@@ -442,12 +493,24 @@ const ResultOverview = () => {
                     peluang karir yang selaras dengan kekuatan Anda.
                   </p>
                 </div>
-                <button
-                  onClick={() => navigate('/dashboard')}
-                  className="bg-gray-900 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-medium text-sm sm:text-base w-full sm:w-auto"
-                >
-                  Dashboard
-                </button>
+                <div className="flex space-x-3 w-full sm:w-auto">
+                  <button
+                    onClick={handleViewRawResult}
+                    className="border border-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors font-medium text-sm flex items-center space-x-2 flex-1 sm:flex-none justify-center"
+                    title="View raw result data for debugging"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                    <span>Raw Data</span>
+                  </button>
+                  <button
+                    onClick={() => navigate('/dashboard')}
+                    className="bg-gray-900 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-medium text-sm sm:text-base flex-1 sm:flex-none"
+                  >
+                    Dashboard
+                  </button>
+                </div>
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6">
@@ -478,7 +541,7 @@ const ResultOverview = () => {
               className="mb-8 sm:mb-10 lg:mb-12"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                {/* Career Persona Summary */}
+                {/* Profile Persona Summary */}
                 {(() => {
                   const archetype = result.persona_profile?.archetype || result.persona_profile?.career_persona?.archetype;
                   const shortSummary = result.persona_profile?.shortSummary || result.persona_profile?.short_summary || result.persona_profile?.summary;
@@ -486,7 +549,7 @@ const ResultOverview = () => {
                   return archetype && (
                     <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
                       <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
-                        Career Persona Anda
+                        Profile Persona Anda
                       </h2>
                       <motion.div
                         className="inline-block bg-gray-50 px-3 sm:px-4 py-2 rounded-lg border border-gray-200/40 shadow-xs mb-3 sm:mb-4"
@@ -519,7 +582,7 @@ const ResultOverview = () => {
                     <div><strong className="text-gray-900">Character Strengths:</strong> Nilai-nilai inti dan kekuatan karakter Anda.</div>
                     <div><strong className="text-gray-900">Career Interests:</strong> Minat terhadap lingkungan karir dan aktivitas.</div>
                     <div><strong className="text-gray-900">Personality Traits:</strong> Dimensi kepribadian dan gaya kerja Anda.</div>
-                    <div><strong className="text-gray-900">Career Persona:</strong> Rekomendasi karir dan peluang pengembangan.</div>
+                    <div><strong className="text-gray-900">Profile Persona:</strong> Rekomendasi karir dan peluang pengembangan.</div>
                   </div>
                 </div>
               </div>

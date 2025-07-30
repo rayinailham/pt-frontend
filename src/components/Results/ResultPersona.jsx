@@ -105,19 +105,11 @@ const ResultPersona = () => {
     return colors[level] || "text-slate-600 bg-slate-50 border-slate-200";
   };
 
-  const getProspectLevel = (level) => {
-    const levels = {
-      "super high": 5,
-      high: 4,
-      moderate: 3,
-      low: 2,
-      "super low": 1,
-    };
-    return levels[level] || 0;
-  };
+
 
   const formatProspectLabel = (key) => {
     const labels = {
+      aiOvertake: "Risiko Digantikan AI",
       jobAvailability: "Ketersediaan Pekerjaan",
       salaryPotential: "Potensi Penghasilan",
       careerProgression: "Peluang Pengembangan Karier",
@@ -125,6 +117,68 @@ const ResultPersona = () => {
       skillDevelopment: "Pengembangan Keahlian",
     };
     return labels[key] || key;
+  };
+
+  // Function to handle viewing raw result data
+  const handleViewRawResult = async () => {
+    try {
+      const response = await apiService.getResultById(resultId);
+      if (response.success) {
+        // Open raw data in a new window/tab for debugging
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.document.write(`
+            <html>
+              <head>
+                <title>Raw Result Data - ${resultId}</title>
+                <style>
+                  body {
+                    font-family: 'Courier New', monospace;
+                    margin: 20px;
+                    background-color: #f8f9fa;
+                  }
+                  .container {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                  .header {
+                    border-bottom: 2px solid #e9ecef;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                  }
+                  pre {
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    background-color: #f8f9fa;
+                    padding: 15px;
+                    border-radius: 4px;
+                    border: 1px solid #dee2e6;
+                    font-size: 12px;
+                    line-height: 1.4;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <h1>Raw Result Data</h1>
+                    <p><strong>Result ID:</strong> ${resultId}</p>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                  </div>
+                  <pre>${JSON.stringify(response.data, null, 2)}</pre>
+                </div>
+              </body>
+            </html>
+          `);
+          newWindow.document.close();
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch raw result:', error);
+      alert('Failed to fetch raw result data. Please try again.');
+    }
   };
 
   // Navigation cards data
@@ -171,21 +225,21 @@ const ResultPersona = () => {
             className="col-span-12 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
           >
             <div className="p-8">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-lg">✦</span>
+              <div className="mb-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-lg">✦</span>
                   </div>
                   <div>
                     <h3 className="text-2xl font-semibold text-slate-900 mb-1">
                       {personaProfile.archetype}
                     </h3>
-                    <p className="text-slate-500 text-sm">Career Archetype Profile</p>
+                    <p className="text-slate-500 text-sm">Profile Archetype Persona</p>
                   </div>
                 </div>
                 {/* Core Motivators Pills */}
                 {personaProfile.coreMotivators && personaProfile.coreMotivators.length > 0 && (
-                  <div className="flex flex-wrap gap-2 max-w-md">
+                  <div className="flex flex-wrap gap-2">
                     {personaProfile.coreMotivators.map((motivator, idx) => (
                       <span
                         key={idx}
@@ -206,7 +260,7 @@ const ResultPersona = () => {
               {personaProfile.learningStyle && (
                 <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
                   <h4 className="text-sm font-semibold text-slate-900 mb-3 flex items-center">
-                    <span className="w-5 h-5 bg-slate-100 rounded-lg flex items-center justify-center mr-2">
+                    <span className="w-5 h-5 bg-slate-50 rounded-lg flex items-center justify-center mr-2">
                       <span className="text-slate-600 text-xs">🎯</span>
                     </span>
                     Gaya Belajar
@@ -229,8 +283,8 @@ const ResultPersona = () => {
           >
             <div className="bg-slate-50 border-b border-slate-200 p-5">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-sm">✓</span>
+                <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <span className="text-slate-600 text-sm">✓</span>
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900">Kekuatan Utama</h4>
@@ -269,8 +323,8 @@ const ResultPersona = () => {
             >
               <div className="bg-slate-50 border-b border-slate-200 p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-sm">⚡</span>
+                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-sm">⚡</span>
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-slate-900">Pengembangan Keahlian</h4>
@@ -308,12 +362,12 @@ const ResultPersona = () => {
           >
             <div className="bg-slate-50 border-b border-slate-200 p-6">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-lg">💼</span>
+                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <span className="text-slate-600 text-lg">💼</span>
                 </div>
                 <div>
                   <h4 className="text-xl font-semibold text-slate-900">Rekomendasi Karier</h4>
-                  <p className="text-slate-600 text-sm">Jalur Karier yang Sesuai dengan Profil Anda</p>
+                  <p className="text-slate-600 text-sm">Jalur Karier yang Sesuai dengan Profil Persona Anda</p>
                 </div>
               </div>
             </div>
@@ -349,14 +403,11 @@ const ResultPersona = () => {
 
                       {/* Career Prospects */}
                       <div>
-                        <h6 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider">Prospek Karier</h6>
-                        <div className="grid grid-cols-2 gap-3">
+                        <h6 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Prospek Karier</h6>
+                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
                           {Object.entries(career.careerProspect || {}).map(([key, value]) => (
-                            <div key={key} className="text-center bg-white p-4 rounded-xl border border-slate-200">
-                              <div className="text-2xl font-bold text-slate-900 mb-2">
-                                {getProspectLevel(value)}/5
-                              </div>
-                              <div className={`text-xs font-medium mb-3 px-3 py-1.5 rounded-full ${getProspectColor(value)}`}>
+                            <div key={key} className="text-center bg-white p-3 rounded-lg border border-slate-200">
+                              <div className={`text-sm font-semibold mb-2 px-3 py-1.5 rounded-full ${getProspectColor(value)}`}>
                                 {value}
                               </div>
                               <div className="text-xs text-slate-600 leading-tight font-medium">
@@ -377,8 +428,8 @@ const ResultPersona = () => {
                                 key={stepIdx}
                                 className="flex items-start text-sm text-slate-700 bg-white p-4 rounded-xl border border-slate-200"
                               >
-                                <div className="w-7 h-7 bg-slate-800 rounded-lg flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
-                                  <span className="text-white text-sm font-bold">{stepIdx + 1}</span>
+                                <div className="w-7 h-7 bg-slate-100 rounded-lg flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                                  <span className="text-slate-600 text-sm font-bold">{stepIdx + 1}</span>
                                 </div>
                                 <span className="leading-relaxed">{step}</span>
                               </div>
@@ -420,8 +471,8 @@ const ResultPersona = () => {
           >
             <div className="bg-slate-50 border-b border-slate-200 p-5">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-sm">⚠</span>
+                <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <span className="text-slate-600 text-sm">⚠</span>
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900">Area Pengembangan</h4>
@@ -459,8 +510,8 @@ const ResultPersona = () => {
           >
             <div className="bg-slate-50 border-b border-slate-200 p-5">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-sm">💡</span>
+                <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <span className="text-slate-600 text-sm">💡</span>
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900">Wawasan Pengembangan</h4>
@@ -471,7 +522,7 @@ const ResultPersona = () => {
             <div className="p-6">
               <div className="mb-5 bg-slate-50 p-5 rounded-xl border border-slate-200">
                 <p className="text-slate-700 text-sm leading-relaxed">
-                  Wawasan strategis yang mendalam untuk membantu Anda mengenali dan menyikapi area-area yang perlu dikembangkan.
+                  Bahkan berdasarkan hasil analisis data OCEAN, RIASEC, dan VIA-IS, kami memberikan wawasan strategis yang mendalam untuk membantu Anda mengenali serta menyikapi area-area yang perlu dikembangkan.
                 </p>
               </div>
               <div className="space-y-4">
@@ -499,8 +550,8 @@ const ResultPersona = () => {
             >
               <div className="bg-slate-50 border-b border-slate-200 p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-sm">⚠</span>
+                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-sm">⚠</span>
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-slate-900">Tantangan Potensial</h4>
@@ -535,8 +586,8 @@ const ResultPersona = () => {
             >
               <div className="bg-slate-50 border-b border-slate-200 p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-sm">🏢</span>
+                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-sm">🏢</span>
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-slate-900">Lingkungan Kerja</h4>
@@ -565,12 +616,12 @@ const ResultPersona = () => {
             >
               <div className="bg-slate-50 border-b border-slate-200 p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-sm">👥</span>
+                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-sm">👥</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-slate-900">Panutan Karier</h4>
-                    <p className="text-slate-600 text-xs">Role Models</p>
+                    <h4 className="text-lg font-semibold text-slate-900">Panutan Profil Persona</h4>
+                    <p className="text-slate-600 text-xs">Role Models Profil Persona</p>
                   </div>
                 </div>
               </div>
@@ -604,8 +655,8 @@ const ResultPersona = () => {
                 >
                   <div className="bg-slate-50 border-b border-slate-200 p-5">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                        <span className="text-white text-sm">🎯</span>
+                      <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                        <span className="text-slate-600 text-sm">🎯</span>
                       </div>
                       <div>
                         <h4 className="text-lg font-semibold text-slate-900">Ekstrakurikuler</h4>
@@ -646,8 +697,8 @@ const ResultPersona = () => {
                 >
                   <div className="bg-slate-50 border-b border-slate-200 p-5">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                        <span className="text-white text-sm">💡</span>
+                      <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                        <span className="text-slate-600 text-sm">💡</span>
                       </div>
                       <div>
                         <h4 className="text-lg font-semibold text-slate-900">Ide Proyek</h4>
@@ -683,8 +734,8 @@ const ResultPersona = () => {
                 >
                   <div className="bg-slate-50 border-b border-slate-200 p-5">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center">
-                        <span className="text-white text-sm">📚</span>
+                      <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                        <span className="text-slate-600 text-sm">📚</span>
                       </div>
                       <div>
                         <h4 className="text-lg font-semibold text-slate-900">Rekomendasi Buku</h4>
@@ -808,10 +859,10 @@ const ResultPersona = () => {
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 space-y-4 sm:space-y-0">
                 <div>
                   <h1 className="text-2xl font-medium text-slate-900 mb-2">
-                    Career Persona Profile
+                    Profile Persona
                   </h1>
                   <p className="text-slate-600 max-w-2xl text-sm leading-relaxed">
-                    Discover your comprehensive career persona based on integrated assessment results from RIASEC, OCEAN, and VIA-IS evaluations.
+                    Discover your comprehensive profile persona based on integrated assessment results from RIASEC, OCEAN, and VIA-IS evaluations.
                   </p>
                 </div>
                 <div className="flex space-x-3">
@@ -863,7 +914,7 @@ const ResultPersona = () => {
             >
               <div className="text-center mb-6">
                 <h2 className="text-xl font-medium text-slate-900 mb-2">
-                  Your Complete Career Profile
+                  Profil Persona Lengkap Anda
                 </h2>
                 <div className="w-16 h-0.5 bg-slate-300 mx-auto rounded-full"></div>
               </div>
