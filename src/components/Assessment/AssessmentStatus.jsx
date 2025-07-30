@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import apiService from '../../services/apiService';
-import { useNotifications } from '../../hooks/useNotifications';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import ErrorMessage from '../UI/ErrorMessage';
-import { getRandomTrivia } from '../../data/assessmentTrivia';
-import TriviaCard from './TriviaCard';
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import apiService from "../../services/apiService";
+import { useNotifications } from "../../hooks/useNotifications";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import ErrorMessage from "../UI/ErrorMessage";
+import { getRandomTrivia } from "../../data/assessmentTrivia";
+import TriviaCard from "./TriviaCard";
 
 /**
  * AssessmentStatus Component - Uses Observer Pattern with Fallback Polling
@@ -26,9 +26,12 @@ const AssessmentStatus = () => {
   const location = useLocation();
   const [status, setStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [currentStage, setCurrentStage] = useState('processing'); // processing, analyzing, preparing
-  const [connectionStatus, setConnectionStatus] = useState({ connected: false, authenticated: false });
+  const [error, setError] = useState("");
+  const [currentStage, setCurrentStage] = useState("processing"); // processing, analyzing, preparing
+  const [connectionStatus, setConnectionStatus] = useState({
+    connected: false,
+    authenticated: false,
+  });
   const [debugInfo, setDebugInfo] = useState([]);
   const [currentTrivia, setCurrentTrivia] = useState(null);
   const processingToAnalysisTimeoutRef = useRef(null);
@@ -41,7 +44,7 @@ const AssessmentStatus = () => {
   // Add debug logging
   const addDebugInfo = (message) => {
     const timestamp = new Date().toLocaleTimeString();
-    setDebugInfo(prev => [...prev.slice(-4), `${timestamp}: ${message}`]);
+    setDebugInfo((prev) => [...prev.slice(-4), `${timestamp}: ${message}`]);
     console.log(`[AssessmentStatus] ${message}`);
   };
 
@@ -76,56 +79,101 @@ const AssessmentStatus = () => {
       updateTrivia();
     }, 10000);
 
-    addDebugInfo('Trivia rotation started');
+    addDebugInfo("Trivia rotation started");
   };
 
   const stopTriviaRotation = () => {
     if (triviaIntervalRef.current) {
       clearInterval(triviaIntervalRef.current);
       triviaIntervalRef.current = null;
-      addDebugInfo('Trivia rotation stopped');
+      addDebugInfo("Trivia rotation stopped");
     }
+  };
+
+  // Data verification function to ensure results are available before navigation
+  const verifyDataAvailability = async (resultId, maxRetries = 3) => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        addDebugInfo(
+          `Verifying data availability - attempt ${attempt}/${maxRetries}`
+        );
+        const response = await apiService.getResultById(resultId);
+
+        if (response.success && response.data) {
+          addDebugInfo("Data verification successful - results are available");
+          return true;
+        }
+      } catch (error) {
+        addDebugInfo(
+          `Data verification attempt ${attempt} failed: ${error.message}`
+        );
+
+        // If it's the last attempt, return false
+        if (attempt === maxRetries) {
+          addDebugInfo("Data verification failed after all attempts");
+          return false;
+        }
+
+        // Wait 1 second before next attempt
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
+    return false;
   };
 
   // Observer Pattern: Setup WebSocket notifications as observers
   const { isConnected, isAuthenticated } = useNotifications({
-    onAnalysisComplete: (data) => {
-      addDebugInfo(`WebSocket: Analysis complete received for jobId: ${data?.jobId}`);
+    onAnalysisComplete: async (data) => {
+      addDebugInfo(
+        `WebSocket: Analysis complete received for jobId: ${data?.jobId}`
+      );
 
       // Prevent race conditions - only handle if not already processing
       if (isHandlingWebSocketRef.current) {
-        addDebugInfo('WebSocket: Already handling analysis complete, ignoring duplicate');
+        addDebugInfo(
+          "WebSocket: Already handling analysis complete, ignoring duplicate"
+        );
         return;
       }
 
       if (data?.jobId === jobId && !hasNavigatedRef.current) {
         isHandlingWebSocketRef.current = true;
-        hasNavigatedRef.current = true;
         addDebugInfo(`Transitioning to preparing stage`);
 
-        // Transition to Report stage immediately when notification is received
-        setCurrentStage('preparing');
+        // Transition to preparing stage immediately when notification is received
+        setCurrentStage("preparing");
 
         // Clear polling if active
         if (pollingIntervalRef.current) {
           clearInterval(pollingIntervalRef.current);
           pollingIntervalRef.current = null;
-          addDebugInfo('Polling cleared due to WebSocket success');
+          addDebugInfo("Polling cleared due to WebSocket success");
         }
 
-        // Navigate after minimum 3 seconds to allow UI transition
-        navigationTimeoutRef.current = setTimeout(() => {
-          if (hasNavigatedRef.current && data?.resultId) {
-            addDebugInfo(`Navigating to results: ${data.resultId}`);
-            navigate(`/results/${data.resultId}`);
-          }
-        }, 3000);
+        // Wait 5 seconds after WebSocket notification to allow data to be fully persisted
+        addDebugInfo("Waiting 5 seconds for data persistence...");
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+
+        // Verify data availability before navigation
+        const resultId = data?.resultId || jobId;
+        const isDataAvailable = await verifyDataAvailability(resultId);
+
+        if (isDataAvailable && !hasNavigatedRef.current) {
+          hasNavigatedRef.current = true;
+          addDebugInfo(`Data verified, navigating to results: ${resultId}`);
+          navigate(`/results/${resultId}`);
+        } else if (!hasNavigatedRef.current) {
+          // If data verification fails, fall back to polling
+          addDebugInfo("Data verification failed, falling back to polling");
+          isHandlingWebSocketRef.current = false; // Reset to allow polling
+          startFallbackPolling();
+        }
       }
     },
     onAnalysisFailed: (data) => {
       addDebugInfo(`WebSocket: Analysis failed for jobId: ${data?.jobId}`);
       if (data?.jobId === jobId) {
-        setError(data.message || 'Analysis failed');
+        setError(data.message || "Analysis failed");
         // Clear polling on failure
         if (pollingIntervalRef.current) {
           clearInterval(pollingIntervalRef.current);
@@ -139,26 +187,33 @@ const AssessmentStatus = () => {
         // Reset handling flag
         isHandlingWebSocketRef.current = false;
       }
-    }
+    },
   });
 
   // Observer: WebSocket connection status tracking
   useEffect(() => {
-    setConnectionStatus({ connected: isConnected, authenticated: isAuthenticated });
-    addDebugInfo(`WebSocket status - Connected: ${isConnected}, Authenticated: ${isAuthenticated}`);
+    setConnectionStatus({
+      connected: isConnected,
+      authenticated: isAuthenticated,
+    });
+    addDebugInfo(
+      `WebSocket status - Connected: ${isConnected}, Authenticated: ${isAuthenticated}`
+    );
 
     // Start fallback polling if WebSocket is not working properly OR if we're in analyzing stage
     // This ensures polling starts even if WebSocket is connected but not authenticated
-    if (currentStage === 'analyzing' && (!isConnected || !isAuthenticated)) {
+    if (currentStage === "analyzing" && (!isConnected || !isAuthenticated)) {
       startFallbackPolling();
     }
 
     // Also start polling if we've been in analyzing stage for more than 10 seconds
     // This handles cases where WebSocket notification was missed
-    if (currentStage === 'analyzing') {
+    if (currentStage === "analyzing") {
       const pollingTimeout = setTimeout(() => {
-        if (currentStage === 'analyzing' && !hasNavigatedRef.current) {
-          addDebugInfo('Starting safety polling after 10 seconds in analyzing stage');
+        if (currentStage === "analyzing" && !hasNavigatedRef.current) {
+          addDebugInfo(
+            "Starting safety polling after 10 seconds in analyzing stage"
+          );
           startFallbackPolling();
         }
       }, 10000);
@@ -178,28 +233,51 @@ const AssessmentStatus = () => {
     };
   }, [currentStage]);
 
-  // Fallback polling mechanism
+  // Fallback polling mechanism with data verification
   const startFallbackPolling = () => {
     if (pollingIntervalRef.current) return; // Already polling
 
-    addDebugInfo('Starting fallback polling (WebSocket unavailable or safety check)');
+    addDebugInfo(
+      "Starting fallback polling (WebSocket unavailable or safety check)"
+    );
     pollingIntervalRef.current = setInterval(async () => {
       try {
         const response = await apiService.getAssessmentStatus(jobId);
-        if (response.success && response.data.status === 'completed' && !hasNavigatedRef.current) {
-          hasNavigatedRef.current = true;
-          addDebugInfo('Polling: Analysis completed, transitioning to preparing');
+        if (
+          response.success &&
+          response.data.status === "completed" &&
+          !hasNavigatedRef.current
+        ) {
+          addDebugInfo(
+            "Polling: Analysis completed, transitioning to preparing"
+          );
+          setCurrentStage("preparing");
 
-          setCurrentStage('preparing');
           clearInterval(pollingIntervalRef.current);
           pollingIntervalRef.current = null;
 
-          setTimeout(() => {
-            addDebugInfo(`Polling: Navigating to results: ${response.data.resultId || jobId}`);
-            navigate(`/results/${response.data.resultId || jobId}`);
-          }, 3000);
-        } else if (response.data.status === 'failed') {
-          setError('Analysis failed. Please try again.');
+          // Wait 5 seconds and verify data availability before navigation
+          addDebugInfo("Polling: Waiting 5 seconds for data persistence...");
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+
+          const resultId = response.data.resultId || jobId;
+          const isDataAvailable = await verifyDataAvailability(resultId);
+
+          if (isDataAvailable && !hasNavigatedRef.current) {
+            hasNavigatedRef.current = true;
+            addDebugInfo(
+              `Polling: Data verified, navigating to results: ${resultId}`
+            );
+            navigate(`/results/${resultId}`);
+          } else if (!hasNavigatedRef.current) {
+            // If data verification fails, continue polling
+            addDebugInfo(
+              "Polling: Data verification failed, continuing polling"
+            );
+            startFallbackPolling();
+          }
+        } else if (response.data.status === "failed") {
+          setError("Analysis failed. Please try again.");
           clearInterval(pollingIntervalRef.current);
           pollingIntervalRef.current = null;
         }
@@ -209,21 +287,41 @@ const AssessmentStatus = () => {
     }, 3000); // Poll every 3 seconds (more frequent)
   };
 
-  // Immediate status check for safety (runs periodically)
+  // Immediate status check for safety (runs periodically) with data verification
   const startImmediateStatusCheck = () => {
     const immediateCheck = async () => {
       try {
         const response = await apiService.getAssessmentStatus(jobId);
-        if (response.success && response.data.status === 'completed' && !hasNavigatedRef.current) {
-          hasNavigatedRef.current = true;
-          addDebugInfo('Immediate check: Analysis completed, transitioning to preparing');
+        if (
+          response.success &&
+          response.data.status === "completed" &&
+          !hasNavigatedRef.current
+        ) {
+          addDebugInfo(
+            "Immediate check: Analysis completed, transitioning to preparing"
+          );
+          setCurrentStage("preparing");
 
-          setCurrentStage('preparing');
+          // Wait 5 seconds and verify data availability
+          addDebugInfo(
+            "Immediate check: Waiting 5 seconds for data persistence..."
+          );
+          await new Promise((resolve) => setTimeout(resolve, 5000));
 
-          setTimeout(() => {
-            addDebugInfo(`Immediate check: Navigating to results: ${response.data.resultId || jobId}`);
-            navigate(`/results/${response.data.resultId || jobId}`);
-          }, 3000);
+          const resultId = response.data.resultId || jobId;
+          const isDataAvailable = await verifyDataAvailability(resultId);
+
+          if (isDataAvailable && !hasNavigatedRef.current) {
+            hasNavigatedRef.current = true;
+            addDebugInfo(
+              `Immediate check: Data verified, navigating to results: ${resultId}`
+            );
+            navigate(`/results/${resultId}`);
+          } else if (!hasNavigatedRef.current) {
+            addDebugInfo(
+              "Immediate check: Data verification failed, will retry on next check"
+            );
+          }
         }
       } catch (err) {
         addDebugInfo(`Immediate check error: ${err.message}`);
@@ -237,14 +335,14 @@ const AssessmentStatus = () => {
     // Clear after 2 minutes to avoid infinite checking
     setTimeout(() => {
       clearInterval(immediateInterval);
-      addDebugInfo('Immediate status check stopped after 2 minutes');
+      addDebugInfo("Immediate status check stopped after 2 minutes");
     }, 120000);
   };
 
   // Initial status check (only called once)
   const checkInitialStatus = async () => {
     try {
-      addDebugInfo('Checking initial assessment status');
+      addDebugInfo("Checking initial assessment status");
       const response = await apiService.getAssessmentStatus(jobId);
 
       if (response.success) {
@@ -253,17 +351,17 @@ const AssessmentStatus = () => {
         addDebugInfo(`Initial status: ${statusData.status}`);
 
         // If already completed when we first check, navigate immediately
-        if (statusData.status === 'completed' && !hasNavigatedRef.current) {
+        if (statusData.status === "completed" && !hasNavigatedRef.current) {
           hasNavigatedRef.current = true;
-          addDebugInfo('Assessment already completed, navigating immediately');
+          addDebugInfo("Assessment already completed, navigating immediately");
           navigate(`/results/${statusData.resultId || jobId}`);
-        } else if (statusData.status === 'failed') {
-          setError('Analysis failed. Please try again.');
+        } else if (statusData.status === "failed") {
+          setError("Analysis failed. Please try again.");
         }
         // For 'queued' or 'processing', we rely on observer pattern + fallback
       }
     } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Failed to check status';
+      const errorMsg = err.response?.data?.message || "Failed to check status";
       addDebugInfo(`Initial status check error: ${errorMsg}`);
       setError(errorMsg);
     } finally {
@@ -271,11 +369,9 @@ const AssessmentStatus = () => {
     }
   };
 
-
-
   useEffect(() => {
     if (!jobId) {
-      navigate('/assessment');
+      navigate("/assessment");
       return;
     }
 
@@ -284,13 +380,15 @@ const AssessmentStatus = () => {
     // Check if we just came from assessment submission
     const isFromSubmission = location.state?.fromSubmission;
     if (isFromSubmission) {
-      addDebugInfo('Coming from assessment submission, starting processing stage');
-      setCurrentStage('processing');
+      addDebugInfo(
+        "Coming from assessment submission, starting processing stage"
+      );
+      setCurrentStage("processing");
 
       // Stage 1 → Stage 2: Processing to Analysis after 3 seconds
       processingToAnalysisTimeoutRef.current = setTimeout(() => {
-        addDebugInfo('Transitioning from processing to analyzing stage');
-        setCurrentStage('analyzing');
+        addDebugInfo("Transitioning from processing to analyzing stage");
+        setCurrentStage("analyzing");
         // Stage 2 (Analysis) will wait for WebSocket notification + fallback polling
         // Start fallback polling if WebSocket is not connected
         if (!isConnected || !isAuthenticated) {
@@ -306,7 +404,7 @@ const AssessmentStatus = () => {
 
     // Cleanup
     return () => {
-      addDebugInfo('Component unmounting, cleaning up');
+      addDebugInfo("Component unmounting, cleaning up");
       if (processingToAnalysisTimeoutRef.current) {
         clearTimeout(processingToAnalysisTimeoutRef.current);
         processingToAnalysisTimeoutRef.current = null;
@@ -331,37 +429,37 @@ const AssessmentStatus = () => {
 
   const getStageInfo = (stage) => {
     switch (stage) {
-      case 'processing':
+      case "processing":
         return {
-          title: 'Processing Data',
-          description: 'Mengorganisasi respons penilaian Anda',
-          color: 'text-gray-900',
-          bgColor: 'bg-gray-50',
-          iconColor: 'text-gray-700'
+          title: "Processing Data",
+          description: "Mengorganisasi respons penilaian Anda",
+          color: "text-gray-900",
+          bgColor: "bg-gray-50",
+          iconColor: "text-gray-700",
         };
-      case 'analyzing':
+      case "analyzing":
         return {
-          title: 'Analyzing with AI',
-          description: 'Menganalisis pola dan menghasilkan wawasan',
-          color: 'text-gray-900',
-          bgColor: 'bg-gray-50',
-          iconColor: 'text-gray-700'
+          title: "Analyzing with AI",
+          description: "Menganalisis pola dan menghasilkan wawasan",
+          color: "text-gray-900",
+          bgColor: "bg-gray-50",
+          iconColor: "text-gray-700",
         };
-      case 'preparing':
+      case "preparing":
         return {
-          title: 'Finalizing Report',
-          description: 'Menyiapkan hasil yang dipersonalisasi untuk Anda',
-          color: 'text-gray-900',
-          bgColor: 'bg-gray-50',
-          iconColor: 'text-gray-700'
+          title: "Finalizing Report",
+          description: "Menyiapkan hasil yang dipersonalisasi untuk Anda",
+          color: "text-gray-900",
+          bgColor: "bg-gray-50",
+          iconColor: "text-gray-700",
         };
       default:
         return {
-          title: 'Processing',
-          description: 'Penilaian Anda sedang diproses',
-          color: 'text-gray-900',
-          bgColor: 'bg-gray-50',
-          iconColor: 'text-gray-700'
+          title: "Processing",
+          description: "Penilaian Anda sedang diproses",
+          color: "text-gray-900",
+          bgColor: "bg-gray-50",
+          iconColor: "text-gray-700",
         };
     }
   };
@@ -370,47 +468,114 @@ const AssessmentStatus = () => {
     const stageInfo = getStageInfo(stage);
 
     switch (stage) {
-      case 'processing':
+      case "processing":
         return (
-          <div className={`relative w-20 h-20  rounded-xl  flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+          <div
+            className={`relative w-20 h-20  rounded-xl  flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}
+          >
             {/* Outer rotating ring */}
-            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '1.5s'}}></div>
+            <div
+              className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin"
+              style={{ animationDuration: "1.5s" }}
+            ></div>
             {/* Inner pulsing ring */}
-            <div className="absolute inset-4 border border-gray-300 border-t-gray-600 rounded-full animate-spin opacity-60" style={{animationDuration: '2.5s', animationDirection: 'reverse'}}></div>
+            <div
+              className="absolute inset-4 border border-gray-300 border-t-gray-600 rounded-full animate-spin opacity-60"
+              style={{
+                animationDuration: "2.5s",
+                animationDirection: "reverse",
+              }}
+            ></div>
             {/* Processing icon */}
-            <div className="relative z-10 animate-pulse" style={{animationDuration: '2s'}}>
-              <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-all duration-500`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            <div
+              className="relative z-10 animate-pulse"
+              style={{ animationDuration: "2s" }}
+            >
+              <svg
+                className={`w-8 h-8 ${stageInfo.iconColor} transition-all duration-500`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
               </svg>
             </div>
           </div>
         );
-      case 'analyzing':
+      case "analyzing":
         return (
-          <div className={`relative w-20 h-20 rounded-xl   flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+          <div
+            className={`relative w-20 h-20 rounded-xl   flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}
+          >
             {/* Subtle pulsing background */}
-            <div className="absolute inset-2 rounded-lg animate-pulse" style={{animationDuration: '2s'}}></div>
+            <div
+              className="absolute inset-2 rounded-lg animate-pulse"
+              style={{ animationDuration: "2s" }}
+            ></div>
             {/* Multiple rotating rings for complex analysis effect */}
-            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '2s'}}></div>
-            <div className="absolute inset-3 border border-gray-300 border-r-gray-600 rounded-full animate-spin opacity-70" style={{animationDuration: '3s', animationDirection: 'reverse'}}></div>
-            <svg className={`w-8 h-8 ${stageInfo.iconColor} relative z-10 transition-all duration-500 animate-pulse`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{animationDuration: '1.8s'}}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            <div
+              className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin"
+              style={{ animationDuration: "2s" }}
+            ></div>
+            <div
+              className="absolute inset-3 border border-gray-300 border-r-gray-600 rounded-full animate-spin opacity-70"
+              style={{ animationDuration: "3s", animationDirection: "reverse" }}
+            ></div>
+            <svg
+              className={`w-8 h-8 ${stageInfo.iconColor} relative z-10 transition-all duration-500 animate-pulse`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+              style={{ animationDuration: "1.8s" }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
             </svg>
           </div>
         );
-      case 'preparing':
+      case "preparing":
         return (
-          <div className={`relative w-20 h-20  rounded-xl   flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+          <div
+            className={`relative w-20 h-20 rounded-xl flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}
+          >
             {/* Subtle pulsing background */}
-            <div className="absolute inset-2 rounded-lg animate-pulse" style={{animationDuration: '1.5s'}}></div>
+            <div
+              className="absolute inset-2 rounded-lg animate-pulse"
+              style={{ animationDuration: "1.5s" }}
+            ></div>
             {/* Slow rotating progress indicator */}
-            <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '2.5s'}}></div>
+            <div
+              className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin"
+              style={{ animationDuration: "2.5s" }}
+            ></div>
             {/* Success pulse effect */}
-            <div className="absolute inset-1 border border-gray-300 rounded-xl animate-ping opacity-30" style={{animationDuration: '3s'}}></div>
-            {/* Check icon with subtle scale animation */}
-            <div className="relative z-10 animate-bounce" style={{animationDuration: '2s'}}>
-              <svg className={`w-8 h-8 ${stageInfo.iconColor} transition-all duration-500`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div
+              className="absolute inset-1 border border-gray-300 rounded-xl animate-ping opacity-30"
+              style={{ animationDuration: "3s" }}
+            ></div>
+            {/* Check icon - static, no bounce animation */}
+            <div className="relative z-10">
+              <svg
+                className={`w-8 h-8 ${stageInfo.iconColor} transition-all duration-500`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             </div>
           </div>
@@ -418,8 +583,18 @@ const AssessmentStatus = () => {
       default:
         return (
           <div className="w-20 h-20 rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out">
-            <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <svg
+              className="w-8 h-8 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
             </svg>
           </div>
         );
@@ -428,7 +603,7 @@ const AssessmentStatus = () => {
 
   // Show content immediately when coming from submission
   if (isLoading && location.state?.fromSubmission) {
-    setCurrentStage('processing');
+    setCurrentStage("processing");
     setIsLoading(false);
   }
 
@@ -447,30 +622,42 @@ const AssessmentStatus = () => {
           {/* Connection Status Indicator */}
           <div className="mt-4 flex justify-center">
             <div className="flex items-center space-x-2 text-xs">
-              <div className={`w-2 h-2 rounded-full ${connectionStatus.connected && connectionStatus.authenticated ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  connectionStatus.connected && connectionStatus.authenticated
+                    ? "bg-green-500"
+                    : "bg-yellow-500"
+                }`}
+              ></div>
               <span className="text-gray-600">
                 {connectionStatus.connected && connectionStatus.authenticated
-                  ? 'Real-time updates active'
-                  : 'Using backup monitoring'}
+                  ? "Real-time updates active"
+                  : "Using backup monitoring"}
               </span>
             </div>
           </div>
 
           {/* Debug Info (show in development or when there are connection issues) */}
-          {(process.env.NODE_ENV === 'development' || (!connectionStatus.connected || !connectionStatus.authenticated)) && debugInfo.length > 0 && (
-            <div className="mt-4 max-w-md mx-auto">
-              <details className="text-left">
-                <summary className="text-xs text-gray-500 cursor-pointer">
-                  Debug Info {(!connectionStatus.connected || !connectionStatus.authenticated) && '(Connection Issues Detected)'}
-                </summary>
-                <div className="mt-2 p-2  rounded text-xs text-gray-700 font-mono max-h-32 overflow-y-auto">
-                  {debugInfo.map((info, index) => (
-                    <div key={index}>{info}</div>
-                  ))}
-                </div>
-              </details>
-            </div>
-          )}
+          {(process.env.NODE_ENV === "development" ||
+            !connectionStatus.connected ||
+            !connectionStatus.authenticated) &&
+            debugInfo.length > 0 && (
+              <div className="mt-4 max-w-md mx-auto">
+                <details className="text-left">
+                  <summary className="text-xs text-gray-500 cursor-pointer">
+                    Debug Info{" "}
+                    {(!connectionStatus.connected ||
+                      !connectionStatus.authenticated) &&
+                      "(Connection Issues Detected)"}
+                  </summary>
+                  <div className="mt-2 p-2  rounded text-xs text-gray-700 font-mono max-h-32 overflow-y-auto">
+                    {debugInfo.map((info, index) => (
+                      <div key={index}>{info}</div>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            )}
         </div>
 
         {/* Main Content */}
@@ -480,84 +667,135 @@ const AssessmentStatus = () => {
               <ErrorMessage
                 title="Assessment Error"
                 message={error}
-                onRetry={() => navigate('/assessment')}
+                onRetry={() => navigate("/assessment")}
                 retryText="Start New Assessment"
               />
             </div>
-          ) : (location.state?.fromSubmission || status) ? (
+          ) : location.state?.fromSubmission || status ? (
             <div className="p-4 sm:p-8">
               {/* Progress Steps */}
               <div className="mb-8 sm:mb-12">
                 <div className="flex justify-center items-center space-x-2 sm:space-x-4 mb-6 sm:mb-8 px-2">
                   {/* Step 1: Processing */}
                   <div className="flex items-center space-x-1 sm:space-x-2">
-                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
-                      currentStage === 'processing' ? 'bg-gray-900 text-white shadow-lg' :
-                      ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700 text-white shadow-md' :
-                      'bg-gray-200 text-gray-600'
-                    }`}>
-                      {['analyzing', 'preparing'].includes(currentStage) ? (
-                        <svg className="w-2 h-2 sm:w-3 sm:h-3 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    <div
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
+                        currentStage === "processing"
+                          ? "bg-gray-900 text-white shadow-lg"
+                          : ["analyzing", "preparing"].includes(currentStage)
+                          ? "bg-gray-700 text-white shadow-md"
+                          : "bg-gray-200 text-gray-600"
+                      }`}
+                    >
+                      {["analyzing", "preparing"].includes(currentStage) ? (
+                        <svg
+                          className="w-2 h-2 sm:w-3 sm:h-3 transition-all duration-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       ) : (
-                        '1'
+                        "1"
                       )}
                     </div>
-                    <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'processing' ? 'text-gray-900' :
-                      ['analyzing', 'preparing'].includes(currentStage) ? 'text-gray-700' :
-                      'text-gray-500'
-                    }`}>
+                    <span
+                      className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
+                        currentStage === "processing"
+                          ? "text-gray-900"
+                          : ["analyzing", "preparing"].includes(currentStage)
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                      }`}
+                    >
                       Processing
                     </span>
                   </div>
 
                   {/* Connector */}
-                  <div className={`h-0.5 w-4 sm:w-8 rounded-full transition-all duration-700 ease-in-out ${
-                    ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700' : 'bg-gray-300'
-                  }`}></div>
+                  <div
+                    className={`h-0.5 w-4 sm:w-8 rounded-full transition-all duration-700 ease-in-out ${
+                      ["analyzing", "preparing"].includes(currentStage)
+                        ? "bg-gray-700"
+                        : "bg-gray-300"
+                    }`}
+                  ></div>
 
                   {/* Step 2: Analysis */}
                   <div className="flex items-center space-x-1 sm:space-x-2">
-                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
-                      currentStage === 'analyzing' ? 'bg-gray-900 text-white shadow-lg' :
-                      currentStage === 'preparing' ? 'bg-gray-700 text-white shadow-md' :
-                      'bg-gray-200 text-gray-600'
-                    }`}>
-                      {currentStage === 'preparing' ? (
-                        <svg className="w-2 h-2 sm:w-3 sm:h-3 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    <div
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
+                        currentStage === "analyzing"
+                          ? "bg-gray-900 text-white shadow-lg"
+                          : currentStage === "preparing"
+                          ? "bg-gray-700 text-white shadow-md"
+                          : "bg-gray-200 text-gray-600"
+                      }`}
+                    >
+                      {currentStage === "preparing" ? (
+                        <svg
+                          className="w-2 h-2 sm:w-3 sm:h-3 transition-all duration-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       ) : (
-                        '2'
+                        "2"
                       )}
                     </div>
-                    <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'analyzing' ? 'text-gray-900' :
-                      currentStage === 'preparing' ? 'text-gray-700' :
-                      'text-gray-500'
-                    }`}>
+                    <span
+                      className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
+                        currentStage === "analyzing"
+                          ? "text-gray-900"
+                          : currentStage === "preparing"
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                      }`}
+                    >
                       Analysis
                     </span>
                   </div>
 
                   {/* Connector */}
-                  <div className={`h-0.5 w-4 sm:w-8 rounded-full transition-all duration-700 ease-in-out ${
-                    currentStage === 'preparing' ? 'bg-gray-700' : 'bg-gray-300'
-                  }`}></div>
+                  <div
+                    className={`h-0.5 w-4 sm:w-8 rounded-full transition-all duration-700 ease-in-out ${
+                      currentStage === "preparing"
+                        ? "bg-gray-700"
+                        : "bg-gray-300"
+                    }`}
+                  ></div>
 
                   {/* Step 3: Report */}
                   <div className="flex items-center space-x-1 sm:space-x-2">
-                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
-                      currentStage === 'preparing' ? 'bg-gray-900 text-white shadow-lg' :
-                      'bg-gray-200 text-gray-600'
-                    }`}>
+                    <div
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
+                        currentStage === "preparing"
+                          ? "bg-gray-900 text-white shadow-lg"
+                          : "bg-gray-200 text-gray-600"
+                      }`}
+                    >
                       3
                     </div>
-                    <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
-                      currentStage === 'preparing' ? 'text-gray-900' : 'text-gray-500'
-                    }`}>
+                    <span
+                      className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
+                        currentStage === "preparing"
+                          ? "text-gray-900"
+                          : "text-gray-500"
+                      }`}
+                    >
                       Report
                     </span>
                   </div>
@@ -571,7 +809,9 @@ const AssessmentStatus = () => {
                 </div>
 
                 <div className="space-y-2 sm:space-y-3 px-4">
-                  <h2 className={`text-xl sm:text-2xl font-semibold transition-colors duration-500 text-gray-900`}>
+                  <h2
+                    className={`text-xl sm:text-2xl font-semibold transition-colors duration-500 text-gray-900`}
+                  >
                     {getStageInfo(currentStage).title}
                   </h2>
                   <p className="text-sm sm:text-base text-gray-700 max-w-md mx-auto transition-opacity duration-300 font-medium">
@@ -588,13 +828,27 @@ const AssessmentStatus = () => {
                 <div className="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-200 transition-all duration-300 mx-2 sm:mx-0">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-lg flex items-center justify-center border border-gray-200 transition-all duration-300 flex-shrink-0">
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs sm:text-sm font-medium text-gray-900">Estimated Time Remaining</p>
-                      <p className="text-xs sm:text-sm text-gray-700">{status.estimatedTimeRemaining}</p>
+                      <p className="text-xs sm:text-sm font-medium text-gray-900">
+                        Estimated Time Remaining
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-700">
+                        {status.estimatedTimeRemaining}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -603,12 +857,28 @@ const AssessmentStatus = () => {
               {/* Back to Dashboard Button */}
               <div className="mt-6 sm:mt-8 text-center px-4">
                 <button
-                  onClick={() => navigate('/dashboard', { state: { fromAssessment: true } })}
+                  onClick={() =>
+                    navigate("/dashboard", { state: { fromAssessment: true } })
+                  }
                   className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 text-sm sm:text-base"
                 >
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z" />
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"
+                    />
                   </svg>
                   Back to Dashboard
                 </button>

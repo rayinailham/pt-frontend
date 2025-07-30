@@ -903,6 +903,9 @@ const Assessment = () => {
           }}
           onFillAllAssessments={fillAllAssessments}
           onNavigateToPhase={handleNavigateToPhase}
+          onSubmit={handleSubmit}
+          isAllComplete={isAllComplete}
+          isSubmitting={isSubmitting}
         />
       </div>
 

@@ -95,17 +95,12 @@ export const WebSocketProvider = ({ children }) => {
         triggerCallbacks('onAuthError', error);
       })
       .onAnalysisComplete((data) => {
-        setNotifications(prev => [...prev, {
-          id: Date.now(),
-          type: 'success',
-          title: 'Analysis Complete',
-          message: data.message || 'Your analysis is ready!',
-          data: data,
-          timestamp: new Date()
-        }]);
+        // Don't show notification to user - this is handled internally by AssessmentStatus
+        // Just trigger callbacks for internal processing
         triggerCallbacks('onAnalysisComplete', data);
       })
       .onAnalysisFailed((data) => {
+        // Show error notification to user since they need to know about failures
         setNotifications(prev => [...prev, {
           id: Date.now(),
           type: 'error',

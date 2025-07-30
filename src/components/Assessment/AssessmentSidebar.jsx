@@ -1,4 +1,4 @@
-import { ChevronRight, Flag, Home, Zap, RotateCcw } from 'lucide-react';
+import { ChevronRight, ChevronDown, Flag, Home, Zap, RotateCcw, Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { viaQuestions, riasecQuestions, bigFiveQuestions } from '../../data/assessmentQuestions';
 
@@ -14,7 +14,10 @@ const AssessmentSidebar = ({
   overallProgress, // Add this prop for total progress across all assessments
   flaggedQuestions, // Add this prop for flagged questions
   onFillRandomAnswers, // Function to fill current assessment
-  onFillAllAssessments // Function to fill all assessments
+  onFillAllAssessments, // Function to fill all assessments
+  onSubmit, // Function to submit assessment
+  isAllComplete, // Boolean indicating if all assessments are complete
+  isSubmitting // Boolean indicating if submission is in progress
 }) => {
   const navigate = useNavigate();
 
@@ -197,11 +200,11 @@ const AssessmentSidebar = ({
   };
 
   return (
-    <div className="hidden lg:block fixed right-0 top-0 h-full w-90 bg-white border-l border-gray-300 overflow-y-auto z-20 shadow-lg rounded-l-xl">
-      <div className="p-3 h-full flex flex-col">
+    <div id="assessment-sidebar" className="hidden lg:block fixed right-0 top-0 h-full w-90 bg-white border-l border-gray-300 overflow-y-auto z-20 shadow-lg rounded-l-xl">
+      <div id="sidebar-container" className="p-3 h-full flex flex-col">
         {/* Phase Structure */}
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-3 border-b border-gray-200 pb-2">
+        <div id="sidebar-main-content" className="flex-1">
+          <div id="sidebar-header" className="flex items-center justify-between mb-3 border-b border-gray-200 pb-2">
             <h3 className="text-base font-bold text-gray-900">
               Assessment Progress
             </h3>
@@ -216,7 +219,7 @@ const AssessmentSidebar = ({
             </button>
           </div>
 
-          <div className="space-y-2">
+          <div id="assessment-phases-list" className="space-y-2">
             {assessmentPhases.map((phase) => {
               const isCurrentPhase = phase.step === currentStep;
               // Calculate actual progress for each phase
@@ -224,15 +227,15 @@ const AssessmentSidebar = ({
               const progressPercentage = phaseProgress.total > 0 ? (phaseProgress.answered / phaseProgress.total) * 100 : 0;
 
               return (
-                <div key={phase.id} className={`border rounded-xl transition-all duration-200 transform hover:scale-[1.02] ${isCurrentPhase ? 'border-gray-400 bg-gray-50 shadow-md' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'}`}>
+                <div key={phase.id} id={`phase-${phase.id}`} className={`border rounded-xl transition-all duration-200 ${isCurrentPhase ? 'border-gray-400 bg-gray-50 shadow-md' : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'}`}>
                   <button
                     onClick={() => navigateToPhase(phase.step)}
                     className={`w-full text-left transition-all duration-200`}
                     disabled={isCurrentPhase}
                   >
-                    <div className="p-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex-1 min-w-0">
+                    <div id={`phase-${phase.id}-content`} className="p-2">
+                      <div id={`phase-${phase.id}-header`} className="flex items-center justify-between mb-1.5">
+                        <div id={`phase-${phase.id}-info`} className="flex-1 min-w-0">
                           <h4 className={`text-sm font-bold truncate ${isCurrentPhase ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}>
                             {phase.title}
                           </h4>
@@ -240,7 +243,7 @@ const AssessmentSidebar = ({
                             {phase.subtitle}
                           </p>
                         </div>
-                        <div className="flex items-center space-x-2 ml-3">
+                        <div id={`phase-${phase.id}-stats`} className="flex items-center space-x-1.5 ml-2">
                           <div className={`text-xs font-semibold ${isCurrentPhase ? 'text-gray-900' : 'text-gray-500'}`}>
                             {phaseProgress.answered}/{phaseProgress.total}
                           </div>
@@ -251,9 +254,9 @@ const AssessmentSidebar = ({
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="w-full bg-gray-200 h-1.5 rounded-full">
+                      <div id={`phase-${phase.id}-progress-bar`} className="w-full bg-gray-200 h-1 rounded-full">
                         <div
-                          className={`h-1.5 rounded-full transition-all duration-300 ${isCurrentPhase ? 'bg-gradient-to-r from-gray-700 to-gray-800' : 'bg-gray-600'}`}
+                          className={`h-1 rounded-full transition-all duration-300 ${isCurrentPhase ? 'bg-gradient-to-r from-gray-700 to-gray-800' : 'bg-gray-600'}`}
                           style={{ width: `${progressPercentage}%` }}
                         ></div>
                       </div>
@@ -262,41 +265,45 @@ const AssessmentSidebar = ({
 
                   {/* Categories for current phase */}
                   {isCurrentPhase && (
-                    <div className="mt-3 space-y-1">
+                    <div id={`phase-${phase.id}-categories`} className="mt-2 space-y-1">
                       {Object.entries(assessmentData.categories).map(([categoryKey, category]) => {
                         const isCurrentCategory = Object.keys(assessmentData.categories)[currentPage] === categoryKey;
                         const categoryProgress = getCategoryProgress(categoryKey);
 
                         return (
-                          <div key={categoryKey} className="border border-gray-200 bg-white overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                          <div key={categoryKey} id={`category-${categoryKey}`} className="border border-gray-200 bg-white overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                             {/* Category Header */}
                             <button
                               onClick={() => navigateToCategory(categoryKey)}
-                              className={`w-full text-left p-2 transition-all duration-200 group ${
+                              className={`w-full text-left p-1.5 transition-all duration-200 group ${
                                 isCurrentCategory
                                   ? 'bg-gray-50'
                                   : 'bg-white hover:bg-gray-50'
                               }`}
                             >
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center min-w-0 flex-1">
+                              <div id={`category-${categoryKey}-header`} className="flex items-center justify-between">
+                                <div id={`category-${categoryKey}-name`} className="flex items-center min-w-0 flex-1">
                                   <span className="text-sm font-medium text-gray-900 truncate">
                                     {category.name}
                                   </span>
                                 </div>
-                                <div className="flex items-center space-x-2 ml-2">
+                                <div id={`category-${categoryKey}-stats`} className="flex items-center space-x-1.5 ml-2">
                                   <span className="text-xs font-semibold text-gray-600">
                                     {categoryProgress.answered}/{categoryProgress.total}
                                   </span>
-                                  <ChevronRight className="h-4 w-4 text-gray-400 transition-transform duration-200 group-hover:translate-x-1" />
+                                  {isCurrentCategory ? (
+                                    <ChevronDown className="h-4 w-4 text-gray-400 transition-transform duration-200" />
+                                  ) : (
+                                    <ChevronRight className="h-4 w-4 text-gray-400 transition-transform duration-200 group-hover:translate-x-1" />
+                                  )}
                                 </div>
                               </div>
                             </button>
 
                             {/* Quick Navigation Grid */}
                             {isCurrentCategory && (
-                              <div className="border-t border-gray-100 bg-gradient-to-br from-slate-50 to-gray-50 p-4">
-                                <div className="grid grid-cols-5 gap-2.5">
+                              <div id={`category-${categoryKey}-navigation`} className="border-t border-gray-100 bg-gradient-to-br from-slate-50 to-gray-50 p-3">
+                                <div id={`category-${categoryKey}-questions-grid`} className="grid grid-cols-6 gap-1">
                                   {/* Regular Questions */}
                                   {category.questions.map((_, questionIndex) => {
                                     const isAnswered = getQuestionStatus(categoryKey, questionIndex);
@@ -304,11 +311,12 @@ const AssessmentSidebar = ({
                                     return (
                                       <button
                                         key={`q-${questionIndex}`}
+                                        id={`question-btn-${categoryKey}-${questionIndex}`}
                                         onClick={() => navigateToQuestion(categoryKey, questionIndex)}
-                                        className={`group relative h-9 w-9 rounded-lg text-xs font-semibold transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                                        className={`group relative h-10 w-full aspect-square rounded-lg text-xs font-bold transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                                           isAnswered
-                                            ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow-lg hover:shadow-xl focus:ring-slate-400'
-                                            : 'bg-white text-slate-600 border border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md hover:bg-slate-50 focus:ring-slate-300'
+                                            ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow-md hover:shadow-lg focus:ring-slate-400'
+                                            : 'bg-white text-slate-700 border border-slate-300 shadow-sm hover:border-slate-400 hover:shadow-md hover:bg-slate-50 focus:ring-slate-300'
                                         }`}
                                         title={`Question ${questionIndex + 1}${isFlagged ? ' (Flagged)' : ''}`}
                                       >
@@ -317,7 +325,7 @@ const AssessmentSidebar = ({
                                           <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-transparent rounded-lg"></div>
                                         )}
                                         {isFlagged && (
-                                          <Flag className="absolute -top-1 -right-1 h-3 w-3 text-red-500 fill-current" />
+                                          <Flag className="absolute -top-0.5 -right-0.5 h-3 w-3 text-red-500 fill-current" />
                                         )}
                                       </button>
                                     );
@@ -331,11 +339,12 @@ const AssessmentSidebar = ({
                                     return (
                                       <button
                                         key={`r-${questionIndex}`}
+                                        id={`question-btn-${categoryKey}-reverse-${questionIndex}`}
                                         onClick={() => navigateToQuestion(categoryKey, questionIndex, true)}
-                                        className={`group relative h-9 w-9 rounded-lg text-xs font-semibold transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                                        className={`group relative h-10 w-full aspect-square rounded-lg text-xs font-bold transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                                           isAnswered
-                                            ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow-lg hover:shadow-xl focus:ring-slate-400'
-                                            : 'bg-white text-slate-600 border border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md hover:bg-slate-50 focus:ring-slate-300'
+                                            ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-white shadow-md hover:shadow-lg focus:ring-slate-400'
+                                            : 'bg-white text-slate-700 border border-slate-300 shadow-sm hover:border-slate-400 hover:shadow-md hover:bg-slate-50 focus:ring-slate-300'
                                         }`}
                                         title={`Question ${questionNumber}${isFlagged ? ' (Flagged)' : ''}`}
                                       >
@@ -344,7 +353,7 @@ const AssessmentSidebar = ({
                                           <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-transparent rounded-lg"></div>
                                         )}
                                         {isFlagged && (
-                                          <Flag className="absolute -top-1 -right-1 h-3 w-3 text-red-500 fill-current" />
+                                          <Flag className="absolute -top-0.5 -right-0.5 h-3 w-3 text-red-500 fill-current" />
                                         )}
                                       </button>
                                     );
@@ -363,35 +372,62 @@ const AssessmentSidebar = ({
           </div>
         </div>
 
-        {/* Total Progress - Bottom Section */}
-        <div className="mt-auto pt-3 border-t border-gray-300">
-          <div className="text-center">
+        {/* Bottom Section - Fixed to bottom */}
+        <div id="sidebar-bottom-section" className="mt-auto pt-3 border-t border-gray-300">
+          {/* Submit Assessment Button - Now first */}
+          <div id="submit-section" className="mb-4">
+            <button
+              id="submit-assessment-btn"
+              onClick={isAllComplete ? onSubmit : undefined}
+              disabled={!isAllComplete || isSubmitting}
+              className={`w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg ${
+                isAllComplete && !isSubmitting
+                  ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-xl hover:brightness-110 transform hover:scale-105 active:scale-95"
+                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
+              }`}
+              title={!isAllComplete ? "Complete all assessments to submit" : "Submit your assessment"}
+            >
+              <Send className={`h-5 w-5 transition-transform duration-200 ${isSubmitting ? 'animate-pulse' : 'group-hover:translate-x-1'}`} />
+              <span className={isSubmitting ? 'animate-pulse' : ''}>
+                {isSubmitting ? 'Submitting...' : 'Submit Assessment'}
+              </span>
+            </button>
+            {!isAllComplete && !isSubmitting && (
+              <div id="submit-help-text" className="text-xs text-gray-500 mt-2 text-center">
+                Complete all phases to submit
+              </div>
+            )}
+          </div>
+
+          {/* Overall Progress - Now second */}
+          <div id="overall-progress-section" className="text-center pt-3 border-t border-gray-200">
             <h4 className="text-sm font-semibold text-gray-900 mb-2">Overall Progress</h4>
-            <div className="w-full bg-gray-200 h-2.5 rounded-full">
+            <div id="overall-progress-bar" className="w-full bg-gray-200 h-2.5 rounded-full">
               <div
                 className="bg-gradient-to-r from-gray-800 to-gray-900 h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${overallProgress ? overallProgress.percentage : 0}%` }}
               ></div>
             </div>
-            <div className="text-sm text-gray-700 mt-2 font-semibold">
+            <div id="overall-progress-percentage" className="text-sm text-gray-700 mt-2 font-semibold">
               {overallProgress ? overallProgress.percentage : 0}% Complete
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div id="overall-progress-count" className="text-xs text-gray-500 mt-1">
               {overallProgress ? `${overallProgress.totalAnswered}/${overallProgress.totalQuestions}` : '0/0'} questions answered
             </div>
           </div>
 
-          {/* Autofill Buttons - Development Feature */}
-          {isAutofillEnabled && (
-            <div className="mt-4 pt-3 border-t border-gray-200">
-              <div className="text-center mb-2">
+          {/* Development Tools - Hidden by default */}
+          {false && isAutofillEnabled && (
+            <div id="autofill-section" className="mt-4 pt-3 border-t border-gray-200">
+              <div id="autofill-header" className="text-center mb-2">
                 <h5 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
                   Development Tools
                 </h5>
               </div>
-              <div className="space-y-2">
+              <div id="autofill-buttons" className="space-y-2">
                 {/* Fill Current Assessment Button */}
                 <button
+                  id="fill-current-btn"
                   onClick={onFillRandomAnswers}
                   className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 group transform hover:scale-105 active:scale-95"
                   title="Fill current assessment with random answers"
@@ -402,6 +438,7 @@ const AssessmentSidebar = ({
 
                 {/* Fill All Assessments Button */}
                 <button
+                  id="fill-all-btn"
                   onClick={onFillAllAssessments}
                   className="w-full flex items-center justify-center space-x-2 px-3 py-2 text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 group transform hover:scale-105 active:scale-95"
                   title="Fill all assessments with random answers"
@@ -410,7 +447,7 @@ const AssessmentSidebar = ({
                   <span>Fill All</span>
                 </button>
               </div>
-              <div className="text-xs text-gray-500 mt-2 text-center">
+              <div id="autofill-disclaimer" className="text-xs text-gray-500 mt-2 text-center">
                 For testing purposes only
               </div>
             </div>
