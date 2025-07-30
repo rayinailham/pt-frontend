@@ -69,29 +69,7 @@ export const viaStrengthsData = {
       low: 'Lebih cocok untuk peran yang membutuhkan empati dan hubungan interpersonal yang kuat, atau pekerjaan yang bersifat eksekutif dengan panduan yang jelas.'
     }
   },
-  'love_of_learning': {
-    name: 'Love of Learning',
-    category: 'wisdom',
-    description: 'Menguasai keterampilan, topik, dan pengetahuan baru secara berkelanjutan',
-    highTraits: [
-      'Memiliki motivasi tinggi untuk terus mengembangkan pengetahuan dan keterampilan',
-      'Senang mengikuti pelatihan, kursus, atau program pengembangan diri',
-      'Aktif mencari peluang untuk mempelajari hal-hal baru di bidang pekerjaan',
-      'Memiliki kemampuan untuk belajar secara mandiri dan berkelanjutan',
-      'Merasa energik dan termotivasi ketika menghadapi tantangan pembelajaran baru'
-    ],
-    lowTraits: [
-      'Lebih fokus pada penerapan pengetahuan yang sudah dimiliki',
-      'Merasa cukup dengan tingkat keahlian saat ini',
-      'Kurang tertarik pada program pengembangan atau pelatihan tambahan',
-      'Lebih menyukai stabilitas dalam rutinitas kerja',
-      'Mengutamakan efisiensi dalam tugas yang sudah dikuasai'
-    ],
-    implications: {
-      high: 'Ideal untuk lingkungan kerja yang dinamis dan berkembang pesat, seperti teknologi, akademik, atau bidang yang membutuhkan adaptasi berkelanjutan.',
-      low: 'Lebih sesuai untuk peran yang membutuhkan keahlian stabil dan konsisten, seperti operasional rutin atau spesialisasi teknis yang sudah mapan.'
-    }
-  },
+
   'loveOfLearning': {
     name: 'Love of Learning',
     category: 'wisdom',
@@ -276,29 +254,7 @@ export const viaStrengthsData = {
       low: 'Lebih sesuai untuk peran yang membutuhkan objektivitas, analisis, atau fokus pada pencapaian target individual.'
     }
   },
-  'social_intelligence': {
-    name: 'Social Intelligence',
-    category: 'humanity',
-    description: 'Memahami motivasi dan perasaan diri sendiri maupun orang lain',
-    highTraits: [
-      'Mampu membaca dan memahami dinamika sosial dengan akurat',
-      'Memiliki kemampuan untuk menyesuaikan komunikasi sesuai dengan audiens',
-      'Dapat mengidentifikasi motivasi dan emosi orang lain dengan tepat',
-      'Mahir dalam navigasi politik organisasi dan hubungan interpersonal',
-      'Memiliki awareness yang tinggi terhadap dampak perilaku sendiri pada orang lain'
-    ],
-    lowTraits: [
-      'Lebih fokus pada konten daripada konteks sosial dalam komunikasi',
-      'Cenderung straightforward dan direct dalam interaksi',
-      'Kurang memperhatikan nuansa emosional dalam situasi sosial',
-      'Lebih nyaman dengan komunikasi yang eksplisit dan jelas',
-      'Mengutamakan substansi daripada diplomasi dalam berinteraksi'
-    ],
-    implications: {
-      high: 'Ideal untuk peran dalam sales, negotiation, public relations, atau kepemimpinan yang membutuhkan kemampuan interpersonal yang tinggi.',
-      low: 'Lebih cocok untuk peran teknis, penelitian, atau yang membutuhkan fokus pada detail dan akurasi daripada dinamika sosial.'
-    }
-  },
+
   'socialIntelligence': {
     name: 'Social Intelligence',
     category: 'humanity',
@@ -460,29 +416,7 @@ export const viaStrengthsData = {
       low: 'Lebih cocok untuk peran yang membutuhkan quick decision making, innovation, atau lingkungan yang dinamis dan fast-paced.'
     }
   },
-  'self_regulation': {
-    name: 'Self-Regulation',
-    category: 'temperance',
-    description: 'Mengatur perasaan dan perilaku secara disiplin serta mampu mengendalikan dorongan dan emosi',
-    highTraits: [
-      'Memiliki kontrol diri yang kuat terhadap emosi dan impuls',
-      'Mampu mempertahankan fokus dan disiplin dalam jangka panjang',
-      'Bersedia menunda gratifikasi untuk mencapai tujuan yang lebih besar',
-      'Dapat mengelola stress dan tekanan dengan tenang dan terkendali',
-      'Konsisten dalam menjalankan rutinitas dan komitmen yang telah dibuat'
-    ],
-    lowTraits: [
-      'Lebih ekspresif dan spontan dalam menunjukkan emosi',
-      'Cenderung mengikuti mood dan energy level yang berfluktuasi',
-      'Lebih fleksibel dalam mengubah rencana sesuai situasi',
-      'Kurang sabar dengan rutinitas yang monoton atau rigid',
-      'Lebih responsif terhadap stimulus eksternal dan perubahan lingkungan'
-    ],
-    implications: {
-      high: 'Sangat cocok untuk peran yang membutuhkan consistency, long-term projects, atau posisi yang membutuhkan emotional stability.',
-      low: 'Lebih sesuai untuk peran kreatif, dynamic environment, atau posisi yang membutuhkan adaptability dan responsiveness.'
-    }
-  },
+
   'selfRegulation': {
     name: 'Self-Regulation',
     category: 'temperance',
@@ -506,29 +440,7 @@ export const viaStrengthsData = {
       low: 'Lebih sesuai untuk peran kreatif, dynamic environment, atau posisi yang membutuhkan adaptability dan responsiveness.'
     }
   },
-  'appreciation_of_beauty': {
-    name: 'Appreciation of Beauty',
-    category: 'transcendence',
-    description: 'Menyadari dan menghargai keindahan, keunggulan, serta performa terbaik di berbagai bidang',
-    highTraits: [
-      'Memiliki kepekaan tinggi terhadap keindahan dalam berbagai bentuk',
-      'Dapat menghargai excellence dan craftsmanship dalam pekerjaan',
-      'Termotivasi oleh aesthetic dan kualitas dalam lingkungan kerja',
-      'Memiliki kemampuan untuk melihat dan menciptakan harmony dalam design',
-      'Menghargai detail dan finesse dalam hasil kerja'
-    ],
-    lowTraits: [
-      'Lebih fokus pada fungsi daripada form dalam pendekatan kerja',
-      'Mengutamakan efisiensi dan praktikalitas daripada aesthetic',
-      'Kurang memperhatikan aspek visual atau artistic dalam pekerjaan',
-      'Lebih tertarik pada substance daripada presentation',
-      'Cenderung pragmatis dalam menilai kualitas berdasarkan utility'
-    ],
-    implications: {
-      high: 'Ideal untuk peran dalam design, arts, architecture, atau bidang yang membutuhkan aesthetic sense dan appreciation untuk quality.',
-      low: 'Lebih cocok untuk peran teknis, engineering, atau yang membutuhkan fokus pada functionality dan efficiency.'
-    }
-  },
+
   'appreciationOfBeauty': {
     name: 'Appreciation of Beauty',
     category: 'transcendence',

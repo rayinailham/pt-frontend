@@ -884,8 +884,9 @@ const ResultRiasec = () => {
 
                   {/* RIASEC Interest Cards - 3 columns 2 rows layout */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                    {Object.entries(result.assessment_data.riasec).map(
-                      ([type, score], index) => {
+                    {['realistic', 'investigative', 'artistic', 'social', 'enterprising', 'conventional'].map(
+                      (type, index) => {
+                        const score = result.assessment_data.riasec[type];
                         const trait = riasecTraits[type];
                         if (!trait) return null;
 

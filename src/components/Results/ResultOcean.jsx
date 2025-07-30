@@ -805,9 +805,9 @@ const ResultOcean = () => {
               <div className="space-y-4 sm:space-y-6">
                 {/* First 3 cards in a row */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                  {Object.entries(result.assessment_data.ocean)
-                    .slice(0, 3)
-                    .map(([traitKey, score], index) => {
+                  {['openness', 'conscientiousness', 'extraversion']
+                    .map((traitKey, index) => {
+                      const score = result.assessment_data.ocean[traitKey];
                       const trait = oceanTraits[traitKey];
                       if (!trait) return null;
 
@@ -921,9 +921,9 @@ const ResultOcean = () => {
 
                 {/* Last 2 cards taking full width */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                  {Object.entries(result.assessment_data.ocean)
-                    .slice(3, 5)
-                    .map(([traitKey, score], index) => {
+                  {['agreeableness', 'neuroticism']
+                    .map((traitKey, index) => {
+                      const score = result.assessment_data.ocean[traitKey];
                       const trait = oceanTraits[traitKey];
                       if (!trait) return null;
 
