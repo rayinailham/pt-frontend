@@ -212,9 +212,9 @@ const ResultPersona = () => {
     }
 
     return (
-      <div id="persona-profile-container" className="space-y-6">
+      <div id="persona-profile-container" className="space-y-4 sm:space-y-6">
         {/* Bento Grid Layout */}
-        <div className="grid grid-cols-12 gap-6 auto-rows-min">
+        <div className="grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-4 sm:gap-6 auto-rows-min">
 
           {/* Hero Section - Archetype & Summary (Full Width) */}
           <motion.div
@@ -222,28 +222,28 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="col-span-12 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+            className="col-span-1 sm:col-span-6 lg:col-span-12 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
           >
-            <div className="p-8">
-              <div className="mb-6">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
-                    <span className="text-slate-600 text-lg">✦</span>
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="mb-4 sm:mb-6">
+                <div className="flex items-center space-x-3 sm:space-x-4 mb-3 sm:mb-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-base sm:text-lg">✦</span>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-semibold text-slate-900 mb-1">
+                    <h3 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-1">
                       {personaProfile.archetype}
                     </h3>
-                    <p className="text-slate-500 text-sm">Profile Archetype Persona</p>
+                    <p className="text-slate-500 text-xs sm:text-sm">Profile Archetype Persona</p>
                   </div>
                 </div>
                 {/* Core Motivators Pills */}
                 {personaProfile.coreMotivators && personaProfile.coreMotivators.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {personaProfile.coreMotivators.map((motivator, idx) => (
                       <span
                         key={idx}
-                        className="text-slate-600 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium"
+                        className="text-slate-600 bg-slate-50 border border-slate-200 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium"
                       >
                         {motivator}
                       </span>
@@ -252,15 +252,15 @@ const ResultPersona = () => {
                 )}
               </div>
 
-              <p className="text-slate-700 text-base leading-relaxed mb-6">
+              <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                 {personaProfile.shortSummary}
               </p>
 
               {/* Learning Style */}
               {personaProfile.learningStyle && (
-                <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                  <h4 className="text-sm font-semibold text-slate-900 mb-3 flex items-center">
-                    <span className="w-5 h-5 bg-slate-50 rounded-lg flex items-center justify-center mr-2">
+                <div className="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                  <h4 className="text-sm font-semibold text-slate-900 mb-2 sm:mb-3 flex items-center">
+                    <span className="w-4 h-4 sm:w-5 sm:h-5 bg-slate-50 rounded-lg flex items-center justify-center mr-2">
                       <span className="text-slate-600 text-xs">🎯</span>
                     </span>
                     Gaya Belajar
@@ -279,30 +279,30 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="col-span-12 lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+            className="col-span-1 sm:col-span-6 lg:col-span-8 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
           >
-            <div className="bg-slate-50 border-b border-slate-200 p-5">
+            <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                   <span className="text-slate-600 text-sm">✓</span>
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900">Kekuatan Utama</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-slate-900">Kekuatan Utama</h4>
                   <p className="text-slate-600 text-xs">Core Strengths</p>
                 </div>
               </div>
             </div>
-            <div className="p-6">
-              <div className="mb-6 bg-slate-50 p-5 rounded-xl border border-slate-200">
+            <div className="p-4 sm:p-6">
+              <div className="mb-4 sm:mb-6 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
                 <p className="text-slate-700 text-sm leading-relaxed">
                   {personaProfile.strengthSummary || "Kekuatan inti yang mendefinisikan keunggulan utama dalam profil karier Anda."}
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {personaProfile.strengths?.map((strength, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center space-x-3 bg-slate-50 p-4 rounded-xl border border-slate-200"
+                    className="flex items-center space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
                   >
                     <div className="w-2 h-2 bg-slate-600 rounded-full flex-shrink-0"></div>
                     <span className="text-slate-700 text-sm font-medium">{strength}</span>
@@ -319,30 +319,30 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+              className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
             >
-              <div className="bg-slate-50 border-b border-slate-200 p-5">
+              <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                     <span className="text-slate-600 text-sm">⚡</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-slate-900">Pengembangan Keahlian</h4>
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900">Pengembangan Keahlian</h4>
                     <p className="text-slate-600 text-xs">Skill Development</p>
                   </div>
                 </div>
               </div>
-              <div className="p-6">
-                <div className="mb-5 bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div className="p-4 sm:p-6">
+                <div className="mb-4 sm:mb-5 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
                   <p className="text-slate-700 text-sm leading-relaxed">
                     Rekomendasi keahlian yang dirancang khusus untuk memperkokoh fondasi keunggulan utama yang telah Anda miliki.
                   </p>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {personaProfile.skillSuggestion.map((skill, idx) => (
                     <div
                       key={idx}
-                      className="bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg text-sm font-medium text-slate-700"
+                      className="bg-slate-50 border border-slate-200 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm font-medium text-slate-700"
                     >
                       {skill}
                     </div>
@@ -358,42 +358,42 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="col-span-12 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+            className="col-span-1 sm:col-span-6 lg:col-span-12 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
           >
-            <div className="bg-slate-50 border-b border-slate-200 p-6">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
-                  <span className="text-slate-600 text-lg">💼</span>
+            <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-6">
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <span className="text-slate-600 text-base sm:text-lg">💼</span>
                 </div>
                 <div>
-                  <h4 className="text-xl font-semibold text-slate-900">Rekomendasi Karier</h4>
-                  <p className="text-slate-600 text-sm">Jalur Karier yang Sesuai dengan Profil Persona Anda</p>
+                  <h4 className="text-lg sm:text-xl font-semibold text-slate-900">Rekomendasi Karier</h4>
+                  <p className="text-slate-600 text-xs sm:text-sm">Jalur Karier yang Sesuai dengan Profil Persona Anda</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-8">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
                 {personaProfile.careerRecommendation?.map((career, idx) => (
                   <div
                     key={idx}
-                    className={`bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 ${
-                      personaProfile.careerRecommendation.length === 3 && idx === 2 ? 'xl:col-span-2' : ''
+                    className={`bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 ${
+                      personaProfile.careerRecommendation.length === 3 && idx === 2 ? 'lg:col-span-2' : ''
                     }`}
                   >
                     {/* Career Header */}
-                    <div className="bg-white border-b border-slate-200 p-6">
-                      <h5 className="text-2xl font-bold text-slate-900 text-center">
+                    <div className="bg-white border-b border-slate-200 p-4 sm:p-6">
+                      <h5 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 text-center">
                         {career.careerName}
                       </h5>
                     </div>
 
-                    <div className="p-6 space-y-6">
+                    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                       {/* Justification */}
                       {career.justification && (
                         <div>
-                          <h6 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Mengapa Cocok untuk Anda</h6>
-                          <div className="bg-white p-4 rounded-xl border border-slate-200">
+                          <h6 className="text-xs sm:text-sm font-bold text-slate-900 mb-2 sm:mb-3 uppercase tracking-wider">Mengapa Cocok untuk Anda</h6>
+                          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200">
                             <p className="text-sm text-slate-700 leading-relaxed">
                               {career.justification}
                             </p>
@@ -403,11 +403,11 @@ const ResultPersona = () => {
 
                       {/* Career Prospects */}
                       <div>
-                        <h6 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Prospek Karier</h6>
-                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                        <h6 className="text-xs sm:text-sm font-bold text-slate-900 mb-2 sm:mb-3 uppercase tracking-wider">Prospek Karier</h6>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                           {Object.entries(career.careerProspect || {}).map(([key, value]) => (
-                            <div key={key} className="text-center bg-white p-3 rounded-lg border border-slate-200">
-                              <div className={`text-sm font-semibold mb-2 px-3 py-1.5 rounded-full ${getProspectColor(value)}`}>
+                            <div key={key} className="text-center bg-white p-2 sm:p-3 rounded-lg border border-slate-200">
+                              <div className={`text-xs sm:text-sm font-semibold mb-1 sm:mb-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${getProspectColor(value)}`}>
                                 {value}
                               </div>
                               <div className="text-xs text-slate-600 leading-tight font-medium">
@@ -421,15 +421,15 @@ const ResultPersona = () => {
                       {/* First Steps */}
                       {career.firstSteps && career.firstSteps.length > 0 && (
                         <div>
-                          <h6 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Langkah Pertama</h6>
-                          <div className="space-y-3">
+                          <h6 className="text-xs sm:text-sm font-bold text-slate-900 mb-2 sm:mb-3 uppercase tracking-wider">Langkah Pertama</h6>
+                          <div className="space-y-2 sm:space-y-3">
                             {career.firstSteps.slice(0, 3).map((step, stepIdx) => (
                               <div
                                 key={stepIdx}
-                                className="flex items-start text-sm text-slate-700 bg-white p-4 rounded-xl border border-slate-200"
+                                className="flex items-start text-sm text-slate-700 bg-white p-3 sm:p-4 rounded-xl border border-slate-200"
                               >
-                                <div className="w-7 h-7 bg-slate-100 rounded-lg flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
-                                  <span className="text-slate-600 text-sm font-bold">{stepIdx + 1}</span>
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-slate-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4 mt-0.5 flex-shrink-0">
+                                  <span className="text-slate-600 text-xs sm:text-sm font-bold">{stepIdx + 1}</span>
                                 </div>
                                 <span className="leading-relaxed">{step}</span>
                               </div>
@@ -441,12 +441,12 @@ const ResultPersona = () => {
                       {/* Related Majors */}
                       {career.relatedMajors && career.relatedMajors.length > 0 && (
                         <div>
-                          <h6 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Jurusan Terkait</h6>
-                          <div className="flex flex-wrap gap-2">
+                          <h6 className="text-xs sm:text-sm font-bold text-slate-900 mb-2 sm:mb-3 uppercase tracking-wider">Jurusan Terkait</h6>
+                          <div className="flex flex-wrap gap-1.5 sm:gap-2">
                             {career.relatedMajors.slice(0, 4).map((major, majorIdx) => (
                               <span
                                 key={majorIdx}
-                                className="text-slate-700 bg-white border border-slate-200 px-4 py-2 rounded-full text-sm font-medium"
+                                className="text-slate-700 bg-white border border-slate-200 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium"
                               >
                                 {major}
                               </span>
@@ -467,30 +467,30 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="col-span-12 lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+            className="col-span-1 sm:col-span-6 lg:col-span-6 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
           >
-            <div className="bg-slate-50 border-b border-slate-200 p-5">
+            <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                   <span className="text-slate-600 text-sm">⚠</span>
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900">Area Pengembangan</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-slate-900">Area Pengembangan</h4>
                   <p className="text-slate-600 text-xs">Development Areas</p>
                 </div>
               </div>
             </div>
-            <div className="p-6">
-              <div className="mb-5 bg-slate-50 p-5 rounded-xl border border-slate-200">
+            <div className="p-4 sm:p-6">
+              <div className="mb-4 sm:mb-5 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
                 <p className="text-slate-700 text-sm leading-relaxed">
                   {personaProfile.weaknessSummary || "Area-area yang memerlukan perhatian khusus untuk pengembangan diri yang lebih optimal."}
                 </p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {personaProfile.weaknesses?.map((weakness, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start space-x-3 bg-slate-50 p-4 rounded-xl border border-slate-200"
+                    className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
                   >
                     <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-slate-700 text-sm leading-relaxed">{weakness}</span>
@@ -506,30 +506,30 @@ const ResultPersona = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="col-span-12 lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+            className="col-span-1 sm:col-span-6 lg:col-span-6 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
           >
-            <div className="bg-slate-50 border-b border-slate-200 p-5">
+            <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                   <span className="text-slate-600 text-sm">💡</span>
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900">Wawasan Pengembangan</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-slate-900">Wawasan Pengembangan</h4>
                   <p className="text-slate-600 text-xs">Development Insights</p>
                 </div>
               </div>
             </div>
-            <div className="p-6">
-              <div className="mb-5 bg-slate-50 p-5 rounded-xl border border-slate-200">
+            <div className="p-4 sm:p-6">
+              <div className="mb-4 sm:mb-5 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
                 <p className="text-slate-700 text-sm leading-relaxed">
                   Bahkan berdasarkan hasil analisis data OCEAN, RIASEC, dan VIA-IS, kami memberikan wawasan strategis yang mendalam untuk membantu Anda mengenali serta menyikapi area-area yang perlu dikembangkan.
                 </p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {personaProfile.insights?.map((insight, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start space-x-3 bg-slate-50 p-4 rounded-xl border border-slate-200"
+                    className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
                   >
                     <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-slate-700 text-sm leading-relaxed">{insight}</span>
@@ -546,25 +546,25 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.7 }}
-              className="col-span-12 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+              className="col-span-1 sm:col-span-6 lg:col-span-12 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
             >
-              <div className="bg-slate-50 border-b border-slate-200 p-5">
+              <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                     <span className="text-slate-600 text-sm">⚠</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-slate-900">Tantangan Potensial</h4>
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900">Tantangan Potensial</h4>
                     <p className="text-slate-600 text-xs">Area yang Perlu Diwaspadai</p>
                   </div>
                 </div>
               </div>
-              <div className="p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <div className="p-4 sm:p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
                   {personaProfile.possiblePitfalls.map((pitfall, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start space-x-3 bg-slate-50 p-5 rounded-xl border border-slate-200"
+                      className="flex items-start space-x-3 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200"
                     >
                       <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-slate-700 text-sm leading-relaxed">{pitfall}</span>
@@ -582,21 +582,21 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.8 }}
-              className="col-span-12 lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+              className="col-span-1 sm:col-span-6 lg:col-span-8 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
             >
-              <div className="bg-slate-50 border-b border-slate-200 p-5">
+              <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                     <span className="text-slate-600 text-sm">🏢</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-slate-900">Lingkungan Kerja</h4>
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900">Lingkungan Kerja</h4>
                     <p className="text-slate-600 text-xs">Work Environment</p>
                   </div>
                 </div>
               </div>
-              <div className="p-6">
-                <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <div className="p-4 sm:p-6">
+                <div className="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
                   <p className="text-slate-700 leading-relaxed text-sm">
                     {personaProfile.workEnvironment}
                   </p>
@@ -612,25 +612,25 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.9 }}
-              className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+              className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
             >
-              <div className="bg-slate-50 border-b border-slate-200 p-5">
+              <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                     <span className="text-slate-600 text-sm">👥</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-slate-900">Panutan Profil Persona</h4>
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900">Panutan Profil Persona</h4>
                     <p className="text-slate-600 text-xs">Role Models Profil Persona</p>
                   </div>
                 </div>
               </div>
-              <div className="p-6">
-                <div className="space-y-3">
+              <div className="p-4 sm:p-6">
+                <div className="space-y-2 sm:space-y-3">
                   {personaProfile.roleModel.map((model, idx) => (
                     <div
                       key={idx}
-                      className="bg-slate-50 text-slate-700 border border-slate-200 px-4 py-3 rounded-xl text-sm font-medium text-center"
+                      className="bg-slate-50 text-slate-700 border border-slate-200 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm font-medium text-center"
                     >
                       {model}
                     </div>
@@ -651,32 +651,32 @@ const ResultPersona = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 1.0 }}
-                  className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+                  className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
                 >
-                  <div className="bg-slate-50 border-b border-slate-200 p-5">
+                  <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                         <span className="text-slate-600 text-sm">🎯</span>
                       </div>
                       <div>
-                        <h4 className="text-lg font-semibold text-slate-900">Ekstrakurikuler</h4>
+                        <h4 className="text-base sm:text-lg font-semibold text-slate-900">Ekstrakurikuler</h4>
                         <p className="text-slate-600 text-xs">Extracurricular</p>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <div className="space-y-3">
+                  <div className="p-4 sm:p-6">
+                    <div className="space-y-2 sm:space-y-3">
                       {personaProfile.developmentActivities.extracurricular.slice(0, 3).map((activity, idx) => (
                         <div
                           key={idx}
-                          className="flex items-start space-x-3 bg-slate-50 p-4 rounded-xl border border-slate-200"
+                          className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
                         >
                           <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                           <span className="text-slate-700 text-sm leading-relaxed">{activity}</span>
                         </div>
                       ))}
                       {personaProfile.developmentActivities.extracurricular.length > 3 && (
-                        <div className="text-center pt-3">
+                        <div className="text-center pt-2 sm:pt-3">
                           <span className="text-xs text-slate-500">+{personaProfile.developmentActivities.extracurricular.length - 3} lainnya</span>
                         </div>
                       )}
@@ -693,25 +693,25 @@ const ResultPersona = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 1.1 }}
-                  className="col-span-12 lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+                  className="col-span-1 sm:col-span-6 lg:col-span-8 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
                 >
-                  <div className="bg-slate-50 border-b border-slate-200 p-5">
+                  <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                         <span className="text-slate-600 text-sm">💡</span>
                       </div>
                       <div>
-                        <h4 className="text-lg font-semibold text-slate-900">Ide Proyek</h4>
+                        <h4 className="text-base sm:text-lg font-semibold text-slate-900">Ide Proyek</h4>
                         <p className="text-slate-600 text-xs">Project Ideas</p>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 sm:p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                       {personaProfile.developmentActivities.projectIdeas.map((project, idx) => (
                         <div
                           key={idx}
-                          className="flex items-start space-x-3 bg-slate-50 p-4 rounded-xl border border-slate-200"
+                          className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
                         >
                           <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                           <span className="text-slate-700 text-sm leading-relaxed">{project}</span>
@@ -730,30 +730,30 @@ const ResultPersona = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 1.2 }}
-                  className="col-span-12 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+                  className="col-span-1 sm:col-span-6 lg:col-span-12 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
                 >
-                  <div className="bg-slate-50 border-b border-slate-200 p-5">
+                  <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
                         <span className="text-slate-600 text-sm">📚</span>
                       </div>
                       <div>
-                        <h4 className="text-lg font-semibold text-slate-900">Rekomendasi Buku</h4>
+                        <h4 className="text-base sm:text-lg font-semibold text-slate-900">Rekomendasi Buku</h4>
                         <p className="text-slate-600 text-xs">Book Recommendations</p>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div className="p-4 sm:p-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                       {personaProfile.developmentActivities.bookRecommendations.map((book, idx) => (
                         <div
                           key={idx}
-                          className="bg-slate-50 p-5 rounded-xl border border-slate-200 hover:shadow-md transition-shadow duration-200"
+                          className="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200 hover:shadow-md transition-shadow duration-200"
                         >
-                          <h6 className="text-sm font-semibold text-slate-900 mb-3 leading-tight line-clamp-2">
+                          <h6 className="text-sm font-semibold text-slate-900 mb-2 sm:mb-3 leading-tight line-clamp-2">
                             {book.title}
                           </h6>
-                          <p className="text-xs text-slate-500 mb-4">
+                          <p className="text-xs text-slate-500 mb-3 sm:mb-4">
                             oleh {book.author}
                           </p>
                           <p className="text-xs text-slate-700 leading-relaxed line-clamp-3">
@@ -776,7 +776,7 @@ const ResultPersona = () => {
   return (
     <div id="result-persona-page" className="min-h-screen bg-slate-50">
       {/* Main Content Area */}
-      <main id="main-content" className="flex-1 max-w-7xl mx-auto px-6 py-8">
+      <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Loading State */}
         {!result && !error && (
           <motion.div
@@ -854,35 +854,35 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-6"
+              className="mb-4 sm:mb-6"
             >
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 space-y-4 sm:space-y-0">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 sm:mb-4 space-y-3 sm:space-y-0">
                 <div>
-                  <h1 className="text-2xl font-medium text-slate-900 mb-2">
+                  <h1 className="text-xl sm:text-2xl font-medium text-slate-900 mb-2">
                     Profile Persona
                   </h1>
-                  <p className="text-slate-600 max-w-2xl text-sm leading-relaxed">
+                  <p className="text-slate-600 max-w-2xl text-sm sm:text-base leading-relaxed">
                     Discover your comprehensive profile persona based on integrated assessment results from RIASEC, OCEAN, and VIA-IS evaluations.
                   </p>
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
                   <button
                     onClick={() => navigate(`/results/${resultId}`)}
-                    className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm"
+                    className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm w-full sm:w-auto"
                   >
                     ← Back
                   </button>
                   <button
                     onClick={() => navigate("/dashboard")}
-                    className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-all duration-200 text-sm"
+                    className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-all duration-200 text-sm w-full sm:w-auto"
                   >
                     Dashboard
                   </button>
                 </div>
               </div>
 
-              <div id="header-info-card" className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-slate-600 space-y-3 sm:space-y-0">
+              <div id="header-info-card" className="bg-white rounded-lg p-3 sm:p-4 border border-slate-200 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-slate-600 space-y-2 sm:space-y-0">
                   <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-6">
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-slate-800 rounded-full mr-2"></div>
@@ -898,7 +898,7 @@ const ResultPersona = () => {
                       );
                     })()}
                   </div>
-                  <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded text-xs font-medium uppercase tracking-wider">
+                  <span className="bg-slate-100 text-slate-700 px-2 sm:px-3 py-1 rounded text-xs font-medium uppercase tracking-wider self-start sm:self-auto">
                     Integrated Profile
                   </span>
                 </div>
@@ -912,11 +912,11 @@ const ResultPersona = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <div className="text-center mb-6">
-                <h2 className="text-xl font-medium text-slate-900 mb-2">
+              <div className="text-center mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-xl font-medium text-slate-900 mb-2">
                   Profil Persona Lengkap Anda
                 </h2>
-                <div className="w-16 h-0.5 bg-slate-300 mx-auto rounded-full"></div>
+                <div className="w-12 sm:w-16 h-0.5 bg-slate-300 mx-auto rounded-full"></div>
               </div>
               {renderPersonaProfile(result.persona_profile)}
             </motion.div>
@@ -928,14 +928,14 @@ const ResultPersona = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1.2 }}
-              className="mb-6"
+              className="mb-4 sm:mb-6"
             >
-              <div className="bg-slate-50 rounded-lg p-4 mb-4">
+              <div className="bg-slate-50 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg mb-2">
-                    <span className="text-lg">🎯</span>
+                  <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-slate-100 rounded-lg mb-2">
+                    <span className="text-base sm:text-lg">🎯</span>
                   </div>
-                  <h2 className="text-xl font-medium text-slate-900 mb-2">
+                  <h2 className="text-lg sm:text-xl font-medium text-slate-900 mb-2">
                     Jelajahi Profil Lengkap Anda
                   </h2>
                   <p className="text-slate-600 text-sm max-w-2xl mx-auto leading-relaxed">
@@ -944,7 +944,7 @@ const ResultPersona = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-5xl mx-auto">
                 {navigationCards.map((card, index) => (
                   <motion.div
                     key={card.title}
@@ -958,7 +958,7 @@ const ResultPersona = () => {
                     className="group cursor-pointer"
                     onClick={() => navigate(card.path)}
                   >
-                    <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200 hover:shadow-md transition-all duration-300 h-full">
+                    <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm border border-slate-200 hover:shadow-md transition-all duration-300 h-full">
                       <div className="flex flex-col h-full">
                         <div className="flex items-start justify-end mb-2">
                           <motion.svg
@@ -974,7 +974,7 @@ const ResultPersona = () => {
                         </div>
 
                         <div className="flex-grow">
-                          <h3 className="text-lg font-medium text-slate-900 mb-1 group-hover:text-slate-700 transition-colors">
+                          <h3 className="text-base sm:text-lg font-medium text-slate-900 mb-1 group-hover:text-slate-700 transition-colors">
                             {card.title}
                           </h3>
                           <p className="text-xs text-slate-500 mb-2 font-medium uppercase tracking-wide">

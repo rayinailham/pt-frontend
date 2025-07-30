@@ -1,25 +1,32 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Check, BookOpen, Send } from 'lucide-react';
-import AssessmentQuestion from './AssessmentQuestion';
-import AssessmentSidebar from './AssessmentSidebar';
-import MobileAssessmentNavbar from './MobileAssessmentNavbar';
-import MobileBottomNavigation from './MobileBottomNavigation';
-import MobilePhaseMenu from './MobilePhaseMenu';
-import AutoFillNotification from './AutoFillNotification';
-import CompletionNotification from './CompletionNotification';
-import { viaQuestions, riasecQuestions, bigFiveQuestions } from '../../data/assessmentQuestions';
-import apiService from '../../services/apiService';
-import ErrorMessage from '../UI/ErrorMessage';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import { transformAssessmentScores, validateAssessmentData } from '../../utils/assessmentTransformers';
-import { secureStorage, migrateToEncrypted } from '../../utils/encryption';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChevronLeft, ChevronRight, Check, BookOpen, Send } from "lucide-react";
+import AssessmentQuestion from "./AssessmentQuestion";
+import AssessmentSidebar from "./AssessmentSidebar";
+import MobileAssessmentNavbar from "./MobileAssessmentNavbar";
+import MobileBottomNavigation from "./MobileBottomNavigation";
+import MobilePhaseMenu from "./MobilePhaseMenu";
+import AutoFillNotification from "./AutoFillNotification";
+import CompletionNotification from "./CompletionNotification";
+import {
+  viaQuestions,
+  riasecQuestions,
+  bigFiveQuestions,
+} from "../../data/assessmentQuestions";
+import apiService from "../../services/apiService";
+import ErrorMessage from "../UI/ErrorMessage";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import {
+  transformAssessmentScores,
+  validateAssessmentData,
+} from "../../utils/assessmentTransformers";
+import { secureStorage, migrateToEncrypted } from "../../utils/encryption";
 
 /**
  * Assessment Component
- * 
+ *
  * Single unified component that handles the complete assessment process following Assessment-Processing-Logic.md:
- * 
+ *
  * Data Flow:
  * 1. User Input Handling - Radio button selection updates answers state
  * 2. Auto-Save to localStorage - Automatic persistence of answers
@@ -28,7 +35,7 @@ import { secureStorage, migrateToEncrypted } from '../../utils/encryption';
  * 5. Progress Tracking - Tracks overall progress across all assessments
  * 6. Data Transformation for API - Transforms scores to API format when ready
  * 7. API Submission - Submits to backend when all assessments complete
- * 
+ *
  * Features:
  * - Single component managing all assessment logic
  * - Preserves existing UI structure and mobile responsiveness
@@ -39,54 +46,57 @@ import { secureStorage, migrateToEncrypted } from '../../utils/encryption';
  */
 const Assessment = () => {
   const navigate = useNavigate();
-  
+
   // Core state management following Assessment-Processing-Logic.md
-  const [currentAssessmentType, setCurrentAssessmentType] = useState('via'); // 'via', 'riasec', 'bigFive'
+  const [currentAssessmentType, setCurrentAssessmentType] = useState("via"); // 'via', 'riasec', 'bigFive'
   const [currentPage, setCurrentPage] = useState(0); // Category pagination
   const [answers, setAnswers] = useState({}); // All answers from all assessments
   const [assessmentData, setAssessmentData] = useState({
     via: {},
     riasec: {},
-    bigFive: {}
+    bigFive: {},
   });
   const [completionStatus, setCompletionStatus] = useState({
     via: false,
     riasec: false,
-    bigFive: false
+    bigFive: false,
   });
-  
+
   // UI and submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [isPhaseMenuOpen, setIsPhaseMenuOpen] = useState(false);
-  const [showAutoFillNotification, setShowAutoFillNotification] = useState(false);
+  const [showAutoFillNotification, setShowAutoFillNotification] =
+    useState(false);
   const [isAutoFillMode, setIsAutoFillMode] = useState(false);
-  const [showCompletionNotification, setShowCompletionNotification] = useState(false);
-  const [hasUserDismissedNotification, setHasUserDismissedNotification] = useState(false);
+  const [showCompletionNotification, setShowCompletionNotification] =
+    useState(false);
+  const [hasUserDismissedNotification, setHasUserDismissedNotification] =
+    useState(false);
 
   // Flagging system state
   const [flaggedQuestions, setFlaggedQuestions] = useState({});
 
   // Assessment configurations
   const assessments = {
-    via: { 
-      data: viaQuestions, 
-      title: 'VIA Character Strengths', 
+    via: {
+      data: viaQuestions,
+      title: "VIA Character Strengths",
       step: 1,
-      description: 'Character strengths assessment with 96 questions'
+      description: "Character strengths assessment with 96 questions",
     },
-    riasec: { 
-      data: riasecQuestions, 
-      title: 'RIASEC Holland Codes', 
+    riasec: {
+      data: riasecQuestions,
+      title: "RIASEC Holland Codes",
       step: 2,
-      description: 'Career interests assessment with 60 questions'
+      description: "Career interests assessment with 60 questions",
     },
-    bigFive: { 
-      data: bigFiveQuestions, 
-      title: 'Big Five Personality', 
+    bigFive: {
+      data: bigFiveQuestions,
+      title: "Big Five Personality",
       step: 3,
-      description: 'Personality traits assessment with 44 questions'
-    }
+      description: "Personality traits assessment with 44 questions",
+    },
   };
 
   const currentAssessment = assessments[currentAssessmentType];
@@ -97,25 +107,33 @@ const Assessment = () => {
     const questionKeys = [];
     const currentAssessment = assessments[currentAssessmentType];
 
-    Object.entries(currentAssessment.data.categories).forEach(([categoryKey, category]) => {
-      // Add regular questions
-      category.questions.forEach((_, index) => {
-        questionKeys.push(`${currentAssessmentType}_${categoryKey}_${index}`);
-      });
-
-      // Add reverse questions
-      if (category.reverseQuestions) {
-        category.reverseQuestions.forEach((_, index) => {
-          questionKeys.push(`${currentAssessmentType}_${categoryKey}_reverse_${index}`);
+    Object.entries(currentAssessment.data.categories).forEach(
+      ([categoryKey, category]) => {
+        // Add regular questions
+        category.questions.forEach((_, index) => {
+          questionKeys.push(`${currentAssessmentType}_${categoryKey}_${index}`);
         });
+
+        // Add reverse questions
+        if (category.reverseQuestions) {
+          category.reverseQuestions.forEach((_, index) => {
+            questionKeys.push(
+              `${currentAssessmentType}_${categoryKey}_reverse_${index}`
+            );
+          });
+        }
       }
-    });
+    );
 
     return questionKeys;
   };
 
   // Helper function to find next unanswered question
-  const findNextUnansweredQuestion = (currentQuestionKey, allQuestionKeys, answers) => {
+  const findNextUnansweredQuestion = (
+    currentQuestionKey,
+    allQuestionKeys,
+    answers
+  ) => {
     const currentIndex = allQuestionKeys.indexOf(currentQuestionKey);
     if (currentIndex === -1) return null;
 
@@ -136,9 +154,9 @@ const Assessment = () => {
       const element = document.getElementById(`question-${questionKey}`);
       if (element) {
         element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'nearest'
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
         });
       }
     }, 100); // Small delay to ensure DOM is updated
@@ -151,14 +169,18 @@ const Assessment = () => {
 
     const newAnswers = {
       ...answers,
-      [questionKey]: value
+      [questionKey]: value,
     };
     setAnswers(newAnswers);
 
     // Auto scroll to next unanswered question only for new answers
     if (isNewAnswer) {
       const allQuestionKeys = getAllQuestionKeysInOrder();
-      const nextUnansweredQuestion = findNextUnansweredQuestion(questionKey, allQuestionKeys, newAnswers);
+      const nextUnansweredQuestion = findNextUnansweredQuestion(
+        questionKey,
+        allQuestionKeys,
+        newAnswers
+      );
 
       if (nextUnansweredQuestion) {
         scrollToQuestion(nextUnansweredQuestion);
@@ -170,7 +192,7 @@ const Assessment = () => {
   const handleToggleFlag = (questionKey) => {
     const newFlaggedQuestions = {
       ...flaggedQuestions,
-      [questionKey]: !flaggedQuestions[questionKey]
+      [questionKey]: !flaggedQuestions[questionKey],
     };
 
     // Remove false values to keep object clean
@@ -185,11 +207,11 @@ const Assessment = () => {
   useEffect(() => {
     if (Object.keys(answers).length > 0) {
       try {
-        secureStorage.setItem('assessmentAnswers', answers);
+        secureStorage.setItem("assessmentAnswers", answers);
       } catch (error) {
-        console.error('Failed to save encrypted answers:', error);
+        console.error("Failed to save encrypted answers:", error);
         // Fallback to unencrypted storage if encryption fails
-        localStorage.setItem('assessmentAnswers', JSON.stringify(answers));
+        localStorage.setItem("assessmentAnswers", JSON.stringify(answers));
       }
     }
   }, [answers]);
@@ -197,56 +219,69 @@ const Assessment = () => {
   // Auto-Save flagged questions to localStorage with encryption
   useEffect(() => {
     try {
-      secureStorage.setItem('assessmentFlaggedQuestions', flaggedQuestions);
+      secureStorage.setItem("assessmentFlaggedQuestions", flaggedQuestions);
     } catch (error) {
-      console.error('Failed to save encrypted flagged questions:', error);
+      console.error("Failed to save encrypted flagged questions:", error);
       // Fallback to unencrypted storage if encryption fails
-      localStorage.setItem('assessmentFlaggedQuestions', JSON.stringify(flaggedQuestions));
+      localStorage.setItem(
+        "assessmentFlaggedQuestions",
+        JSON.stringify(flaggedQuestions)
+      );
     }
   }, [flaggedQuestions]);
 
   // Load saved answers and flagged questions on component mount with encryption support
   useEffect(() => {
     // Migrate existing unencrypted data to encrypted storage
-    migrateToEncrypted('assessmentAnswers', secureStorage);
-    migrateToEncrypted('assessmentFlaggedQuestions', secureStorage);
+    migrateToEncrypted("assessmentAnswers", secureStorage);
+    migrateToEncrypted("assessmentFlaggedQuestions", secureStorage);
 
     // Load encrypted answers
     try {
-      const savedAnswers = secureStorage.getItem('assessmentAnswers');
+      const savedAnswers = secureStorage.getItem("assessmentAnswers");
       if (savedAnswers) {
         setAnswers(savedAnswers);
       }
     } catch (error) {
-      console.error('Failed to load encrypted answers, trying unencrypted fallback:', error);
+      console.error(
+        "Failed to load encrypted answers, trying unencrypted fallback:",
+        error
+      );
       // Fallback to unencrypted storage
-      const savedAnswers = localStorage.getItem('assessmentAnswers');
+      const savedAnswers = localStorage.getItem("assessmentAnswers");
       if (savedAnswers) {
         try {
           const parsedAnswers = JSON.parse(savedAnswers);
           setAnswers(parsedAnswers);
         } catch (parseError) {
-          console.error('Failed to load saved answers:', parseError);
+          console.error("Failed to load saved answers:", parseError);
         }
       }
     }
 
     // Load encrypted flagged questions
     try {
-      const savedFlaggedQuestions = secureStorage.getItem('assessmentFlaggedQuestions');
+      const savedFlaggedQuestions = secureStorage.getItem(
+        "assessmentFlaggedQuestions"
+      );
       if (savedFlaggedQuestions) {
         setFlaggedQuestions(savedFlaggedQuestions);
       }
     } catch (error) {
-      console.error('Failed to load encrypted flagged questions, trying unencrypted fallback:', error);
+      console.error(
+        "Failed to load encrypted flagged questions, trying unencrypted fallback:",
+        error
+      );
       // Fallback to unencrypted storage
-      const savedFlaggedQuestions = localStorage.getItem('assessmentFlaggedQuestions');
+      const savedFlaggedQuestions = localStorage.getItem(
+        "assessmentFlaggedQuestions"
+      );
       if (savedFlaggedQuestions) {
         try {
           const parsedFlaggedQuestions = JSON.parse(savedFlaggedQuestions);
           setFlaggedQuestions(parsedFlaggedQuestions);
         } catch (parseError) {
-          console.error('Failed to load saved flagged questions:', parseError);
+          console.error("Failed to load saved flagged questions:", parseError);
         }
       }
     }
@@ -256,42 +291,44 @@ const Assessment = () => {
   const calculateCategoryScores = (assessmentType) => {
     const assessment = assessments[assessmentType];
     const categoryScores = {};
-    
-    Object.entries(assessment.data.categories).forEach(([categoryKey, category]) => {
-      let totalScore = 0;
-      let questionCount = 0;
-      
-      // Regular questions
-      category.questions.forEach((_, index) => {
-        const questionKey = `${assessmentType}_${categoryKey}_${index}`;
-        if (answers[questionKey]) {
-          totalScore += answers[questionKey];
-          questionCount++;
-        }
-      });
-      
-      // Reverse questions (for Big Five)
-      if (category.reverseQuestions) {
-        category.reverseQuestions.forEach((_, index) => {
-          const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+
+    Object.entries(assessment.data.categories).forEach(
+      ([categoryKey, category]) => {
+        let totalScore = 0;
+        let questionCount = 0;
+
+        // Regular questions
+        category.questions.forEach((_, index) => {
+          const questionKey = `${assessmentType}_${categoryKey}_${index}`;
           if (answers[questionKey]) {
-            // Reverse the score (6 - original score for 1-5 scale)
-            totalScore += (6 - answers[questionKey]);
+            totalScore += answers[questionKey];
             questionCount++;
           }
         });
+
+        // Reverse questions (for Big Five)
+        if (category.reverseQuestions) {
+          category.reverseQuestions.forEach((_, index) => {
+            const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+            if (answers[questionKey]) {
+              // Reverse the score (6 - original score for 1-5 scale)
+              totalScore += 6 - answers[questionKey];
+              questionCount++;
+            }
+          });
+        }
+
+        // Calculate average score (0-100 scale)
+        if (questionCount > 0) {
+          const average = totalScore / questionCount;
+          // Convert from 1-5 scale to 0-100 scale
+          categoryScores[categoryKey] = Math.round(((average - 1) / 4) * 100);
+        } else {
+          categoryScores[categoryKey] = 0;
+        }
       }
-      
-      // Calculate average score (0-100 scale)
-      if (questionCount > 0) {
-        const average = totalScore / questionCount;
-        // Convert from 1-5 scale to 0-100 scale
-        categoryScores[categoryKey] = Math.round(((average - 1) / 4) * 100);
-      } else {
-        categoryScores[categoryKey] = 0;
-      }
-    });
-    
+    );
+
     return categoryScores;
   };
 
@@ -300,47 +337,49 @@ const Assessment = () => {
     const assessment = assessments[assessmentType];
     let totalQuestions = 0;
     let answeredQuestions = 0;
-    
-    Object.entries(assessment.data.categories).forEach(([categoryKey, category]) => {
-      // Regular questions
-      category.questions.forEach((_, index) => {
-        totalQuestions++;
-        const questionKey = `${assessmentType}_${categoryKey}_${index}`;
-        if (answers[questionKey]) {
-          answeredQuestions++;
-        }
-      });
-      
-      // Reverse questions
-      if (category.reverseQuestions) {
-        category.reverseQuestions.forEach((_, index) => {
+
+    Object.entries(assessment.data.categories).forEach(
+      ([categoryKey, category]) => {
+        // Regular questions
+        category.questions.forEach((_, index) => {
           totalQuestions++;
-          const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+          const questionKey = `${assessmentType}_${categoryKey}_${index}`;
           if (answers[questionKey]) {
             answeredQuestions++;
           }
         });
+
+        // Reverse questions
+        if (category.reverseQuestions) {
+          category.reverseQuestions.forEach((_, index) => {
+            totalQuestions++;
+            const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+            if (answers[questionKey]) {
+              answeredQuestions++;
+            }
+          });
+        }
       }
-    });
-    
+    );
+
     return totalQuestions > 0 && answeredQuestions === totalQuestions;
   };
 
   // Step 4: Update Assessment Data (real-time)
   useEffect(() => {
     // Calculate scores for all assessment types
-    Object.keys(assessments).forEach(assessmentType => {
+    Object.keys(assessments).forEach((assessmentType) => {
       const scores = calculateCategoryScores(assessmentType);
       const isComplete = isAssessmentComplete(assessmentType);
-      
-      setAssessmentData(prev => ({
+
+      setAssessmentData((prev) => ({
         ...prev,
-        [assessmentType]: scores
+        [assessmentType]: scores,
       }));
-      
-      setCompletionStatus(prev => ({
+
+      setCompletionStatus((prev) => ({
         ...prev,
-        [assessmentType]: isComplete
+        [assessmentType]: isComplete,
       }));
     });
   }, [answers]);
@@ -349,39 +388,45 @@ const Assessment = () => {
   const calculateOverallProgress = () => {
     let totalAnswered = 0;
     let totalQuestions = 0;
-    
-    Object.keys(assessments).forEach(assessmentType => {
+
+    Object.keys(assessments).forEach((assessmentType) => {
       const assessment = assessments[assessmentType];
-      Object.entries(assessment.data.categories).forEach(([categoryKey, category]) => {
-        // Count total questions
-        totalQuestions += category.questions.length;
-        if (category.reverseQuestions) {
-          totalQuestions += category.reverseQuestions.length;
-        }
-        
-        // Count answered questions
-        category.questions.forEach((_, index) => {
-          const questionKey = `${assessmentType}_${categoryKey}_${index}`;
-          if (answers[questionKey]) totalAnswered++;
-        });
-        
-        if (category.reverseQuestions) {
-          category.reverseQuestions.forEach((_, index) => {
-            const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+      Object.entries(assessment.data.categories).forEach(
+        ([categoryKey, category]) => {
+          // Count total questions
+          totalQuestions += category.questions.length;
+          if (category.reverseQuestions) {
+            totalQuestions += category.reverseQuestions.length;
+          }
+
+          // Count answered questions
+          category.questions.forEach((_, index) => {
+            const questionKey = `${assessmentType}_${categoryKey}_${index}`;
             if (answers[questionKey]) totalAnswered++;
           });
+
+          if (category.reverseQuestions) {
+            category.reverseQuestions.forEach((_, index) => {
+              const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+              if (answers[questionKey]) totalAnswered++;
+            });
+          }
         }
-      });
+      );
     });
-    
-    return { 
-      totalAnswered, 
-      totalQuestions, 
-      percentage: totalQuestions > 0 ? Math.round((totalAnswered / totalQuestions) * 100) : 0 
+
+    return {
+      totalAnswered,
+      totalQuestions,
+      percentage:
+        totalQuestions > 0
+          ? Math.round((totalAnswered / totalQuestions) * 100)
+          : 0,
     };
   };
 
-  const isAllComplete = completionStatus.via && completionStatus.riasec && completionStatus.bigFive;
+  const isAllComplete =
+    completionStatus.via && completionStatus.riasec && completionStatus.bigFive;
 
   // Navigation functions
   const handleNavigateToAssessment = (assessmentType) => {
@@ -392,7 +437,7 @@ const Assessment = () => {
   };
 
   const handleNavigateToPhase = (step) => {
-    const assessmentTypes = ['via', 'riasec', 'bigFive'];
+    const assessmentTypes = ["via", "riasec", "bigFive"];
     const assessmentType = assessmentTypes[step - 1];
     if (assessmentType) {
       handleNavigateToAssessment(assessmentType);
@@ -400,7 +445,7 @@ const Assessment = () => {
   };
 
   const handleNextAssessment = () => {
-    const types = ['via', 'riasec', 'bigFive'];
+    const types = ["via", "riasec", "bigFive"];
     const currentIndex = types.indexOf(currentAssessmentType);
     if (currentIndex < types.length - 1) {
       setCurrentAssessmentType(types[currentIndex + 1]);
@@ -409,7 +454,7 @@ const Assessment = () => {
   };
 
   const handlePreviousAssessment = () => {
-    const types = ['via', 'riasec', 'bigFive'];
+    const types = ["via", "riasec", "bigFive"];
     const currentIndex = types.indexOf(currentAssessmentType);
     if (currentIndex > 0) {
       setCurrentAssessmentType(types[currentIndex - 1]);
@@ -420,13 +465,13 @@ const Assessment = () => {
   const handleNextCategory = () => {
     const categories = Object.entries(currentAssessment.data.categories);
     if (currentPage < categories.length - 1) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const handlePreviousCategory = () => {
     if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1);
+      setCurrentPage((prev) => prev - 1);
     }
   };
 
@@ -438,7 +483,7 @@ const Assessment = () => {
       // Validate the transformed data
       const validation = validateAssessmentData(apiData);
       if (!validation.isValid) {
-        throw new Error(`Validation failed: ${validation.errors.join(', ')}`);
+        throw new Error(`Validation failed: ${validation.errors.join(", ")}`);
       }
 
       return apiData;
@@ -450,7 +495,7 @@ const Assessment = () => {
   // Step 7: API Submission
   const handleSubmit = async () => {
     if (!isAllComplete) {
-      setSubmitError('All assessments must be completed');
+      setSubmitError("All assessments must be completed");
       return;
     }
 
@@ -468,31 +513,32 @@ const Assessment = () => {
       if (response.success && response.data?.jobId) {
         // Clear saved progress from both encrypted and unencrypted storage
         try {
-          secureStorage.removeItem('assessmentAnswers');
-          secureStorage.removeItem('assessmentFlaggedQuestions');
+          secureStorage.removeItem("assessmentAnswers");
+          secureStorage.removeItem("assessmentFlaggedQuestions");
         } catch (error) {
-          console.error('Failed to clear encrypted storage:', error);
+          console.error("Failed to clear encrypted storage:", error);
         }
 
         // Also clear unencrypted fallback storage
-        localStorage.removeItem('assessmentAnswers');
-        localStorage.removeItem('assessmentFlaggedQuestions');
+        localStorage.removeItem("assessmentAnswers");
+        localStorage.removeItem("assessmentFlaggedQuestions");
 
         // Navigate to status page
         navigate(`/assessment/status/${response.data.jobId}`, {
-          state: { fromSubmission: true }
+          state: { fromSubmission: true },
         });
       } else {
-        throw new Error(response.message || 'Failed to submit assessment');
+        throw new Error(response.message || "Failed to submit assessment");
       }
     } catch (error) {
-      console.error('Assessment submission error:', error);
+      console.error("Assessment submission error:", error);
 
       // Handle specific error cases
-      let errorMessage = 'Failed to submit assessment';
+      let errorMessage = "Failed to submit assessment";
 
       if (error.response?.status === 402) {
-        errorMessage = 'Insufficient tokens to process your assessment. Please contact support or try again later.';
+        errorMessage =
+          "Insufficient tokens to process your assessment. Please contact support or try again later.";
       } else if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.message) {
@@ -515,32 +561,48 @@ const Assessment = () => {
 
   // Show completion notification when all assessments are complete
   useEffect(() => {
-    if (isAllComplete && !isSubmitting && !submitError && !isAutoFillMode && !showCompletionNotification && !hasUserDismissedNotification) {
+    if (
+      isAllComplete &&
+      !isSubmitting &&
+      !submitError &&
+      !isAutoFillMode &&
+      !showCompletionNotification &&
+      !hasUserDismissedNotification
+    ) {
       setShowCompletionNotification(true);
     }
-  }, [isAllComplete, isSubmitting, submitError, isAutoFillMode, showCompletionNotification, hasUserDismissedNotification]);
+  }, [
+    isAllComplete,
+    isSubmitting,
+    submitError,
+    isAutoFillMode,
+    showCompletionNotification,
+    hasUserDismissedNotification,
+  ]);
 
   // Auto-fill function for testing
   const fillAllAssessments = () => {
     const allAnswers = {};
 
-    Object.keys(assessments).forEach(assessmentType => {
+    Object.keys(assessments).forEach((assessmentType) => {
       const assessment = assessments[assessmentType];
-      Object.entries(assessment.data.categories).forEach(([categoryKey, category]) => {
-        // Regular questions
-        category.questions.forEach((_, index) => {
-          const questionKey = `${assessmentType}_${categoryKey}_${index}`;
-          allAnswers[questionKey] = Math.floor(Math.random() * 5) + 1; // Random 1-5
-        });
-
-        // Reverse questions
-        if (category.reverseQuestions) {
-          category.reverseQuestions.forEach((_, index) => {
-            const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+      Object.entries(assessment.data.categories).forEach(
+        ([categoryKey, category]) => {
+          // Regular questions
+          category.questions.forEach((_, index) => {
+            const questionKey = `${assessmentType}_${categoryKey}_${index}`;
             allAnswers[questionKey] = Math.floor(Math.random() * 5) + 1; // Random 1-5
           });
+
+          // Reverse questions
+          if (category.reverseQuestions) {
+            category.reverseQuestions.forEach((_, index) => {
+              const questionKey = `${assessmentType}_${categoryKey}_reverse_${index}`;
+              allAnswers[questionKey] = Math.floor(Math.random() * 5) + 1; // Random 1-5
+            });
+          }
         }
-      });
+      );
     });
 
     setAnswers(allAnswers);
@@ -583,7 +645,7 @@ const Assessment = () => {
         question,
         categoryKey: currentCategoryKey,
         questionKey: `${currentAssessmentType}_${currentCategoryKey}_${index}`,
-        isReverse: false
+        isReverse: false,
       });
     });
 
@@ -594,7 +656,7 @@ const Assessment = () => {
           question,
           categoryKey: currentCategoryKey,
           questionKey: `${currentAssessmentType}_${currentCategoryKey}_reverse_${index}`,
-          isReverse: true
+          isReverse: true,
         });
       });
     }
@@ -602,44 +664,46 @@ const Assessment = () => {
 
   // Calculate global question indices for display
   const allQuestions = [];
-  Object.keys(assessments).forEach(assessmentType => {
+  Object.keys(assessments).forEach((assessmentType) => {
     const assessment = assessments[assessmentType];
-    Object.entries(assessment.data.categories).forEach(([categoryKey, category]) => {
-      category.questions.forEach((question, index) => {
-        allQuestions.push({
-          question,
-          categoryKey,
-          questionKey: `${assessmentType}_${categoryKey}_${index}`,
-          isReverse: false
-        });
-      });
-
-      if (category.reverseQuestions) {
-        category.reverseQuestions.forEach((question, index) => {
+    Object.entries(assessment.data.categories).forEach(
+      ([categoryKey, category]) => {
+        category.questions.forEach((question, index) => {
           allQuestions.push({
             question,
             categoryKey,
-            questionKey: `${assessmentType}_${categoryKey}_reverse_${index}`,
-            isReverse: true
+            questionKey: `${assessmentType}_${categoryKey}_${index}`,
+            isReverse: false,
           });
         });
+
+        if (category.reverseQuestions) {
+          category.reverseQuestions.forEach((question, index) => {
+            allQuestions.push({
+              question,
+              categoryKey,
+              questionKey: `${assessmentType}_${categoryKey}_reverse_${index}`,
+              isReverse: true,
+            });
+          });
+        }
       }
-    });
+    );
   });
 
-  const currentAssessmentQuestions = allQuestions.filter(q =>
+  const currentAssessmentQuestions = allQuestions.filter((q) =>
     q.questionKey.startsWith(currentAssessmentType)
   );
 
-  const isCurrentAssessmentComplete = isAssessmentComplete(currentAssessmentType);
-  const isLastAssessment = currentAssessmentType === 'bigFive';
+  const isCurrentAssessmentComplete = isAssessmentComplete(
+    currentAssessmentType
+  );
+  const isLastAssessment = currentAssessmentType === "bigFive";
 
   // Scroll to top when page changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
-
-
 
   return (
     <div className="min-h-screen bg-gray-50 mobile-container">
@@ -676,7 +740,8 @@ const Assessment = () => {
                     {currentAssessment.title}
                   </h1>
                   <p className="text-gray-600 text-sm mt-1 font-semibold">
-                    Assessment {currentAssessment.step} of {totalSteps} - {currentAssessment.description}
+                    Assessment {currentAssessment.step} of {totalSteps} -{" "}
+                    {currentAssessment.description}
                   </p>
                   {isAutoFillMode && (
                     <div className="mt-2 inline-flex items-center px-3 py-1 text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300 rounded-lg">
@@ -694,7 +759,9 @@ const Assessment = () => {
             {currentQuestions.map((q, index) => {
               // Calculate the global question index for this question
               let globalIndex = 0;
-              const categoriesArray = Object.entries(currentAssessment.data.categories);
+              const categoriesArray = Object.entries(
+                currentAssessment.data.categories
+              );
 
               // Count questions from previous categories
               for (let i = 0; i < currentPage; i++) {
@@ -760,22 +827,13 @@ const Assessment = () => {
                     onClick={isAllComplete ? handleSubmit : undefined}
                     disabled={!isAllComplete || isSubmitting}
                     className={`flex items-center space-x-2 px-8 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg ${
-                      isAllComplete
-                        ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-xl hover:brightness-110'
-                        : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                    } ${isSubmitting ? 'opacity-75 cursor-not-allowed animate-pulse' : ''}`}
+                      isAllComplete && !isSubmitting
+                        ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 hover:shadow-xl hover:brightness-110"
+                        : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                    }`}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <LoadingSpinner size="sm" className="mr-2" />
-                        <span className="animate-pulse">Submitting Assessment...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
-                        <span>Submit Assessment</span>
-                      </>
-                    )}
+                    <Send className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
+                    <span>Submit Assessment</span>
                   </button>
                   {!isAllComplete && !isSubmitting && (
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
@@ -825,19 +883,23 @@ const Assessment = () => {
           onFillRandomAnswers={() => {
             // Fill current assessment only
             const currentAnswers = {};
-            Object.entries(currentAssessment.data.categories).forEach(([categoryKey, category]) => {
-              category.questions.forEach((_, index) => {
-                const questionKey = `${currentAssessmentType}_${categoryKey}_${index}`;
-                currentAnswers[questionKey] = Math.floor(Math.random() * 5) + 1;
-              });
-              if (category.reverseQuestions) {
-                category.reverseQuestions.forEach((_, index) => {
-                  const questionKey = `${currentAssessmentType}_${categoryKey}_reverse_${index}`;
-                  currentAnswers[questionKey] = Math.floor(Math.random() * 5) + 1;
+            Object.entries(currentAssessment.data.categories).forEach(
+              ([categoryKey, category]) => {
+                category.questions.forEach((_, index) => {
+                  const questionKey = `${currentAssessmentType}_${categoryKey}_${index}`;
+                  currentAnswers[questionKey] =
+                    Math.floor(Math.random() * 5) + 1;
                 });
+                if (category.reverseQuestions) {
+                  category.reverseQuestions.forEach((_, index) => {
+                    const questionKey = `${currentAssessmentType}_${categoryKey}_reverse_${index}`;
+                    currentAnswers[questionKey] =
+                      Math.floor(Math.random() * 5) + 1;
+                  });
+                }
               }
-            });
-            setAnswers(prev => ({ ...prev, ...currentAnswers }));
+            );
+            setAnswers((prev) => ({ ...prev, ...currentAnswers }));
           }}
           onFillAllAssessments={fillAllAssessments}
           onNavigateToPhase={handleNavigateToPhase}

@@ -391,7 +391,6 @@ const ResultOverview = () => {
       preview: result?.assessment_data?.ocean ? getTopOceanTraits(result.assessment_data.ocean) : []
     },
     {
-      title: 'Career Persona',
       title: 'Profile Persona',
       description: 'Mensintesis semua penilaian menjadi rekomendasi karir yang dapat ditindaklanjuti dan peluang pengembangan',
       icon: '🎪',
@@ -533,56 +532,105 @@ const ResultOverview = () => {
               </div>
             </motion.div>
 
-            {/* Career Persona Summary & Introduction Section - Combined in Single Row */}
+            {/* Profile Persona & Assessment Understanding - Bento Layout */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-8 sm:mb-10 lg:mb-12"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                {/* Profile Persona Summary */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                {/* Profile Persona - Compact without summary */}
                 {(() => {
                   const archetype = result.persona_profile?.archetype || result.persona_profile?.career_persona?.archetype;
-                  const shortSummary = result.persona_profile?.shortSummary || result.persona_profile?.short_summary || result.persona_profile?.summary;
+                  const riskTolerance = result.persona_profile?.riskTolerance || result.persona_profile?.risk_tolerance;
+                  const careerRecommendations = result.persona_profile?.careerRecommendation || result.persona_profile?.career_recommendations || [];
 
                   return archetype && (
                     <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
-                      <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
-                        Profile Persona Anda
-                      </h2>
-                      <motion.div
-                        className="inline-block bg-gray-50 px-3 sm:px-4 py-2 rounded-lg border border-gray-200/40 shadow-xs mb-3 sm:mb-4"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <span className="text-sm sm:text-base font-medium text-gray-900">
-                          {archetype}
-                        </span>
-                      </motion.div>
-                      {shortSummary && (
-                        <p className="text-gray-600 leading-relaxed text-xs sm:text-sm">
-                          {shortSummary}
-                        </p>
-                      )}
+                      <div className="flex items-center mb-4">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                          <span className="text-lg sm:text-xl">🎪</span>
+                        </div>
+                        <h2 className="text-base sm:text-lg font-medium text-gray-900">
+                          Profile Persona Anda
+                        </h2>
+                      </div>
+
+                      <div className="space-y-3">
+                        <motion.div
+                          className="bg-gray-50 px-3 py-2 rounded-lg border border-gray-200/40"
+                          whileHover={{ scale: 1.02 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="text-xs text-gray-500 font-medium mb-1">Archetype</div>
+                          <div className="text-sm font-medium text-gray-900">{archetype}</div>
+                        </motion.div>
+
+                        {riskTolerance && (
+                          <div className="bg-gray-50 px-3 py-2 rounded-lg border border-gray-200/40">
+                            <div className="text-xs text-gray-500 font-medium mb-1">Risk Tolerance</div>
+                            <div className="text-sm font-medium text-gray-900 capitalize">{riskTolerance}</div>
+                          </div>
+                        )}
+
+                        <div className="bg-gray-50 px-3 py-2 rounded-lg border border-gray-200/40">
+                          <div className="text-xs text-gray-500 font-medium mb-1">Career Recommendations</div>
+                          <div className="text-sm font-medium text-gray-900">{careerRecommendations.length} Available</div>
+                        </div>
+                      </div>
                     </div>
                   );
                 })()}
 
-                {/* Introduction Section */}
-                <div className="bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
-                  <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
-                    Memahami Hasil Assessment Anda
-                  </h2>
-                  <p className="text-gray-600 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed">
+                {/* Assessment Understanding - Spans 2 columns */}
+                <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200/40 p-4 sm:p-6 shadow-xs">
+                  <div className="flex items-center mb-4">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-lg sm:text-xl">📊</span>
+                    </div>
+                    <h2 className="text-base sm:text-lg font-medium text-gray-900">
+                      Memahami Hasil Assessment Anda
+                    </h2>
+                  </div>
+
+                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
                     Hasil assessment Anda diorganisir dalam empat bagian komprehensif yang saling terintegrasi.
-                    Visualisasi di bawah menunjukkan kekuatan utama Anda di setiap dimensi.
+                    Setiap dimensi memberikan wawasan unik tentang profil kepribadian dan karir Anda.
                   </p>
-                  <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-600">
-                    <div><strong className="text-gray-900">Character Strengths:</strong> Nilai-nilai inti dan kekuatan karakter Anda.</div>
-                    <div><strong className="text-gray-900">Career Interests:</strong> Minat terhadap lingkungan karir dan aktivitas.</div>
-                    <div><strong className="text-gray-900">Personality Traits:</strong> Dimensi kepribadian dan gaya kerja Anda.</div>
-                    <div><strong className="text-gray-900">Profile Persona:</strong> Rekomendasi karir dan peluang pengembangan.</div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200/40">
+                      <div className="flex items-center mb-2">
+                        <span className="text-sm mr-2">⭐</span>
+                        <strong className="text-sm text-gray-900">Character Strengths</strong>
+                      </div>
+                      <p className="text-xs text-gray-600">Nilai-nilai inti dan kekuatan karakter yang mendorong perilaku Anda.</p>
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200/40">
+                      <div className="flex items-center mb-2">
+                        <span className="text-sm mr-2">🎯</span>
+                        <strong className="text-sm text-gray-900">Career Interests</strong>
+                      </div>
+                      <p className="text-xs text-gray-600">Minat terhadap lingkungan karir dan aktivitas yang menarik bagi Anda.</p>
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200/40">
+                      <div className="flex items-center mb-2">
+                        <span className="text-sm mr-2">🧭</span>
+                        <strong className="text-sm text-gray-900">Personality Traits</strong>
+                      </div>
+                      <p className="text-xs text-gray-600">Dimensi kepribadian fundamental dan gaya kerja Anda.</p>
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200/40">
+                      <div className="flex items-center mb-2">
+                        <span className="text-sm mr-2">🎪</span>
+                        <strong className="text-sm text-gray-900">Profile Persona</strong>
+                      </div>
+                      <p className="text-xs text-gray-600">Sintesis semua assessment menjadi rekomendasi karir yang actionable.</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -598,7 +646,7 @@ const ResultOverview = () => {
 
             
 
-            {/* Assessment Sections */}
+            {/* Assessment Sections - Traditional Grid Layout */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -609,6 +657,7 @@ const ResultOverview = () => {
                 Jelajahi Hasil Assessment Anda
               </h2>
 
+              {/* Traditional 2x2 Grid Layout */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {navigationCards.map((card, index) => (
                   <motion.div
@@ -681,9 +730,9 @@ const ResultOverview = () => {
                         ) : (
                           <div className="text-center py-3 sm:py-4">
                             <p className="text-xs sm:text-sm text-gray-500">
-                              {card.title.includes('VIA-IS') ? 'Data kekuatan karakter tidak tersedia' :
-                               card.title.includes('RIASEC') ? 'Data minat karir tidak tersedia' :
-                               card.title.includes('OCEAN') ? 'Data kepribadian tidak tersedia' :
+                              {card.title.includes('Character Strengths') ? 'Data kekuatan karakter tidak tersedia' :
+                               card.title.includes('Career Interests') ? 'Data minat karir tidak tersedia' :
+                               card.title.includes('Personality Traits') ? 'Data kepribadian tidak tersedia' :
                                'Klik untuk melihat detail lengkap'}
                             </p>
                           </div>

@@ -4,6 +4,8 @@ import apiService from '../../services/apiService';
 import { useNotifications } from '../../hooks/useNotifications';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import ErrorMessage from '../UI/ErrorMessage';
+import { getRandomTrivia } from '../../data/assessmentTrivia';
+import TriviaCard from './TriviaCard';
 
 /**
  * AssessmentStatus Component - Uses Observer Pattern with Fallback Polling
@@ -28,9 +30,11 @@ const AssessmentStatus = () => {
   const [currentStage, setCurrentStage] = useState('processing'); // processing, analyzing, preparing
   const [connectionStatus, setConnectionStatus] = useState({ connected: false, authenticated: false });
   const [debugInfo, setDebugInfo] = useState([]);
+  const [currentTrivia, setCurrentTrivia] = useState(null);
   const processingToAnalysisTimeoutRef = useRef(null);
   const pollingIntervalRef = useRef(null);
   const navigationTimeoutRef = useRef(null);
+  const triviaIntervalRef = useRef(null);
   const hasNavigatedRef = useRef(false);
   const isHandlingWebSocketRef = useRef(false);
 
@@ -39,6 +43,48 @@ const AssessmentStatus = () => {
     const timestamp = new Date().toLocaleTimeString();
     setDebugInfo(prev => [...prev.slice(-4), `${timestamp}: ${message}`]);
     console.log(`[AssessmentStatus] ${message}`);
+  };
+
+  // Trivia management
+  const updateTrivia = () => {
+    const newTrivia = getRandomTrivia();
+    // Avoid showing the same trivia consecutively
+    if (currentTrivia && newTrivia.id === currentTrivia.id) {
+      // Get a different trivia
+      const alternativeTrivia = getRandomTrivia();
+      if (alternativeTrivia.id !== currentTrivia.id) {
+        setCurrentTrivia(alternativeTrivia);
+        addDebugInfo(`Updated trivia: ${alternativeTrivia.title}`);
+      }
+    } else {
+      setCurrentTrivia(newTrivia);
+      addDebugInfo(`Updated trivia: ${newTrivia.title}`);
+    }
+  };
+
+  const startTriviaRotation = () => {
+    // Set initial trivia immediately
+    updateTrivia();
+
+    // Clear any existing interval
+    if (triviaIntervalRef.current) {
+      clearInterval(triviaIntervalRef.current);
+    }
+
+    // Update trivia every 10 seconds (slightly longer for better readability)
+    triviaIntervalRef.current = setInterval(() => {
+      updateTrivia();
+    }, 10000);
+
+    addDebugInfo('Trivia rotation started');
+  };
+
+  const stopTriviaRotation = () => {
+    if (triviaIntervalRef.current) {
+      clearInterval(triviaIntervalRef.current);
+      triviaIntervalRef.current = null;
+      addDebugInfo('Trivia rotation stopped');
+    }
   };
 
   // Observer Pattern: Setup WebSocket notifications as observers
@@ -101,17 +147,42 @@ const AssessmentStatus = () => {
     setConnectionStatus({ connected: isConnected, authenticated: isAuthenticated });
     addDebugInfo(`WebSocket status - Connected: ${isConnected}, Authenticated: ${isAuthenticated}`);
 
-    // Start fallback polling if WebSocket is not working properly
+    // Start fallback polling if WebSocket is not working properly OR if we're in analyzing stage
+    // This ensures polling starts even if WebSocket is connected but not authenticated
     if (currentStage === 'analyzing' && (!isConnected || !isAuthenticated)) {
       startFallbackPolling();
     }
+
+    // Also start polling if we've been in analyzing stage for more than 10 seconds
+    // This handles cases where WebSocket notification was missed
+    if (currentStage === 'analyzing') {
+      const pollingTimeout = setTimeout(() => {
+        if (currentStage === 'analyzing' && !hasNavigatedRef.current) {
+          addDebugInfo('Starting safety polling after 10 seconds in analyzing stage');
+          startFallbackPolling();
+        }
+      }, 10000);
+
+      return () => clearTimeout(pollingTimeout);
+    }
   }, [isConnected, isAuthenticated, currentStage]);
+
+  // Trivia rotation based on current stage
+  useEffect(() => {
+    if (currentStage && !hasNavigatedRef.current) {
+      startTriviaRotation();
+    }
+
+    return () => {
+      stopTriviaRotation();
+    };
+  }, [currentStage]);
 
   // Fallback polling mechanism
   const startFallbackPolling = () => {
     if (pollingIntervalRef.current) return; // Already polling
 
-    addDebugInfo('Starting fallback polling (WebSocket unavailable)');
+    addDebugInfo('Starting fallback polling (WebSocket unavailable or safety check)');
     pollingIntervalRef.current = setInterval(async () => {
       try {
         const response = await apiService.getAssessmentStatus(jobId);
@@ -135,7 +206,39 @@ const AssessmentStatus = () => {
       } catch (err) {
         addDebugInfo(`Polling error: ${err.message}`);
       }
-    }, 5000); // Poll every 5 seconds
+    }, 3000); // Poll every 3 seconds (more frequent)
+  };
+
+  // Immediate status check for safety (runs periodically)
+  const startImmediateStatusCheck = () => {
+    const immediateCheck = async () => {
+      try {
+        const response = await apiService.getAssessmentStatus(jobId);
+        if (response.success && response.data.status === 'completed' && !hasNavigatedRef.current) {
+          hasNavigatedRef.current = true;
+          addDebugInfo('Immediate check: Analysis completed, transitioning to preparing');
+
+          setCurrentStage('preparing');
+
+          setTimeout(() => {
+            addDebugInfo(`Immediate check: Navigating to results: ${response.data.resultId || jobId}`);
+            navigate(`/results/${response.data.resultId || jobId}`);
+          }, 3000);
+        }
+      } catch (err) {
+        addDebugInfo(`Immediate check error: ${err.message}`);
+      }
+    };
+
+    // Check immediately, then every 8 seconds
+    immediateCheck();
+    const immediateInterval = setInterval(immediateCheck, 8000);
+
+    // Clear after 2 minutes to avoid infinite checking
+    setTimeout(() => {
+      clearInterval(immediateInterval);
+      addDebugInfo('Immediate status check stopped after 2 minutes');
+    }, 120000);
   };
 
   // Initial status check (only called once)
@@ -193,6 +296,8 @@ const AssessmentStatus = () => {
         if (!isConnected || !isAuthenticated) {
           startFallbackPolling();
         }
+        // Also start immediate status check as safety net
+        startImmediateStatusCheck();
       }, 3000);
     }
 
@@ -213,6 +318,10 @@ const AssessmentStatus = () => {
       if (navigationTimeoutRef.current) {
         clearTimeout(navigationTimeoutRef.current);
         navigationTimeoutRef.current = null;
+      }
+      if (triviaIntervalRef.current) {
+        clearInterval(triviaIntervalRef.current);
+        triviaIntervalRef.current = null;
       }
       // Reset flags to prevent memory leaks
       hasNavigatedRef.current = false;
@@ -263,7 +372,7 @@ const AssessmentStatus = () => {
     switch (stage) {
       case 'processing':
         return (
-          <div className={`relative w-20 h-20 ${stageInfo.bgColor} rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+          <div className={`relative w-20 h-20  rounded-xl  flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
             {/* Outer rotating ring */}
             <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '1.5s'}}></div>
             {/* Inner pulsing ring */}
@@ -278,9 +387,9 @@ const AssessmentStatus = () => {
         );
       case 'analyzing':
         return (
-          <div className={`relative w-20 h-20 ${stageInfo.bgColor} rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+          <div className={`relative w-20 h-20 rounded-xl   flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
             {/* Subtle pulsing background */}
-            <div className="absolute inset-2 bg-gray-100 rounded-lg animate-pulse" style={{animationDuration: '2s'}}></div>
+            <div className="absolute inset-2 rounded-lg animate-pulse" style={{animationDuration: '2s'}}></div>
             {/* Multiple rotating rings for complex analysis effect */}
             <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '2s'}}></div>
             <div className="absolute inset-3 border border-gray-300 border-r-gray-600 rounded-full animate-spin opacity-70" style={{animationDuration: '3s', animationDirection: 'reverse'}}></div>
@@ -291,9 +400,9 @@ const AssessmentStatus = () => {
         );
       case 'preparing':
         return (
-          <div className={`relative w-20 h-20 ${stageInfo.bgColor} rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
+          <div className={`relative w-20 h-20  rounded-xl   flex items-center justify-center transition-all duration-500 ease-in-out transform hover:scale-105`}>
             {/* Subtle pulsing background */}
-            <div className="absolute inset-2 bg-gray-100 rounded-lg animate-pulse" style={{animationDuration: '1.5s'}}></div>
+            <div className="absolute inset-2 rounded-lg animate-pulse" style={{animationDuration: '1.5s'}}></div>
             {/* Slow rotating progress indicator */}
             <div className="absolute inset-2 border-2 border-gray-200 border-t-gray-700 rounded-full animate-spin" style={{animationDuration: '2.5s'}}></div>
             {/* Success pulse effect */}
@@ -308,7 +417,7 @@ const AssessmentStatus = () => {
         );
       default:
         return (
-          <div className="w-20 h-20 bg-gray-100 rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out">
+          <div className="w-20 h-20 rounded-xl border border-gray-200 flex items-center justify-center transition-all duration-500 ease-in-out">
             <svg className="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -324,14 +433,14 @@ const AssessmentStatus = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-12 px-2 sm:px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-3xl font-semibold text-gray-900 mb-3 tracking-tight">
+        <div className="text-center mb-8 sm:mb-16">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-3 tracking-tight px-2">
             Assessment Processing
           </h1>
-          <p className="text-gray-700 max-w-lg mx-auto font-medium">
+          <p className="text-gray-700 max-w-lg mx-auto font-medium px-4">
             Your assessment is being processed using AI technology
           </p>
 
@@ -347,12 +456,14 @@ const AssessmentStatus = () => {
             </div>
           </div>
 
-          {/* Debug Info (only in development) */}
-          {process.env.NODE_ENV === 'development' && debugInfo.length > 0 && (
+          {/* Debug Info (show in development or when there are connection issues) */}
+          {(process.env.NODE_ENV === 'development' || (!connectionStatus.connected || !connectionStatus.authenticated)) && debugInfo.length > 0 && (
             <div className="mt-4 max-w-md mx-auto">
               <details className="text-left">
-                <summary className="text-xs text-gray-500 cursor-pointer">Debug Info</summary>
-                <div className="mt-2 p-2 bg-gray-100 rounded text-xs text-gray-700 font-mono">
+                <summary className="text-xs text-gray-500 cursor-pointer">
+                  Debug Info {(!connectionStatus.connected || !connectionStatus.authenticated) && '(Connection Issues Detected)'}
+                </summary>
+                <div className="mt-2 p-2  rounded text-xs text-gray-700 font-mono max-h-32 overflow-y-auto">
                   {debugInfo.map((info, index) => (
                     <div key={index}>{info}</div>
                   ))}
@@ -363,7 +474,7 @@ const AssessmentStatus = () => {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden shadow-sm mx-2 sm:mx-0">
           {error ? (
             <div className="p-8">
               <ErrorMessage
@@ -374,26 +485,26 @@ const AssessmentStatus = () => {
               />
             </div>
           ) : (location.state?.fromSubmission || status) ? (
-            <div className="p-8">
+            <div className="p-4 sm:p-8">
               {/* Progress Steps */}
-              <div className="mb-12">
-                <div className="flex justify-center items-center space-x-6 mb-8">
+              <div className="mb-8 sm:mb-12">
+                <div className="flex justify-center items-center space-x-2 sm:space-x-4 mb-6 sm:mb-8 px-2">
                   {/* Step 1: Processing */}
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out transform ${
-                      currentStage === 'processing' ? 'bg-gray-900 text-white scale-110 shadow-lg' :
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
+                      currentStage === 'processing' ? 'bg-gray-900 text-white shadow-lg' :
                       ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700 text-white shadow-md' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       {['analyzing', 'preparing'].includes(currentStage) ? (
-                        <svg className="w-5 h-5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="w-2 h-2 sm:w-3 sm:h-3 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       ) : (
                         '1'
                       )}
                     </div>
-                    <span className={`text-sm font-medium transition-colors duration-500 ${
+                    <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
                       currentStage === 'processing' ? 'text-gray-900' :
                       ['analyzing', 'preparing'].includes(currentStage) ? 'text-gray-700' :
                       'text-gray-500'
@@ -403,26 +514,26 @@ const AssessmentStatus = () => {
                   </div>
 
                   {/* Connector */}
-                  <div className={`h-1 w-12 rounded-full transition-all duration-700 ease-in-out ${
+                  <div className={`h-0.5 w-4 sm:w-8 rounded-full transition-all duration-700 ease-in-out ${
                     ['analyzing', 'preparing'].includes(currentStage) ? 'bg-gray-700' : 'bg-gray-300'
                   }`}></div>
 
                   {/* Step 2: Analysis */}
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out transform ${
-                      currentStage === 'analyzing' ? 'bg-gray-900 text-white scale-110 shadow-lg' :
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
+                      currentStage === 'analyzing' ? 'bg-gray-900 text-white shadow-lg' :
                       currentStage === 'preparing' ? 'bg-gray-700 text-white shadow-md' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       {currentStage === 'preparing' ? (
-                        <svg className="w-5 h-5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="w-2 h-2 sm:w-3 sm:h-3 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       ) : (
                         '2'
                       )}
                     </div>
-                    <span className={`text-sm font-medium transition-colors duration-500 ${
+                    <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
                       currentStage === 'analyzing' ? 'text-gray-900' :
                       currentStage === 'preparing' ? 'text-gray-700' :
                       'text-gray-500'
@@ -432,19 +543,19 @@ const AssessmentStatus = () => {
                   </div>
 
                   {/* Connector */}
-                  <div className={`h-1 w-12 rounded-full transition-all duration-700 ease-in-out ${
+                  <div className={`h-0.5 w-4 sm:w-8 rounded-full transition-all duration-700 ease-in-out ${
                     currentStage === 'preparing' ? 'bg-gray-700' : 'bg-gray-300'
                   }`}></div>
 
                   {/* Step 3: Report */}
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out transform ${
-                      currentStage === 'preparing' ? 'bg-gray-900 text-white scale-110 shadow-lg' :
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ease-in-out ${
+                      currentStage === 'preparing' ? 'bg-gray-900 text-white shadow-lg' :
                       'bg-gray-200 text-gray-600'
                     }`}>
                       3
                     </div>
-                    <span className={`text-sm font-medium transition-colors duration-500 ${
+                    <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 ${
                       currentStage === 'preparing' ? 'text-gray-900' : 'text-gray-500'
                     }`}>
                       Report
@@ -454,57 +565,60 @@ const AssessmentStatus = () => {
               </div>
 
               {/* Current Stage Display */}
-              <div className="text-center mb-10">
-                <div className="flex justify-center mb-6">
+              <div className="text-center mb-6 sm:mb-10">
+                <div className="flex justify-center mb-4 sm:mb-6">
                   {getStageIcon(currentStage)}
                 </div>
 
-                <div className="space-y-3">
-                  <h2 className={`text-2xl font-semibold transition-colors duration-500 text-gray-900`}>
+                <div className="space-y-2 sm:space-y-3 px-4">
+                  <h2 className={`text-xl sm:text-2xl font-semibold transition-colors duration-500 text-gray-900`}>
                     {getStageInfo(currentStage).title}
                   </h2>
-                  <p className="text-gray-700 max-w-md mx-auto transition-opacity duration-300 font-medium">
+                  <p className="text-sm sm:text-base text-gray-700 max-w-md mx-auto transition-opacity duration-300 font-medium">
                     {getStageInfo(currentStage).description}
                   </p>
                 </div>
               </div>
 
+              {/* Trivia Section */}
+              <TriviaCard trivia={currentTrivia} isVisible={!!currentTrivia} />
+
               {/* Time Estimation */}
               {status?.estimatedTimeRemaining && (
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 transition-all duration-300">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-200 transition-all duration-300 mx-2 sm:mx-0">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-gray-200 transition-all duration-300">
-                      <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-lg flex items-center justify-center border border-gray-200 transition-all duration-300 flex-shrink-0">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Estimated Time Remaining</p>
-                      <p className="text-sm text-gray-700">{status.estimatedTimeRemaining}</p>
+                    <div className="min-w-0">
+                      <p className="text-xs sm:text-sm font-medium text-gray-900">Estimated Time Remaining</p>
+                      <p className="text-xs sm:text-sm text-gray-700">{status.estimatedTimeRemaining}</p>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Back to Dashboard Button */}
-              <div className="mt-8 text-center">
+              <div className="mt-6 sm:mt-8 text-center px-4">
                 <button
                   onClick={() => navigate('/dashboard', { state: { fromAssessment: true } })}
-                  className="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+                  className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 text-sm sm:text-base"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z" />
                   </svg>
                   Back to Dashboard
                 </button>
-                <p className="text-sm text-gray-600 mt-2 font-medium">
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 font-medium px-2">
                   You can check your assessment status in the dashboard
                 </p>
               </div>
             </div>
           ) : (
-            <div className="p-8">
+            <div className="p-4 sm:p-8">
               <LoadingSpinner text="Loading Assessment Status..." />
             </div>
           )}
