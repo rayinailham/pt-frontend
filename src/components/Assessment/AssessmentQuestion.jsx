@@ -22,7 +22,7 @@ const AssessmentQuestion = ({
   return (
     <div
       id={`question-${questionKey}`}
-      className="bg-white border border-gray-300 shadow-sm rounded-xl p-3 sm:p-4 md:p-6 lg:p-8 mb-4 sm:mb-6 hover:border-gray-400 hover:shadow-md transition-all duration-300 transform hover:scale-[1.02]"
+      className="bg-white border border-gray-300 shadow-sm rounded-xl p-3 sm:p-4 md:p-6 lg:p-8 mb-4 sm:mb-6 hover:border-gray-400 hover:shadow-md transition-all duration-300 transform"
     >
       <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
