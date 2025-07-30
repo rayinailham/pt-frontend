@@ -72,6 +72,38 @@ const Register = ({ onRegister }) => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
               Password
             </label>
+
+            {/* Password Requirements - Grid 2x2 */}
+            <div className="mb-3 p-3  rounded-lg">
+              <p className="text-xs font-medium text-gray-700 mb-2">Requirements:</p>
+              <div className="grid grid-cols-2 gap-2">
+                <div className={`flex items-center text-xs ${password && password.length >= 8 ? 'text-green-600' : 'text-gray-500'}`}>
+                  <svg className={`h-3 w-3 mr-1 flex-shrink-0 ${password && password.length >= 8 ? 'text-green-600' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>8+ characters</span>
+                </div>
+                <div className={`flex items-center text-xs ${password && /[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <svg className={`h-3 w-3 mr-1 flex-shrink-0 ${password && /[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Uppercase letter</span>
+                </div>
+                <div className={`flex items-center text-xs ${password && /[a-z]/.test(password) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <svg className={`h-3 w-3 mr-1 flex-shrink-0 ${password && /[a-z]/.test(password) ? 'text-green-600' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Lowercase letter</span>
+                </div>
+                <div className={`flex items-center text-xs ${password && /\d/.test(password) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <svg className={`h-3 w-3 mr-1 flex-shrink-0 ${password && /\d/.test(password) ? 'text-green-600' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Number</span>
+                </div>
+              </div>
+            </div>
+
             <div className="relative">
               <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -80,8 +112,20 @@ const Register = ({ onRegister }) => {
                 {...register('password', {
                   required: 'Password is required',
                   minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters'
+                    value: 8,
+                    message: 'Password must be at least 8 characters'
+                  },
+                  maxLength: {
+                    value: 128,
+                    message: 'Password must be less than 128 characters'
+                  },
+                  validate: {
+                    hasUppercase: (value) =>
+                      /[A-Z]/.test(value) || 'Password must contain at least one uppercase letter',
+                    hasLowercase: (value) =>
+                      /[a-z]/.test(value) || 'Password must contain at least one lowercase letter',
+                    hasNumber: (value) =>
+                      /\d/.test(value) || 'Password must contain at least one number'
                   }
                 })}
                 type="password"
