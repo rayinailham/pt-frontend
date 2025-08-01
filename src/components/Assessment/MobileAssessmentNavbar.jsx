@@ -1,4 +1,4 @@
-import { Menu, ArrowLeft } from 'lucide-react';
+import { Menu, ArrowLeft, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const MobileAssessmentNavbar = ({
@@ -7,9 +7,13 @@ const MobileAssessmentNavbar = ({
   totalSteps,
   answers,
   currentAssessmentType,
-  onTogglePhaseMenu
+  onTogglePhaseMenu,
+  onFillAllAssessments
 }) => {
   const navigate = useNavigate();
+
+  // Check if autofill is enabled via environment variable
+  const isAutofillEnabled = import.meta.env.VITE_ENABLE_AUTOFILL === 'true';
 
   const handleBackToDashboard = () => {
     navigate('/dashboard');

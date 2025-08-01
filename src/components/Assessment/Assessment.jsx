@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Check, BookOpen, Send } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, BookOpen, Send, Zap } from "lucide-react";
 import AssessmentQuestion from "./AssessmentQuestion";
 import AssessmentSidebar from "./AssessmentSidebar";
 import MobileAssessmentNavbar from "./MobileAssessmentNavbar";
@@ -931,6 +931,25 @@ const Assessment = () => {
         onManualSubmit={handleSubmit}
         currentCategoryData={currentCategoryData}
       />
+
+      {/* Mobile Fill All Button - Floating Action Button */}
+      {import.meta.env.VITE_ENABLE_AUTOFILL === 'true' && (
+        <div className="lg:hidden fixed bottom-20 right-4 z-40">
+          <button
+            onClick={fillAllAssessments}
+            disabled={isSubmitting}
+            className={`flex items-center space-x-2 px-4 py-3 rounded-full shadow-lg transition-all duration-200 font-semibold ${
+              !isSubmitting
+                ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 hover:shadow-xl transform hover:scale-105 active:scale-95"
+                : "bg-gray-400 text-gray-200 cursor-not-allowed"
+            }`}
+            title="Fill all assessments with random answers (for testing)"
+          >
+            <Zap className={`h-5 w-5 ${isSubmitting ? 'animate-pulse' : ''}`} />
+            <span className="text-sm">Fill All</span>
+          </button>
+        </div>
+      )}
 
       {/* Auto Fill Success Notification */}
       <AutoFillNotification

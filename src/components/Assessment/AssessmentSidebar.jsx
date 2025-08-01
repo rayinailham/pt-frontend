@@ -413,12 +413,12 @@ const AssessmentSidebar = ({
             </div>
           </div>
 
-          {/* Development Tools - Hidden by default */}
-          {false && isAutofillEnabled && (
+          {/* Development Tools */}
+          {isAutofillEnabled && (
             <div id="autofill-section" className="mt-4 pt-3 border-t border-gray-200">
               <div id="autofill-header" className="text-center mb-2">
-                <h5 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
-                  Development Tools
+                <h5 className="text-xs font-semibold text-orange-600 uppercase tracking-wide">
+                  Quick Fill Tools
                 </h5>
               </div>
               <div id="autofill-buttons" className="space-y-2">
@@ -444,8 +444,8 @@ const AssessmentSidebar = ({
                   <span>Fill All</span>
                 </button>
               </div>
-              <div id="autofill-disclaimer" className="text-xs text-gray-500 mt-2 text-center">
-                For testing purposes only
+              <div id="autofill-disclaimer" className="text-xs text-orange-500 mt-2 text-center font-medium">
+                Quick testing tools
               </div>
             </div>
           )}
