@@ -5,10 +5,6 @@ import {
   ResponsiveContainer,
   RadialBarChart,
   RadialBar,
-  PolarAngleAxis,
-  PolarGrid,
-  Tooltip,
-  Legend,
   Cell
 } from 'recharts';
 import apiService from '../../services/apiService';
@@ -493,27 +489,14 @@ const ResultOverview = () => {
 
   // Prepare data for radial bar chart
   const prepareRadialChartData = (industryData) => {
-    const colors = ['#1f2937', '#374151', '#6b7280', '#9ca3af']; // Enhanced gray scale colors
+    // Premium color scheme: sophisticated and elegant tones
+    const colors = ['#1e293b', '#475569', '#64748b', '#94a3b8'];
     return getTopIndustries(industryData).map((industry, index) => ({
       name: industryNameMapping[industry.strength] || industry.strength,
       value: industry.score,
       fill: colors[index],
       originalKey: industry.strength
     }));
-  };
-
-  // Custom tooltip for radial chart
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900">{data.name}</p>
-          <p className="text-sm text-gray-600">Score: {data.value.toFixed(1)}%</p>
-        </div>
-      );
-    }
-    return null;
   };
 
   // Industry name mapping for better display
@@ -873,217 +856,342 @@ const ResultOverview = () => {
                   </div>
 
                   <div className="p-6 sm:p-8">
-                    {/* Chart Section - Full Width */}
+                    {/* Integrated Talent Profile & Industry Analysis */}
                     <div className="mb-12">
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.6 }}
-                        className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.06)]"
+                        className="bg-white rounded-xl border border-gray-200/60 shadow-sm overflow-hidden"
                       >
-                        <div className="text-center mb-6">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-2">Visualisasi Skor Industri</h3>
-                          <p className="text-sm text-gray-600">Persentase kesesuaian dengan setiap industri berdasarkan profil Anda</p>
-                        </div>
-
-                        <div className="flex justify-center">
-                          <div className="w-full max-w-lg">
-                            <ResponsiveContainer width="100%" height={400}>
-                              <RadialBarChart
-                                cx="50%"
-                                cy="50%"
-                                innerRadius="20%"
-                                outerRadius="80%"
-                                data={prepareRadialChartData(result.assessment_data.industryScore)}
-                                startAngle={90}
-                                endAngle={450}
-                              >
-                              <PolarGrid
-                                gridType="polygon"
-                                radialLines={true}
-                                stroke="#e5e7eb"
-                                strokeWidth={1}
-                              />
-                              <PolarAngleAxis
-                                dataKey="name"
-                                tick={{
-                                  fontSize: 12,
-                                  fill: '#374151',
-                                  fontWeight: 500
-                                }}
-                                className="text-sm font-medium"
-                                tickFormatter={(value) => value.length > 10 ? value.substring(0, 10) + '...' : value}
-                              />
-                              <RadialBar
-                                minAngle={15}
-                                label={{
-                                  position: 'insideStart',
-                                  fill: 'white',
-                                  fontSize: 12,
-                                  fontWeight: 'bold',
-                                  formatter: (value) => `${value.toFixed(0)}%`
-                                }}
-                                background={{ fill: '#f3f4f6' }}
-                                dataKey="value"
-                                cornerRadius={4}
-                              >
-                                {prepareRadialChartData(result.assessment_data.industryScore).map((entry, index) => (
-                                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                                ))}
-                              </RadialBar>
-                              <Tooltip content={<CustomTooltip />} />
-                              </RadialBarChart>
-                            </ResponsiveContainer>
+                        <div className="bg-gray-50/50 p-6 border-b border-gray-200/60">
+                          <div className="text-center">
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Talent Profile & Industry Analysis</h3>
+                            <p className="text-sm text-gray-600">Analisis komprehensif kesesuaian industri berdasarkan profil kepribadian Anda</p>
                           </div>
                         </div>
 
-                        {/* Color Legend */}
-                        <div className="mt-6 flex flex-wrap justify-center gap-4">
-                          {prepareRadialChartData(result.assessment_data.industryScore).map((item, index) => (
-                            <div key={index} className="flex items-center space-x-2">
-                              <div
-                                className="w-3 h-3 rounded-full"
-                                style={{ backgroundColor: item.fill }}
-                              ></div>
-                              <span className="text-sm font-medium text-gray-700">{item.name}</span>
-                              <span className="text-sm text-gray-500">({item.value.toFixed(0)}%)</span>
-                            </div>
-                          ))}
+                        <div className="p-6">
+                          {/* 2x2 Grid Layout */}
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {/* Top Left - Radial Chart */}
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.6, delay: 0.8 }}
+                              className="bg-gray-50/30 rounded-lg p-6 border border-gray-200/40"
+                            >
+                              <div className="text-center mb-6">
+                                <h4 className="text-lg font-semibold text-gray-900 mb-2">Industry Match Chart</h4>
+                                <p className="text-sm text-gray-600">Visualisasi kesesuaian industri berdasarkan profil Anda</p>
+                              </div>
+
+                              <div className="flex justify-center">
+                                <div className="relative w-64 h-64">
+                                  <ResponsiveContainer width="100%" height="100%">
+                                    <RadialBarChart
+                                      cx="50%"
+                                      cy="50%"
+                                      innerRadius="30%"
+                                      outerRadius="85%"
+                                      data={prepareRadialChartData(result.assessment_data.industryScore)}
+                                      startAngle={90}
+                                      endAngle={450}
+                                    >
+                                      <RadialBar
+                                        minAngle={15}
+                                        background={{ fill: 'transparent' }}
+                                        dataKey="value"
+                                        cornerRadius={6}
+                                        fill="#8884d8"
+                                      >
+                                        {prepareRadialChartData(result.assessment_data.industryScore).map((entry, index) => (
+                                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                                        ))}
+                                      </RadialBar>
+                                    </RadialBarChart>
+                                  </ResponsiveContainer>
+
+                                  {/* Center Label */}
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="text-center">
+                                      <div className="text-xl font-bold text-gray-900">
+                                        {prepareRadialChartData(result.assessment_data.industryScore)[0]?.value.toFixed(0)}%
+                                      </div>
+                                      <div className="text-xs text-gray-500 font-medium">Top Match</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+
+                            {/* Top Right - Industry Rankings */}
+                            <motion.div
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.6, delay: 1.0 }}
+                              className="bg-gray-50/30 rounded-lg p-6 border border-gray-200/40"
+                            >
+                              <div className="mb-6">
+                                <h4 className="text-lg font-semibold text-gray-900 mb-2">Industry Rankings</h4>
+                                <p className="text-sm text-gray-600">Ranking industri berdasarkan tingkat kesesuaian</p>
+                              </div>
+
+                              <div className="space-y-3">
+                                {prepareRadialChartData(result.assessment_data.industryScore).map((item, index) => {
+                                  return (
+                                    <motion.div
+                                      key={index}
+                                      initial={{ opacity: 0, x: 20 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
+                                      className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200/60 hover:shadow-sm transition-all duration-200"
+                                    >
+                                      <div className="flex items-center space-x-3 flex-1">
+                                        <div className="flex items-center space-x-2">
+                                          <div className="w-5 h-5 bg-gray-700 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                            {index + 1}
+                                          </div>
+                                          <div
+                                            className="w-3 h-3 rounded-full flex-shrink-0"
+                                            style={{ backgroundColor: item.fill }}
+                                          ></div>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex items-center space-x-2 mb-1">
+                                            <span className="text-sm font-semibold text-gray-900 truncate">
+                                              {item.name}
+                                            </span>
+                                          </div>
+                                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                                            item.value >= 75 ? 'bg-green-100 text-green-800' :
+                                            item.value >= 65 ? 'bg-yellow-100 text-yellow-800' :
+                                            'bg-gray-100 text-gray-800'
+                                          }`}>
+                                            {item.value >= 75 ? 'Sangat Cocok' :
+                                             item.value >= 65 ? 'Cocok' : 'Cukup Cocok'}
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="text-right ml-3">
+                                        <div className="text-lg font-bold text-gray-900 tabular-nums">
+                                          {item.value.toFixed(0)}%
+                                        </div>
+                                      </div>
+                                    </motion.div>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+
+                            {/* Bottom - Industry Analysis Summary */}
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.6, delay: 1.4 }}
+                              className="lg:col-span-2 bg-gray-50/30 rounded-lg p-6 border border-gray-200/40"
+                            >
+                              <div className="flex items-start space-x-3 mb-4">
+                                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                  <span className="text-gray-600 text-lg">🎯</span>
+                                </div>
+                                <div>
+                                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Industry Match Summary</h4>
+                                  <p className="text-sm text-gray-600">Ringkasan analisis kesesuaian industri berdasarkan profil assessment Anda</p>
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                {/* Key Insights */}
+                                <div className="bg-white rounded-lg p-4 border border-gray-200/60">
+                                  <div className="flex items-center space-x-2 mb-3">
+                                    <span className="text-gray-600 text-sm">💡</span>
+                                    <h5 className="font-medium text-gray-900 text-sm">Key Insights</h5>
+                                  </div>
+                                  <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                                    Top match: <span className="font-semibold text-gray-900">{prepareRadialChartData(result.assessment_data.industryScore)[0]?.name}</span> ({prepareRadialChartData(result.assessment_data.industryScore)[0]?.value.toFixed(0)}%)
+                                  </p>
+                                  <p className="text-xs text-gray-600">
+                                    Prioritaskan pengembangan karir di sektor ini untuk memaksimalkan potensi natural Anda.
+                                  </p>
+                                </div>
+
+                                {/* Calculation Method */}
+                                <div className="bg-white rounded-lg p-4 border border-gray-200/60">
+                                  <div className="flex items-center space-x-2 mb-3">
+                                    <span className="text-gray-600 text-sm">📊</span>
+                                    <h5 className="font-medium text-gray-900 text-sm">Calculation Method</h5>
+                                  </div>
+                                  <p className="text-xs text-gray-600 mb-2">
+                                    Skor dihitung berdasarkan weighted average dari:
+                                  </p>
+                                  <div className="text-xs text-gray-600 space-y-1">
+                                    <div>• RIASEC traits (minat karir)</div>
+                                    <div>• VIA traits (kekuatan karakter)</div>
+                                    <div>• OCEAN traits (kepribadian)</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          </div>
                         </div>
                       </motion.div>
                     </div>
 
-                    {/* Industry Details Section */}
+                    {/* Industry Details Section - Enhanced */}
                     <div className="mb-12">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.8 }}
+                        className="bg-white rounded-xl border border-gray-200/60 shadow-sm overflow-hidden"
                       >
-                        <div className="text-center mb-8">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-2">Detail Industri</h3>
-                          <p className="text-sm text-gray-600">Informasi lengkap tentang setiap industri yang cocok untuk Anda</p>
+                        <div className="bg-gray-50/50 p-6 border-b border-gray-200/60">
+                          <div className="text-center">
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Detail Industri Terpilih</h3>
+                            <p className="text-sm text-gray-600">Informasi komprehensif tentang setiap industri yang sesuai dengan profil Anda</p>
+                          </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {getTopIndustries(result.assessment_data.industryScore).map((industry, index) => {
-                            const industryInfo = getIndustryInfo(industry.strength);
-                            const colors = ['#1f2937', '#374151', '#6b7280', '#9ca3af'];
+                        <div className="p-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {getTopIndustries(result.assessment_data.industryScore).map((industry, index) => {
+                              const industryInfo = getIndustryInfo(industry.strength);
 
-                            return (
-                              <motion.div
-                                key={industry.strength}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4, delay: 1.0 + index * 0.1 }}
-                                className="bg-white rounded-xl p-6 border border-gray-200/60 shadow-[0_2px_16px_rgb(0,0,0,0.04)] hover:shadow-[0_4px_24px_rgb(0,0,0,0.08)] transition-all duration-300"
-                              >
-                                {/* Header with Score */}
-                                <div className="flex items-start justify-between mb-4">
-                                  <div className="flex items-center flex-1">
-                                    <div
-                                      className="w-5 h-5 rounded-full mr-3 flex-shrink-0"
-                                      style={{ backgroundColor: colors[index] }}
-                                    ></div>
-                                    <div className="flex-1 min-w-0">
-                                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                                        {industryNameMapping[industry.strength] || industry.strength}
-                                      </h4>
-                                      <div className="flex items-center">
-                                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                                          industry.score >= 75 ? 'bg-emerald-100 text-emerald-800' :
-                                          industry.score >= 65 ? 'bg-amber-100 text-amber-800' :
-                                          'bg-gray-100 text-gray-800'
-                                        }`}>
-                                          {industry.score >= 75 ? 'Sangat Cocok' :
-                                           industry.score >= 65 ? 'Cocok' : 'Cukup Cocok'}
-                                        </span>
+                              return (
+                                <motion.div
+                                  key={industry.strength}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.4, delay: 1.0 + index * 0.1 }}
+                                  className="bg-gray-50/30 rounded-lg p-5 border border-gray-200/60 hover:bg-gray-50/50 transition-all duration-300"
+                                >
+                                  {/* Header with Score */}
+                                  <div className="flex items-start justify-between mb-4">
+                                    <div className="flex items-center flex-1">
+                                      <div className="flex items-center space-x-3 mb-2">
+                                        <div className="w-6 h-6 bg-gray-700 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                          {index + 1}
+                                        </div>
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                                          {industryNameMapping[industry.strength] || industry.strength}
+                                        </h4>
+                                        <div className="flex items-center">
+                                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                                            industry.score >= 75 ? 'bg-green-100 text-green-800' :
+                                            industry.score >= 65 ? 'bg-yellow-100 text-yellow-800' :
+                                            'bg-gray-100 text-gray-800'
+                                          }`}>
+                                            {industry.score >= 75 ? 'Sangat Cocok' :
+                                             industry.score >= 65 ? 'Cocok' : 'Cukup Cocok'}
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="text-right ml-4">
-                                    <div className="text-3xl font-bold text-gray-900 tabular-nums">
-                                      {industry.score.toFixed(0)}
+                                    <div className="text-right ml-4">
+                                      <div className="text-2xl font-bold text-gray-900 tabular-nums">
+                                        {industry.score.toFixed(0)}%
+                                      </div>
+                                      <div className="text-xs text-gray-500 font-medium">Match Score</div>
                                     </div>
-                                    <div className="text-xs text-gray-500 font-medium">Persentase</div>
                                   </div>
-                                </div>
 
-                                {/* Description */}
-                                <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                                  {industryInfo.description}
-                                </p>
+                                  {/* Description */}
+                                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                                    {industryInfo.description}
+                                  </p>
 
-                                {/* Companies */}
-                                <div>
-                                  <div className="text-xs font-medium text-gray-700 mb-3">Contoh Perusahaan:</div>
-                                  <div className="flex flex-wrap gap-2">
-                                    {industryInfo.topCompanies.slice(0, 4).map((company, idx) => (
-                                      <span
-                                        key={idx}
-                                        className="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"
-                                      >
-                                        {company}
-                                      </span>
-                                    ))}
-                                    {industryInfo.topCompanies.length > 4 && (
-                                      <span className="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-gray-50 text-gray-500 border border-gray-200">
-                                        +{industryInfo.topCompanies.length - 4} lainnya
-                                      </span>
-                                    )}
+                                  {/* Category */}
+                                  <div className="mb-4">
+                                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                                      {industryInfo.category || industry.strength.charAt(0).toUpperCase() + industry.strength.slice(1)}
+                                    </span>
                                   </div>
-                                </div>
-                              </motion.div>
-                            );
-                          })}
+
+                                  {/* Companies */}
+                                  <div>
+                                    <div className="text-xs font-medium text-gray-700 mb-3">Contoh Perusahaan Terkemuka:</div>
+                                    <div className="flex flex-wrap gap-2">
+                                      {industryInfo.topCompanies.slice(0, 4).map((company, idx) => (
+                                        <span
+                                          key={idx}
+                                          className="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-white text-gray-700 border border-gray-200/60 shadow-sm"
+                                        >
+                                          {company}
+                                        </span>
+                                      ))}
+                                      {industryInfo.topCompanies.length > 4 && (
+                                        <span className="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-gray-100 text-gray-500 border border-gray-200">
+                                          +{industryInfo.topCompanies.length - 4} lainnya
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
                         </div>
                       </motion.div>
                     </div>
 
-                    {/* Explanation Section - Below Chart */}
-                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 sm:p-8 border border-gray-200/60">
-                      <div className="text-center max-w-4xl mx-auto">
-                        <h4 className="text-xl font-semibold text-gray-900 mb-4">Bagaimana Skor Dihitung?</h4>
-                        <p className="text-base text-gray-600 leading-relaxed mb-8">
-                          Skor industri dihitung berdasarkan analisis mendalam terhadap kesesuaian kepribadian OCEAN,
-                          minat karir RIASEC, dan kekuatan karakter VIA Anda dengan kebutuhan spesifik setiap industri.
-                        </p>
+                    {/* Methodology Explanation Section */}
+                    <div className="bg-white rounded-xl border border-gray-200/60 shadow-sm overflow-hidden">
+                      <div className="bg-gray-50/50 p-6 border-b border-gray-200/60">
+                        <div className="text-center max-w-4xl mx-auto">
+                          <h4 className="text-xl font-semibold text-gray-900 mb-2">Metodologi Penilaian</h4>
+                          <p className="text-sm text-gray-600 leading-relaxed">
+                            Skor industri dihitung berdasarkan analisis mendalam terhadap kesesuaian kepribadian OCEAN,
+                            minat karir RIASEC, dan kekuatan karakter VIA Anda dengan kebutuhan spesifik setiap industri.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
                           <motion.div
-                            className="bg-white rounded-lg p-5 border border-gray-200/60 shadow-sm"
+                            className="bg-gray-50/30 rounded-lg p-5 border border-gray-200/40"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 1.2 }}
                           >
-                            <div className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                              <span className="mr-2">🧭</span>
-                              OCEAN
+                            <div className="text-base font-semibold text-gray-900 mb-3 flex items-center">
+                              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <span className="text-gray-600">🧭</span>
+                              </div>
+                              OCEAN Model
                             </div>
-                            <p className="text-sm text-gray-600 leading-relaxed">Analisis kepribadian fundamental yang mempengaruhi gaya kerja dan preferensi lingkungan kerja Anda</p>
+                            <p className="text-sm text-gray-600 leading-relaxed">Analisis kepribadian fundamental yang mempengaruhi gaya kerja dan preferensi lingkungan kerja Anda dalam konteks profesional</p>
                           </motion.div>
                           <motion.div
-                            className="bg-white rounded-lg p-5 border border-gray-200/60 shadow-sm"
+                            className="bg-gray-50/30 rounded-lg p-5 border border-gray-200/40"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 1.3 }}
                           >
-                            <div className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                              <span className="mr-2">🎯</span>
-                              RIASEC
+                            <div className="text-base font-semibold text-gray-900 mb-3 flex items-center">
+                              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <span className="text-gray-600">🎯</span>
+                              </div>
+                              RIASEC Theory
                             </div>
-                            <p className="text-sm text-gray-600 leading-relaxed">Pemetaan minat terhadap lingkungan dan aktivitas karir yang sesuai dengan preferensi alami Anda</p>
+                            <p className="text-sm text-gray-600 leading-relaxed">Pemetaan minat terhadap lingkungan dan aktivitas karir yang sesuai dengan preferensi alami dan motivasi intrinsik Anda</p>
                           </motion.div>
                           <motion.div
-                            className="bg-white rounded-lg p-5 border border-gray-200/60 shadow-sm"
+                            className="bg-gray-50/30 rounded-lg p-5 border border-gray-200/40"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 1.4 }}
                           >
-                            <div className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                              <span className="mr-2">⭐</span>
-                              VIA
+                            <div className="text-base font-semibold text-gray-900 mb-3 flex items-center">
+                              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <span className="text-gray-600">⭐</span>
+                              </div>
+                              VIA Character
                             </div>
-                            <p className="text-sm text-gray-600 leading-relaxed">Identifikasi kekuatan karakter yang mendorong perilaku dan nilai-nilai inti dalam bekerja</p>
+                            <p className="text-sm text-gray-600 leading-relaxed">Identifikasi kekuatan karakter yang mendorong perilaku dan nilai-nilai inti dalam bekerja serta pengambilan keputusan</p>
                           </motion.div>
                         </div>
                       </div>
