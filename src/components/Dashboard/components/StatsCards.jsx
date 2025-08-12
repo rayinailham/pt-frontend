@@ -1,4 +1,4 @@
-import { CheckCircle, Coins, XCircle } from 'lucide-react';
+import { CheckCircle, Coins, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const StatsCards = ({ data, loading, statusCounts }) => {
@@ -22,12 +22,12 @@ const StatsCards = ({ data, loading, statusCounts }) => {
       loading: loading.results
     },
     {
-      title: 'Failed',
-      value: loading.results ? null : statusCounts.failed,
-      icon: XCircle,
-      iconBg: 'bg-red-100',
-      iconColor: 'text-red-700',
-      textColor: 'text-red-700',
+      title: 'Processing',
+      value: loading.results ? null : statusCounts.processing,
+      icon: Loader,
+      iconBg: 'bg-blue-100',
+      iconColor: 'text-blue-700',
+      textColor: 'text-blue-700',
       loading: loading.results
     }
   ];

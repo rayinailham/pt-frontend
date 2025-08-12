@@ -489,8 +489,8 @@ const ResultOverview = () => {
 
   // Prepare data for radial bar chart
   const prepareRadialChartData = (industryData) => {
-    // Premium color scheme: sophisticated and elegant tones
-    const colors = ['#1e293b', '#475569', '#64748b', '#94a3b8'];
+    // Premium color scheme: elegant gradient from deep navy to sophisticated blue
+    const colors = ['#0f172a', '#1e3a8a', '#2563eb', '#60a5fa'];
     return getTopIndustries(industryData).map((industry, index) => ({
       name: industryNameMapping[industry.strength] || industry.strength,
       value: industry.score,
@@ -1122,11 +1122,6 @@ const ResultOverview = () => {
                                           {company}
                                         </span>
                                       ))}
-                                      {industryInfo.topCompanies.length > 4 && (
-                                        <span className="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-gray-100 text-gray-500 border border-gray-200">
-                                          +{industryInfo.topCompanies.length - 4} lainnya
-                                        </span>
-                                      )}
                                     </div>
                                   </div>
                                 </motion.div>

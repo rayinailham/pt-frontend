@@ -45,6 +45,7 @@ export const API_ENDPOINTS = {
     DELETE_RESULT: (id) => `/api/archive/results/${id}`,
     STATS: '/api/archive/stats',
     STATS_OVERVIEW: '/api/archive/stats/overview',
+    JOBS: '/api/archive/jobs', // New endpoint for jobs with archetype data
     // JOBS endpoint deprecated - use RESULTS instead
   },
 

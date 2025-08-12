@@ -13,6 +13,7 @@ import StatsCards from './components/StatsCards';
 import ResultsTable from './components/ResultsTable';
 import ArticlesSection from './components/ArticlesSection';
 
+
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -72,21 +73,28 @@ export default function Dashboard() {
     }
   };
 
-  const handleView = (resultId) => {
-    navigate(`/results/${resultId}`);
+  const handleView = (result) => {
+    // Only allow viewing completed jobs with valid result_id
+    if (result.status === 'completed' && result.result_id) {
+      navigate(`/results/${result.result_id}`);
+    } else {
+      alert('This assessment is not yet completed or result is not available.');
+    }
   };
 
   // Calculate status counts from results data
   const getStatusCounts = () => {
     if (!data.results || data.results.length === 0) {
-      return { completed: 0, failed: 0 };
+      return { completed: 0, processing: 0, queued: 0, failed: 0 };
     }
 
     return data.results.reduce((counts, result) => {
       if (result.status === 'completed') counts.completed++;
+      else if (result.status === 'processing') counts.processing++;
+      else if (result.status === 'queued') counts.queued++;
       else if (result.status === 'failed') counts.failed++;
       return counts;
-    }, { completed: 0, failed: 0 });
+    }, { completed: 0, processing: 0, queued: 0, failed: 0 });
   };
 
   const statusCounts = getStatusCounts();
@@ -177,14 +185,6 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
                 >
-                  <div className="mb-6 md:mb-8">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-2">Assessment Results</h2>
-                        <p className="text-sm md:text-base text-slate-600">Lihat dan kelola riwayat asesmen Anda secara terstruktur dan profesional.</p>
-                      </div>
-                    </div>
-                  </div>
                   <ResultsTable
                     data={data}
                     loading={loading}
@@ -223,6 +223,8 @@ export default function Dashboard() {
 
       {/* Subtle footer accent */}
       <div className="h-px bg-slate-200/40"></div>
+
+
     </div>
   );
 }

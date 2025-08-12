@@ -36,13 +36,13 @@ export const useDashboard = () => {
     setError(prev => ({ ...prev, [type]: '' }));
   }, []);
 
-  // Fetch user statistics
+  // Fetch user statistics using enhanced jobs-based stats
   const fetchStats = useCallback(async () => {
     setLoading(prev => ({ ...prev, stats: true }));
     setError(prev => ({ ...prev, stats: '' }));
 
     try {
-      const response = await apiService.getStats();
+      const response = await apiService.getStatsFromJobs();
       setData(prev => ({ ...prev, stats: response.data }));
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch statistics';
@@ -52,24 +52,51 @@ export const useDashboard = () => {
     }
   }, []);
 
-  // Fetch user results with pagination
+  // Fetch user results with pagination using new jobs endpoint
   const fetchResults = useCallback(async (page = 1, limit = 10) => {
     setLoading(prev => ({ ...prev, results: true }));
     setError(prev => ({ ...prev, results: '' }));
 
     try {
-      const response = await apiService.getResults({
+      const response = await apiService.getJobs({
         page,
         limit,
         sort: 'created_at',
         order: 'DESC'
       });
 
+      // Debug logging
+      console.group('🔍 Dashboard Data Debug');
+      console.log('📦 Raw API Response:', response.data);
+      console.log('📊 Jobs count:', response.data.jobs?.length || 0);
+      if (response.data.jobs?.length > 0) {
+        console.log('📋 First job sample:', response.data.jobs[0]);
+        console.log('🎭 Archetypes found:', response.data.jobs.filter(job => job.archetype).map(job => ({ id: job.id, archetype: job.archetype, status: job.status })));
+      }
+      console.groupEnd();
 
+      // Transform jobs data to match expected results structure
+      const transformedResults = (response.data.jobs || []).map(job => ({
+        id: job.id,
+        job_id: job.job_id,
+        user_id: job.user_id,
+        assessment_name: job.assessment_name,
+        created_at: job.created_at,
+        updated_at: job.updated_at,
+        completed_at: job.completed_at,
+        status: job.status,
+        result_id: job.result_id,
+        error_message: job.error_message,
+        priority: job.priority,
+        retry_count: job.retry_count,
+        max_retries: job.max_retries,
+        processing_started_at: job.processing_started_at,
+        archetype: job.archetype
+      }));
 
       setData(prev => ({
         ...prev,
-        results: response.data.results || [],
+        results: transformedResults,
         pagination: response.data.pagination || {
           page: 1,
           limit: 10,

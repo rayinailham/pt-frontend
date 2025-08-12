@@ -202,6 +202,86 @@ class ApiService {
   }
 
   /**
+   * Get user statistics from jobs data (enhanced version)
+   */
+  async getStatsFromJobs() {
+    try {
+      // Get jobs data to calculate statistics
+      const jobsResponse = await this.getJobs({ limit: 100 }); // Get more jobs for better stats
+
+      if (jobsResponse.success && jobsResponse.data) {
+        const jobs = jobsResponse.data.jobs || [];
+        const total = jobsResponse.data.pagination?.total || 0;
+
+        // Calculate statistics from jobs data
+        const completedJobs = jobs.filter(job => job.status === 'completed');
+        const processingJobs = jobs.filter(job => job.status === 'processing');
+        const queuedJobs = jobs.filter(job => job.status === 'queued');
+        const failedJobs = jobs.filter(job => job.status === 'failed');
+
+        const successRate = total > 0 ? (completedJobs.length / total) : 0;
+
+        // Calculate this month's jobs
+        const now = new Date();
+        const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        const thisMonthJobs = jobs.filter(job => new Date(job.created_at) >= thisMonthStart);
+
+        // Get archetype statistics
+        const archetypes = completedJobs
+          .filter(job => job.archetype)
+          .map(job => job.archetype);
+
+        const archetypeFrequency = archetypes.reduce((acc, archetype) => {
+          acc[archetype] = (acc[archetype] || 0) + 1;
+          return acc;
+        }, {});
+
+        const mostCommonArchetype = Object.keys(archetypeFrequency).length > 0
+          ? Object.keys(archetypeFrequency).reduce((a, b) =>
+              archetypeFrequency[a] > archetypeFrequency[b] ? a : b
+            )
+          : '';
+
+        // Get latest job
+        const latestJob = jobs.length > 0 ? jobs[0] : null; // Assuming jobs are sorted by created_at DESC
+
+        const transformedData = {
+          success: true,
+          data: {
+            summary: {
+              total_assessments: total,
+              this_month: thisMonthJobs.length,
+              success_rate: successRate
+            },
+            archetype_summary: {
+              most_common: mostCommonArchetype,
+              frequency: archetypeFrequency[mostCommonArchetype] || 0,
+              last_archetype: completedJobs.length > 0 ? completedJobs[0].archetype || '' : '',
+              unique_archetypes: Object.keys(archetypeFrequency).length,
+              archetype_trend: 'stable'
+            },
+            recent_results: completedJobs.slice(0, 5), // Get 5 most recent completed jobs
+            raw_stats: {
+              completed: completedJobs.length,
+              failed: failedJobs.length,
+              processing: processingJobs.length,
+              queued: queuedJobs.length,
+              latest_analysis: latestJob ? latestJob.created_at : null
+            }
+          }
+        };
+
+        return transformedData;
+      }
+
+      return jobsResponse;
+    } catch (error) {
+      // Fallback to original stats endpoint if jobs endpoint fails
+      return this.getStats();
+    }
+  }
+
+  /**
    * Get user results with pagination and filtering (replaces getUserJobs)
    * @param {Object} params - Query parameters
    * @param {number} params.page - Page number
@@ -222,6 +302,47 @@ class ApiService {
     const url = `${API_ENDPOINTS.ARCHIVE.RESULTS}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
     const response = await axios.get(url);
     return response.data;
+  }
+
+  /**
+   * Get user jobs with archetype data using new jobs endpoint
+   * @param {Object} params - Query parameters
+   * @param {number} params.page - Page number
+   * @param {number} params.limit - Items per page
+   * @param {string} params.status - Filter by status ('queued', 'processing', 'completed', 'failed')
+   * @param {string} params.assessment_name - Filter by assessment name
+   * @param {string} params.sort - Field for sorting (default: 'created_at')
+   * @param {string} params.order - Sort order (default: 'DESC')
+   */
+  async getJobs(params = {}) {
+    const queryParams = new URLSearchParams();
+
+    if (params.page) queryParams.append('page', params.page);
+    if (params.limit) queryParams.append('limit', params.limit);
+    if (params.status) queryParams.append('status', params.status);
+    if (params.assessment_name) queryParams.append('assessment_name', params.assessment_name);
+    if (params.sort) queryParams.append('sort', params.sort);
+    if (params.order) queryParams.append('order', params.order);
+
+    const url = `${API_ENDPOINTS.ARCHIVE.JOBS}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+
+    // Debug logging
+    console.group('🔍 API Call Debug - getJobs');
+    console.log('📍 URL:', url);
+    console.log('📦 Params:', params);
+    console.log('🔑 Auth header:', axios.defaults.headers.common['Authorization'] ? 'SET' : 'NOT SET');
+
+    try {
+      const response = await axios.get(url);
+      console.log('✅ Success:', response.status);
+      console.groupEnd();
+      return response.data;
+    } catch (error) {
+      console.log('❌ Error:', error.response?.status, error.response?.statusText);
+      console.log('📦 Error data:', error.response?.data);
+      console.groupEnd();
+      throw error;
+    }
   }
 
   /**
