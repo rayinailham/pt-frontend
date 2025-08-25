@@ -576,7 +576,7 @@ const ResultPersona = () => {
           )}
 
           {/* Work Environment (Medium) */}
-          {personaProfile.workEnvironment && (
+          {(personaProfile.workEnvironment || (personaProfile.developmentActivities?.extracurricular && personaProfile.developmentActivities.extracurricular.length > 0)) && (
             <motion.div
               id="work-environment-section"
               initial={{ opacity: 0, y: 20 }}
@@ -595,18 +595,48 @@ const ResultPersona = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-4 sm:p-6">
-                <div className="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
-                  <p className="text-slate-700 leading-relaxed text-sm">
-                    {personaProfile.workEnvironment}
-                  </p>
-                </div>
+              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                {/* Work Environment Description */}
+                {personaProfile.workEnvironment && (
+                  <div className="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                    <p className="text-slate-700 leading-relaxed text-sm">
+                      {personaProfile.workEnvironment}
+                    </p>
+                  </div>
+                )}
+
+                {/* Extracurricular Activities for Work Environment (2/4 of total) */}
+                {personaProfile.developmentActivities?.extracurricular && personaProfile.developmentActivities.extracurricular.length > 0 && (
+                  <div>
+                    <h5 className="text-sm font-semibold text-slate-900 mb-3 flex items-center">
+                      <span className="w-4 h-4 sm:w-5 sm:h-5 bg-slate-50 rounded-lg flex items-center justify-center mr-2">
+                        <span className="text-slate-600 text-xs">🎯</span>
+                      </span>
+                      Aktivitas Pengembangan Lingkungan Kerja
+                    </h5>
+                    <div className="space-y-2 sm:space-y-3">
+                      {(() => {
+                        const totalActivities = personaProfile.developmentActivities.extracurricular.length;
+                        const workEnvCount = Math.ceil(totalActivities * 2 / 4); // 2/4 ratio
+                        return personaProfile.developmentActivities.extracurricular.slice(0, workEnvCount).map((activity, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
+                          >
+                            <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-slate-700 text-sm leading-relaxed">{activity}</span>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}
 
           {/* Role Models (Small) */}
-          {personaProfile.roleModel && personaProfile.roleModel.length > 0 && (
+          {(personaProfile.roleModel && personaProfile.roleModel.length > 0) || (personaProfile.developmentActivities?.extracurricular && personaProfile.developmentActivities.extracurricular.length > 0) && (
             <motion.div
               id="role-models-section"
               initial={{ opacity: 0, y: 20 }}
@@ -625,16 +655,91 @@ const ResultPersona = () => {
                   </div>
                 </div>
               </div>
+              <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+                {/* Role Models */}
+                {personaProfile.roleModel && personaProfile.roleModel.length > 0 && (
+                  <div className="space-y-2 sm:space-y-3">
+                    {personaProfile.roleModel.map((model, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-slate-50 text-slate-700 border border-slate-200 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm font-medium text-center"
+                      >
+                        {model}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Extracurricular Activities for Role Models (1/4 of total) */}
+                {personaProfile.developmentActivities?.extracurricular && personaProfile.developmentActivities.extracurricular.length > 0 && (
+                  <div>
+                    <h5 className="text-sm font-semibold text-slate-900 mb-3 flex items-center">
+                      <span className="w-4 h-4 sm:w-5 sm:h-5 bg-slate-50 rounded-lg flex items-center justify-center mr-2">
+                        <span className="text-slate-600 text-xs">🎯</span>
+                      </span>
+                      Aktivitas Panutan
+                    </h5>
+                    <div className="space-y-2 sm:space-y-3">
+                      {(() => {
+                        const totalActivities = personaProfile.developmentActivities.extracurricular.length;
+                        const workEnvCount = Math.ceil(totalActivities * 2 / 4); // 2/4 for work environment
+                        const roleModelCount = Math.ceil(totalActivities * 1 / 4); // 1/4 for role models
+                        const startIndex = workEnvCount;
+                        const endIndex = startIndex + roleModelCount;
+                        return personaProfile.developmentActivities.extracurricular.slice(startIndex, endIndex).map((activity, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
+                          >
+                            <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-slate-700 text-sm leading-relaxed">{activity}</span>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Additional Development Activities (Medium) */}
+          {personaProfile.developmentActivities?.extracurricular && personaProfile.developmentActivities.extracurricular.length > 0 && (
+            <motion.div
+              id="additional-development-section"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.0 }}
+              className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+            >
+              <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
+                <div className="flex items-center space-x-3">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                    <span className="text-slate-600 text-sm">⚡</span>
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900">Aktivitas Pengembangan Tambahan</h4>
+                    <p className="text-slate-600 text-xs">Additional Development Activities</p>
+                  </div>
+                </div>
+              </div>
               <div className="p-4 sm:p-6">
                 <div className="space-y-2 sm:space-y-3">
-                  {personaProfile.roleModel.map((model, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-slate-50 text-slate-700 border border-slate-200 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm font-medium text-center"
-                    >
-                      {model}
-                    </div>
-                  ))}
+                  {(() => {
+                    const totalActivities = personaProfile.developmentActivities.extracurricular.length;
+                    const workEnvCount = Math.ceil(totalActivities * 2 / 4); // 2/4 for work environment
+                    const roleModelCount = Math.ceil(totalActivities * 1 / 4); // 1/4 for role models
+                    const startIndex = workEnvCount + roleModelCount;
+                    return personaProfile.developmentActivities.extracurricular.slice(startIndex).map((activity, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
+                      >
+                        <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-slate-700 text-sm leading-relaxed">{activity}</span>
+                      </div>
+                    ));
+                  })()}
                 </div>
               </div>
             </motion.div>
@@ -643,84 +748,6 @@ const ResultPersona = () => {
           {/* Development Activities Section - Bento Layout */}
           {personaProfile.developmentActivities && (
             <>
-              {/* Extracurricular Activities (Medium) */}
-              {personaProfile.developmentActivities.extracurricular &&
-               personaProfile.developmentActivities.extracurricular.length > 0 && (
-                <motion.div
-                  id="extracurricular-section"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 1.0 }}
-                  className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
-                >
-                  <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
-                        <span className="text-slate-600 text-sm">🎯</span>
-                      </div>
-                      <div>
-                        <h4 className="text-base sm:text-lg font-semibold text-slate-900">Ekstrakurikuler</h4>
-                        <p className="text-slate-600 text-xs">Extracurricular</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <div className="space-y-2 sm:space-y-3">
-                      {personaProfile.developmentActivities.extracurricular.slice(0, 3).map((activity, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
-                        >
-                          <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
-                          <span className="text-slate-700 text-sm leading-relaxed">{activity}</span>
-                        </div>
-                      ))}
-                      {personaProfile.developmentActivities.extracurricular.length > 3 && (
-                        <div className="text-center pt-2 sm:pt-3">
-                          <span className="text-xs text-slate-500">+{personaProfile.developmentActivities.extracurricular.length - 3} lainnya</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Project Ideas (Large) */}
-              {personaProfile.developmentActivities.projectIdeas &&
-               personaProfile.developmentActivities.projectIdeas.length > 0 && (
-                <motion.div
-                  id="project-ideas-section"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 1.1 }}
-                  className="col-span-1 sm:col-span-6 lg:col-span-8 bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
-                >
-                  <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-100 rounded-xl flex items-center justify-center">
-                        <span className="text-slate-600 text-sm">💡</span>
-                      </div>
-                      <div>
-                        <h4 className="text-base sm:text-lg font-semibold text-slate-900">Ide Proyek</h4>
-                        <p className="text-slate-600 text-xs">Project Ideas</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                      {personaProfile.developmentActivities.projectIdeas.map((project, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start space-x-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200"
-                        >
-                          <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
-                          <span className="text-slate-700 text-sm leading-relaxed">{project}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
 
               {/* Book Recommendations (Full Width) */}
               {personaProfile.developmentActivities.bookRecommendations &&
